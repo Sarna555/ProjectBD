@@ -8,5 +8,12 @@ namespace Biz
 {
     public class Class1
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public Class1()
+        {
+            
+        }
     }
 }
