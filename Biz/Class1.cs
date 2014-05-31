@@ -9,7 +9,7 @@ namespace Biz
     public class Class1
     {
         /// <summary>
-        /// Twoja stara lel
+        /// Twoja stara lel not really
         /// </summary>
         public Class1()
         {
