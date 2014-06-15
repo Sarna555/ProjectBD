@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Database1" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True" SettingsObjectName="Biz.Properties.Settings" SettingsPropertyName="Database1ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="user_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="surname" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="User_users2group" Member="users2groups" ThisKey="user_ID" OtherKey="user_ID" Type="users2group" />
+      <Association Name="User_users2operation" Member="users2operations" ThisKey="user_ID" OtherKey="user_ID" Type="users2operation" />
+    </Type>
+  </Table>
+  <Table Name="dbo.users2groups" Member="users2groups">
+    <Type Name="users2group">
+      <Column Name="user_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="group_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="User_users2group" Member="User" ThisKey="user_ID" OtherKey="user_ID" Type="User" IsForeignKey="true" />
+      <Association Name="group_users2group" Member="group" ThisKey="group_ID" OtherKey="group_ID" Type="group" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.groups" Member="groups">
+    <Type Name="group">
+      <Column Name="group_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="group_users2group" Member="users2groups" ThisKey="group_ID" OtherKey="group_ID" Type="users2group" />
+      <Association Name="group_groups2operation" Member="groups2operations" ThisKey="group_ID" OtherKey="group_ID" Type="groups2operation" />
+    </Type>
+  </Table>
+  <Table Name="dbo.operations" Member="operations">
+    <Type Name="operation">
+      <Column Name="operation_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="operation_users2operation" Member="users2operations" ThisKey="operation_ID" OtherKey="operation_ID" Type="users2operation" />
+      <Association Name="operation_groups2operation" Member="groups2operations" ThisKey="operation_ID" OtherKey="operation_ID" Type="groups2operation" />
+    </Type>
+  </Table>
+  <Table Name="dbo.users2operation" Member="users2operations">
+    <Type Name="users2operation">
+      <Column Name="user_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="operation_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="User_users2operation" Member="User" ThisKey="user_ID" OtherKey="user_ID" Type="User" IsForeignKey="true" />
+      <Association Name="operation_users2operation" Member="operation" ThisKey="operation_ID" OtherKey="operation_ID" Type="operation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.groups2operations" Member="groups2operations">
+    <Type Name="groups2operation">
+      <Column Name="group_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="operation_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="group_groups2operation" Member="group" ThisKey="group_ID" OtherKey="group_ID" Type="group" IsForeignKey="true" />
+      <Association Name="operation_groups2operation" Member="operation" ThisKey="operation_ID" OtherKey="operation_ID" Type="operation" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
