@@ -19,6 +19,7 @@ namespace Logic
 
         public static IEnumerable<String> showAll()
         {
+            
             SQLtoLinqDataContext db = new SQLtoLinqDataContext();
             var userResults = from p in db.Users
                               where p.name == "Rafal"
