@@ -17,14 +17,34 @@ namespace Logic
             
         }
 
-        public static IEnumerable<String> showAll()
+        public static List<UserResult> showAll()
         {
             
             SQLtoLinqDataContext db = new SQLtoLinqDataContext();
-            var userResults = from p in db.Users
-                              where p.name == "Rafal"
-                              select p.surname;
+            var userResults = (from p in db.Users
+                              select new UserResult
+                              {
+                                  user_ID = p.user_ID,
+                                  name = p.name,
+                                  surname = p.surname,
+                                  email = p.email
+                              }).ToList<UserResult>();
             return userResults;
+        }
+
+        public static List<UserResult> FindUser(String email, String password)
+        {
+            SQLtoLinqDataContext db = new SQLtoLinqDataContext();
+            var userResult = (from p in db.Users
+                             where p.email == email && p.password == password
+                             select new UserResult
+                             {
+                                 user_ID = p.user_ID,
+                                 name = p.name,
+                                 surname = p.surname,
+                                 email = p.email
+                             }).ToList<UserResult>();
+            return userResult;
         }
     }
 }

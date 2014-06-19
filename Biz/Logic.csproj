@@ -67,6 +67,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="UserResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UsersDatabase.mdf">
