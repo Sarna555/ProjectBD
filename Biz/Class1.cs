@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Linq;
+using System.Security.Principal;
+using System.Security.Permissions;
 
 namespace Logic
 {
@@ -17,6 +19,7 @@ namespace Logic
             
         }
 
+        //[PrincipalPermissionAttribute(SecurityAction.Demand, Name = "Rafal", Role = Operation1Role))]
         public static List<UserResult> showAll()
         {
             
@@ -42,7 +45,15 @@ namespace Logic
                                  user_ID = p.user_ID,
                                  name = p.name,
                                  surname = p.surname,
-                                 email = p.email
+                                 email = p.email,
+                                 operations = (from p1 in db.operations
+                                               from p2 in db.users2operations
+                                               where p1.operation_ID == p2.operation_ID && p.user_ID == p2.user_ID
+                                                   select p1.name).ToList<String>(),
+                                 groups = (from p1 in db.groups
+                                               from p2 in db.users2groups
+                                               where p1.group_ID == p2.group_ID && p.user_ID == p2.user_ID
+                                               select p1.name).ToList<String>()
                              }).ToList<UserResult>();
             return userResult;
         }

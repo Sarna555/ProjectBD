@@ -60,7 +60,7 @@ namespace View
             }
             else
             {
-                MessageBox.Show("Couldnt find user");
+                MessageBox.Show("Couldn't find user");
             }
         }
     }
