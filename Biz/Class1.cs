@@ -19,7 +19,11 @@ namespace Logic
             
         }
 
-        //[PrincipalPermissionAttribute(SecurityAction.Demand, Name = "Rafal", Role = Operation1Role))]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static List<UserResult> showAll()
         {
             
@@ -35,6 +39,12 @@ namespace Logic
             return userResults;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static List<UserResult> FindUser(String email, String password)
         {
             SQLtoLinqDataContext db = new SQLtoLinqDataContext();

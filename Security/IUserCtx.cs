@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Security
 {
-    interface IUserCtx
+    public interface IUserCtx
     {
-        String UName { get; }
+        String uname { get; }
 
         bool HasRoleRight(String OperRoleName);
 

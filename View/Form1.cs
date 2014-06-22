@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logic;
+using Security;
 
 namespace View
 {
     public partial class Form1 : Form
     {
+        public IUserCtx uctx;
         public Form1()
         {
             InitializeComponent();
@@ -20,11 +22,18 @@ namespace View
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var res = Class1.showAll();
-            foreach(UserResult ele in res)
+            try
             {
-                textBox1.AppendText(ele.name + " " + ele.surname + "\n");
-                // Perform logic on the item
+                var res = Class1.showAll();
+                foreach (UserResult ele in res)
+                {
+                    textBox1.AppendText(ele.name + " " + ele.surname + "\n");
+                    // Perform logic on the item
+                }
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
             }
             
         }
@@ -47,21 +56,35 @@ namespace View
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoginForm loginForm = new LoginForm();
-            loginForm.ShowDialog();
-            String email = loginForm.email;
-            String password = loginForm.password;
+            DialogResult lel = loginForm.ShowDialog(this);
+            if (lel == DialogResult.OK)
+            {
+                string email = loginForm.email;
+                string password = loginForm.password;
+
+
+                if (UserCtx.Login(email, password, out uctx))
+                {
+                    label1.Text = email;
+                }
+                else
+                {
+                    MessageBox.Show("No such user exists");
+                }
+            }
             loginForm.Dispose();
+        }
 
-            var user = Class1.FindUser(email, password);
+        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UserCtx.Logout(ref uctx);
+            label1.Text = "";
+        }
 
-            if (user.Count != 0)
-            {
-                MessageBox.Show(user[0].name + " " + user[0].surname);
-            }
-            else
-            {
-                MessageBox.Show("Couldn't find user");
-            }
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(uctx != null)
+                MessageBox.Show(uctx.uname);
         }
     }
 }

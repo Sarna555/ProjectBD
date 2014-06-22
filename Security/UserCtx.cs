@@ -9,16 +9,36 @@ using Logic;
 
 namespace Security
 {
-    class UserCtx : IUserCtx
+    public class UserCtx : IUserCtx
     {
 
-        private String uname;
-        public String UName { get; }
+        public String uname { get; private set; }
+        public List<string> OpersRoles;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="un"></param>
         public UserCtx(String un)
         {
             uname = un;
             OpersRoles = new List<String>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="un"></param>
+        /// <param name="OpersRole"></param>
+        public UserCtx(String un, List<String> OpersRole)
+        {
+            uname = un;
+            this.OpersRoles = OpersRoles;
+        }
+
+        public void AddOperRole(String OperRoleName)
+        {
+            OpersRoles.Add(OperRoleName);
         }
 
         public bool HasRoleRight(String OperRoleName)
@@ -36,6 +56,10 @@ namespace Security
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uc"></param>
         public static void Logout(ref IUserCtx uc)
         {
             // IPrincipal  gp ;
@@ -49,30 +73,34 @@ namespace Security
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uname"></param>
+        /// <param name="pass"></param>
+        /// <param name="uc"></param>
+        /// <returns></returns>
         public static bool Login(String uname, String pass, out IUserCtx uc)
         {
-            String[] roles;
+            List<string> roles;
             uc = null;
 
             // autentykacja (tu następuje sprawdzenie z tablicą user/pass z Bazy Danych)
             var user = Class1.FindUser(uname, pass);
             if (user.Count != 0)
             {
-                roles = user[0].operations.ToArray();
+                roles = user[0].operations;
             }
             else
             {
                 return false;
             }
 
-            UserCtx ucl = new UserCtx(uname);
-            foreach (String s in roles)
-                ucl.AddOperRole(s);
-            uc = ucl;
+            uc = new UserCtx(uname, roles);
 
             GenericIdentity gi = new GenericIdentity(uname);
 
-            GenericPrincipal gp = new GenericPrincipal(gi, roles);
+            GenericPrincipal gp = new GenericPrincipal(gi, roles.ToArray());
 
             // przypisanie kontekstu (żeby działał mechanizm)
             Thread.CurrentPrincipal = gp;
