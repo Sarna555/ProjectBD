@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="classes\Class1.cs" />
     <Compile Include="SQLtoLinq.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -67,7 +67,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UserResult.cs" />
+    <Compile Include="classes\UserResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UsersDatabase.mdf">
