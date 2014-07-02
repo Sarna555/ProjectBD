@@ -1,1 +1,58 @@
-﻿
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Warehouse" Class="SQLtoLinqDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Warehouse.mdf;Integrated Security=True" SettingsObjectName="Warehouse.Properties.Settings" SettingsPropertyName="WarehouseConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Kategoria_produktu" Member="Kategoria_produktus">
+    <Type Name="Kategoria_produktu">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="nazwa" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Kategoria_produktu_Produkt" Member="Produkts" ThisKey="Id" OtherKey="id_kategorii" Type="Produkt" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Zamowoienie" Member="Zamowoienies">
+    <Type Name="Zamowoienie">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="id_stanu" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="nadawca" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="odbiorca" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="data_nadania" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="data_odbioru" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="id_palety" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Stan_Zamowoienie" Member="Stan" ThisKey="id_stanu" OtherKey="Id" Type="Stan" IsForeignKey="true" />
+      <Association Name="Paleta1_Zamowoienie" Member="Paleta" ThisKey="id_palety" OtherKey="Id" Type="Paleta" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Miejsce_w_mag" Member="Miejsce_w_mags">
+    <Type Name="Miejsce_w_mag">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="kod" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Miejsce_w_mag_Paleta1" Member="Paletas" ThisKey="Id" OtherKey="id_miejsca_w_mag" Type="Paleta" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Produkt" Member="Produkts">
+    <Type Name="Produkt">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="nazwa" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="id_kategorii" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="data_przydatnosci" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="id_palety" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Kategoria_produktu_Produkt" Member="Kategoria_produktu" ThisKey="id_kategorii" OtherKey="Id" Type="Kategoria_produktu" IsForeignKey="true" />
+      <Association Name="Paleta1_Produkt" Member="Paleta" ThisKey="id_palety" OtherKey="Id" Type="Paleta" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Stan" Member="Stans">
+    <Type Name="Stan">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="nazwa_stanu" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Stan_Zamowoienie" Member="Zamowoienies" ThisKey="Id" OtherKey="id_stanu" Type="Zamowoienie" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Paleta" Member="Paletas">
+    <Type Name="Paleta">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="id_miejsca_w_mag" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="kod" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Paleta1_Zamowoienie" Member="Zamowoienies" ThisKey="Id" OtherKey="id_palety" Type="Zamowoienie" />
+      <Association Name="Paleta1_Produkt" Member="Produkts" ThisKey="Id" OtherKey="id_palety" Type="Produkt" />
+      <Association Name="Miejsce_w_mag_Paleta1" Member="Miejsce_w_mag" ThisKey="id_miejsca_w_mag" OtherKey="Id" Type="Miejsce_w_mag" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
