@@ -56,6 +56,18 @@
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="order.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="order.Designer.cs">
+      <DependentUpon>order.cs</DependentUpon>
+    </Compile>
+    <Compile Include="pallet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="pallet.Designer.cs">
+      <DependentUpon>pallet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -63,6 +75,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="order.resx">
+      <DependentUpon>order.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="pallet.resx">
+      <DependentUpon>pallet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

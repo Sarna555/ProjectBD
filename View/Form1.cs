@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logic;
 using Security;
-
+using System.Data.SqlClient;
 namespace View
 {
     public partial class Form1 : Form
@@ -27,7 +27,6 @@ namespace View
                 var res = Class1.showAll();
                 foreach (UserResult ele in res)
                 {
-                    textBox1.AppendText(ele.name + " " + ele.surname + "\n");
                     // Perform logic on the item
                 }
             }
@@ -85,6 +84,23 @@ namespace View
         {
             if(uctx != null)
                 MessageBox.Show(uctx.uname);
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var jakaszmienna = Class1.showAll();
+            List<String> names = new List<String>();
+            foreach (UserResult x in jakaszmienna)
+            {
+                string temp = x.name + " " + x.surname;
+                names.Add(temp);
+            }
+            this.listBox1.DataSource = names;
         }
     }
 }

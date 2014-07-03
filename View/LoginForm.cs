@@ -29,5 +29,10 @@ namespace View
             this.password = textBox2.Text;
             this.Close();
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
