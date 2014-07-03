@@ -93,14 +93,23 @@ namespace View
 
         private void button4_Click(object sender, EventArgs e)
         {
-            var jakaszmienna = Class1.showAll();
-            List<String> names = new List<String>();
-            foreach (UserResult x in jakaszmienna)
+            try
             {
-                string temp = x.name + " " + x.surname;
-                names.Add(temp);
+                var jakaszmienna = Class1.showAll();
+                List<String> names = new List<String>();
+                
+                foreach (UserResult x in jakaszmienna)
+                {
+                    string temp = x.name + " " + x.surname;
+                    names.Add(temp);
+                }
+
+                this.listBox1.DataSource = names;
             }
-            this.listBox1.DataSource = names;
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
         }
     }
 }
