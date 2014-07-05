@@ -46,7 +46,7 @@
       <Project>{20715171-842e-4165-a6b1-f6b52c57968d}</Project>
       <Name>Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warehouse\Warehouse.Database.csproj">
+    <ProjectReference Include="..\Warehouse.Database\Warehouse.Database.csproj">
       <Project>{7a8fa000-e4a8-45c1-bcda-501303bf8e23}</Project>
       <Name>Warehouse.Database</Name>
     </ProjectReference>

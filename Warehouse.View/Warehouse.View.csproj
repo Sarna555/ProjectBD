@@ -105,6 +105,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Security\Security.csproj">
+      <Project>{20715171-842e-4165-a6b1-f6b52c57968d}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warehouse.Logic\Warehouse.Logic.csproj">
       <Project>{a2d4657d-a46a-4eb6-b47e-d5d0326a9920}</Project>
       <Name>Warehouse.Logic</Name>
