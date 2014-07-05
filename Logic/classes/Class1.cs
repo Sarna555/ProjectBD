@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using System.Data.Linq;
 using System.Security.Principal;
 using System.Security.Permissions;
+using Security;
 
-namespace Logic
+namespace Admin.Logic
 {
     public class Class1
     {

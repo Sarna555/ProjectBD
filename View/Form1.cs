@@ -7,8 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Logic;
-using Security;
+using Admin.Logic;
 using System.Data.SqlClient;
 namespace View
 {
