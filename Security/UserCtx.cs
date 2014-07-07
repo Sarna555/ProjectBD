@@ -32,7 +32,7 @@ namespace Security
         public UserCtx(String un, List<String> OpersRole)
         {
             uname = un;
-            this.OpersRoles = OpersRoles;
+            this.OpersRoles = OpersRole;
         }
 
         public void AddOperRole(String OperRoleName)
@@ -81,19 +81,14 @@ namespace Security
         /// <returns></returns>
         public static bool Login(String uname, String pass, out IUserCtx uc)
         {
-            List<string> roles;
+            var roles = new List<string>();
             uc = null;
+            var db = new SQLtoLinqDataContext();
 
             // autentykacja (tu następuje sprawdzenie z tablicą user/pass z Bazy Danych)
-            var user = Class1.FindUser(uname, pass);
-            if (user.Count != 0)
-            {
-                roles = user[0].operations;
-            }
-            else
-            {
-                return false;
-            }
+            /*roles = (from u in db.Users
+                     from o in db.operations
+                     where )*/
 
             uc = new UserCtx(uname, roles);
 

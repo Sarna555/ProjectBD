@@ -14,9 +14,6 @@ namespace Security
 
         bool HasGroupRight(String GroupName);
 
-        bool Login(String uname, String pass, out IUserCtx uc);
-
-        void Logout(ref IUserCtx uc);
 
         List<String> GetAllRoles();
     }

@@ -13,7 +13,6 @@ namespace Security
         public String surname { get; set; }
         public String email { get; set; }
         public List<String> operations { get; set; }
-        public List<GroupResult> groups { get; set; }
 
 
         public UserResult()
