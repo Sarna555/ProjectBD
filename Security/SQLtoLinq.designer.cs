@@ -22,7 +22,7 @@ namespace Security
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="SecurityDB")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="UsersDatabase")]
 	public partial class SQLtoLinqDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -30,15 +30,15 @@ namespace Security
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
     partial void Insertgroup(group instance);
     partial void Updategroup(group instance);
     partial void Deletegroup(group instance);
     partial void Insertoperation(operation instance);
     partial void Updateoperation(operation instance);
     partial void Deleteoperation(operation instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
     #endregion
 		
 		public SQLtoLinqDataContext() : 
@@ -69,14 +69,6 @@ namespace Security
 				base(connection, mappingSource)
 		{
 			OnCreated();
-		}
-		
-		public System.Data.Linq.Table<User> Users
-		{
-			get
-			{
-				return this.GetTable<User>();
-			}
 		}
 		
 		public System.Data.Linq.Table<users2group> users2groups
@@ -118,162 +110,12 @@ namespace Security
 				return this.GetTable<groups2operation>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _user_ID;
-		
-		private string _name;
-		
-		private string _surname;
-		
-		private string _email;
-		
-		private string _password;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void Onuser_IDChanging(int value);
-    partial void Onuser_IDChanged();
-    partial void OnnameChanging(string value);
-    partial void OnnameChanged();
-    partial void OnsurnameChanging(string value);
-    partial void OnsurnameChanged();
-    partial void OnemailChanging(string value);
-    partial void OnemailChanged();
-    partial void OnpasswordChanging(string value);
-    partial void OnpasswordChanged();
-    #endregion
-		
-		public User()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int user_ID
+		public System.Data.Linq.Table<User> Users
 		{
 			get
 			{
-				return this._user_ID;
-			}
-			set
-			{
-				if ((this._user_ID != value))
-				{
-					this.Onuser_IDChanging(value);
-					this.SendPropertyChanging();
-					this._user_ID = value;
-					this.SendPropertyChanged("user_ID");
-					this.Onuser_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string name
-		{
-			get
-			{
-				return this._name;
-			}
-			set
-			{
-				if ((this._name != value))
-				{
-					this.OnnameChanging(value);
-					this.SendPropertyChanging();
-					this._name = value;
-					this.SendPropertyChanged("name");
-					this.OnnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_surname", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string surname
-		{
-			get
-			{
-				return this._surname;
-			}
-			set
-			{
-				if ((this._surname != value))
-				{
-					this.OnsurnameChanging(value);
-					this.SendPropertyChanging();
-					this._surname = value;
-					this.SendPropertyChanged("surname");
-					this.OnsurnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_email", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string email
-		{
-			get
-			{
-				return this._email;
-			}
-			set
-			{
-				if ((this._email != value))
-				{
-					this.OnemailChanging(value);
-					this.SendPropertyChanging();
-					this._email = value;
-					this.SendPropertyChanged("email");
-					this.OnemailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string password
-		{
-			get
-			{
-				return this._password;
-			}
-			set
-			{
-				if ((this._password != value))
-				{
-					this.OnpasswordChanging(value);
-					this.SendPropertyChanging();
-					this._password = value;
-					this.SendPropertyChanged("password");
-					this.OnpasswordChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<User>();
 			}
 		}
 	}
@@ -581,6 +423,164 @@ namespace Security
 				{
 					this._operation_ID = value;
 				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _user_ID;
+		
+		private string _name;
+		
+		private string _surname;
+		
+		private string _login;
+		
+		private string _password;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onuser_IDChanging(int value);
+    partial void Onuser_IDChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OnsurnameChanging(string value);
+    partial void OnsurnameChanged();
+    partial void OnloginChanging(string value);
+    partial void OnloginChanged();
+    partial void OnpasswordChanging(string value);
+    partial void OnpasswordChanged();
+    #endregion
+		
+		public User()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int user_ID
+		{
+			get
+			{
+				return this._user_ID;
+			}
+			set
+			{
+				if ((this._user_ID != value))
+				{
+					this.Onuser_IDChanging(value);
+					this.SendPropertyChanging();
+					this._user_ID = value;
+					this.SendPropertyChanged("user_ID");
+					this.Onuser_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_surname", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string surname
+		{
+			get
+			{
+				return this._surname;
+			}
+			set
+			{
+				if ((this._surname != value))
+				{
+					this.OnsurnameChanging(value);
+					this.SendPropertyChanging();
+					this._surname = value;
+					this.SendPropertyChanged("surname");
+					this.OnsurnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_login", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string login
+		{
+			get
+			{
+				return this._login;
+			}
+			set
+			{
+				if ((this._login != value))
+				{
+					this.OnloginChanging(value);
+					this.SendPropertyChanging();
+					this._login = value;
+					this.SendPropertyChanged("login");
+					this.OnloginChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string password
+		{
+			get
+			{
+				return this._password;
+			}
+			set
+			{
+				if ((this._password != value))
+				{
+					this.OnpasswordChanging(value);
+					this.SendPropertyChanging();
+					this._password = value;
+					this.SendPropertyChanged("password");
+					this.OnpasswordChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}

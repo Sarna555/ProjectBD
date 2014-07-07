@@ -23,7 +23,7 @@ namespace Admin.Logic
                                    user_ID = p.user_ID,
                                    name = p.name,
                                    surname = p.surname,
-                                   email = p.email
+                                   login = p.login
                                }).ToList<UserResult>();
             return userResults;
         }
