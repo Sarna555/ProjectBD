@@ -1,6 +1,6 @@
 ﻿namespace View
 {
-    partial class pallet
+    partial class Pallet
     {
         /// <summary>
         /// Required designer variable.

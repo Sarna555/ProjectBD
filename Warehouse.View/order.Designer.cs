@@ -1,6 +1,6 @@
 ﻿namespace View
 {
-    partial class order
+    partial class Order
     {
         /// <summary>
         /// Required designer variable.

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace View
 {
-    public partial class pallet : Form
+    public partial class Pallet : Form
     {
-        public pallet()
+        public Pallet()
         {
             InitializeComponent();
         }

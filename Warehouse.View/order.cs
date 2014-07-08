@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace View
 {
-    public partial class order : Form
+    public partial class Order : Form
     {
-        public order()
+        public Order()
         {
             InitializeComponent();
         }

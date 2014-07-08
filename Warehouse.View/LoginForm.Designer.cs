@@ -57,9 +57,9 @@ namespace View
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 32);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
+            this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "email";
+            this.label1.Text = "login";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
