@@ -32,7 +32,7 @@
         <elementListCompartment Id="30028012-ac70-4810-a80e-a7fb3c2e11e2" absoluteBounds="9.89, 3.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(3.125 : 1.09699625651042); (3.875 : 1.09699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3.125 : 1.09699625651042); (3.875 : 1.09699625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SQLtoLinqDataContext/Kategoria_produktu/Kategoria_produktu_Produkt" />
       <nodes>
         <classShapeMoniker Id="eb94b8ea-a15e-4463-b32e-e3dceaec7950" />
@@ -52,25 +52,25 @@
         <elementListCompartment Id="ed1efa48-efc4-4e34-b81d-8f2b9c5da273" absoluteBounds="7.0150000000000006, 0.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.75 : 1.8862939453125); (7.75 : 2.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/SQLtoLinqDataContext/Paleta/Paleta1_Zamowoienie" />
+    <associationConnector edgePoints="[(7.75 : 1.8862939453125); (7.75 : 2.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SQLtoLinqDataContext/Paleta/Paleta_Zamowoienie" />
       <nodes>
         <classShapeMoniker Id="d21966af-850c-4779-bdb2-7f03c7cc2be8" />
         <classShapeMoniker Id="1d4cccc1-e759-48b2-9dcb-bfa6cfec1638" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(10.625 : 1.09699625651042); (9 : 1.09699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/SQLtoLinqDataContext/Miejsce_w_mag/Miejsce_w_mag_Paleta1" />
-      <nodes>
-        <classShapeMoniker Id="d9d8be43-0078-4a14-8b5d-fec795a452c3" />
-        <classShapeMoniker Id="d21966af-850c-4779-bdb2-7f03c7cc2be8" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(7 : 1.19314697265625); (5.875 : 1.19314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/SQLtoLinqDataContext/Paleta/Paleta1_Produkt" />
+    <associationConnector edgePoints="[(7 : 1.19314697265625); (5.875 : 1.19314697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SQLtoLinqDataContext/Paleta/Paleta_Produkt" />
       <nodes>
         <classShapeMoniker Id="d21966af-850c-4779-bdb2-7f03c7cc2be8" />
         <classShapeMoniker Id="5a9aef54-0756-4a72-8048-30597d719a27" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.625 : 1.09699625651042); (9 : 1.09699625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SQLtoLinqDataContext/Miejsce_w_mag/Miejsce_w_mag_Paleta" />
+      <nodes>
+        <classShapeMoniker Id="d9d8be43-0078-4a14-8b5d-fec795a452c3" />
+        <classShapeMoniker Id="d21966af-850c-4779-bdb2-7f03c7cc2be8" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

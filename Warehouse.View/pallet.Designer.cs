@@ -1,4 +1,4 @@
-﻿namespace View
+﻿namespace Warehouse
 {
     partial class Pallet
     {

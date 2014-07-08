@@ -7,9 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Logic;
 
-namespace View
+namespace Warehouse
 {
     public partial class LoginForm : Form
     {

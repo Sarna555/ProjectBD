@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Admin.Logic;
 using System.Data.SqlClient;
-namespace View
+using Security;
+namespace Warehouse
 {
     public partial class Form1 : Form
     {
@@ -23,11 +23,6 @@ namespace View
         {
             try
             {
-                var res = Class1.showAll();
-                foreach (UserResult ele in res)
-                {
-                    // Perform logic on the item
-                }
             }
             catch (System.Security.SecurityException se)
             {
@@ -94,14 +89,7 @@ namespace View
         {
             try
             {
-                var jakaszmienna = Class1.showAll();
                 List<String> names = new List<String>();
-                
-                foreach (UserResult x in jakaszmienna)
-                {
-                    string temp = x.name + " " + x.surname;
-                    names.Add(temp);
-                }
 
                 this.listBox1.DataSource = names;
             }
