@@ -44,14 +44,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="AddToGroup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AddToGroup.Designer.cs">
+      <DependentUpon>AddToGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditGroup.Designer.cs">
+      <DependentUpon>EditGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditUser.Designer.cs">
+      <DependentUpon>EditUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mainwindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mainwindow.Designer.cs">
+      <DependentUpon>Mainwindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddToGroup.resx">
+      <DependentUpon>AddToGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditGroup.resx">
+      <DependentUpon>EditGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditUser.resx">
+      <DependentUpon>EditUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.pl-PL.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mainwindow.resx">
+      <DependentUpon>Mainwindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
