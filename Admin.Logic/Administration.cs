@@ -43,7 +43,7 @@ namespace Admin.Logic
             var result = (from o in db.operations
                               from u2o in db.users2operations
                               from u in db.Users
-                              where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.name == login
+                              where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.login == login
                               select o.name)
                                 .Union
                                 (from o in db.operations
@@ -51,7 +51,7 @@ namespace Admin.Logic
                                  from u2g in db.users2groups
                                  from u in db.Users
                                  from g in db.groups
-                                 where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.name == login
+                                 where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.login == login
                                  select o.name).ToList<string>();
             return result;
             //Nic nie poradze, jak na razie optymalniej nie chce działać :D
