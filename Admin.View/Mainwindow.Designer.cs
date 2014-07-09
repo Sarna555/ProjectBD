@@ -76,21 +76,22 @@ namespace Admin.View
             // zalogujToolStripMenuItem
             // 
             this.zalogujToolStripMenuItem.Name = "zalogujToolStripMenuItem";
-            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zalogujToolStripMenuItem.Text = "Zaloguj";
             this.zalogujToolStripMenuItem.Click += new System.EventHandler(this.zalogujToolStripMenuItem_Click);
             // 
             // wylogujToolStripMenuItem
             // 
             this.wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
-            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.wylogujToolStripMenuItem.Text = "Wyloguj";
             // 
             // zakończToolStripMenuItem
             // 
             this.zakończToolStripMenuItem.Name = "zakończToolStripMenuItem";
-            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.zakończToolStripMenuItem.Text = "Zakończ";
+            this.zakończToolStripMenuItem.Click += new System.EventHandler(this.zakończToolStripMenuItem_Click);
             // 
             // użytkownicyToolStripMenuItem
             // 
@@ -127,15 +128,16 @@ namespace Admin.View
             // dodajGrupęToolStripMenuItem
             // 
             this.dodajGrupęToolStripMenuItem.Name = "dodajGrupęToolStripMenuItem";
-            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.dodajGrupęToolStripMenuItem.Text = "Dodaj grupę";
             this.dodajGrupęToolStripMenuItem.Click += new System.EventHandler(this.dodajGrupęToolStripMenuItem_Click);
             // 
             // zobaczListęToolStripMenuItem1
             // 
             this.zobaczListęToolStripMenuItem1.Name = "zobaczListęToolStripMenuItem1";
-            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.zobaczListęToolStripMenuItem1.Text = "Zobacz listę";
+            this.zobaczListęToolStripMenuItem1.Click += new System.EventHandler(this.zobaczListęToolStripMenuItem1_Click);
             // 
             // pomocToolStripMenuItem
             // 
@@ -159,6 +161,7 @@ namespace Admin.View
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(150, 212);
             this.listBox1.TabIndex = 1;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // checkedListBox1
             // 

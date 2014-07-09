@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Admin.Logic;
+using Security;
 
 namespace Admin.View
 {
@@ -56,7 +57,15 @@ namespace Admin.View
         {
             try
             {
-                this.listBox1.DataSource = Administration.GetAllUsers();
+                choice = "user";
+                var userslist = Administration.GetAllUsers();
+                List<String> usernamelist = new List<String>();
+                foreach(UserResult result in userslist)
+                {
+                    usernamelist.Add(result.login);
+                }
+
+                this.listBox1.DataSource = usernamelist;
             }
             catch (System.Security.SecurityException se)
             {
@@ -67,6 +76,46 @@ namespace Admin.View
         private void dodajGrupęToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditGroup().Show();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string login = this.listBox1.SelectedItem.ToString();
+            checkedListBox1.Items.Clear();
+            switch (choice)
+            {
+                case "group":
+                    var permissionListGroups = Administration.GetGroupOperations(login);
+                    foreach (String permission in permissionListGroups)
+                    {
+                        checkedListBox1.Items.Add(permission, true);
+                    }
+
+                    break;
+                case "user":
+                    var permissionListUser = Administration.GetUserOperations(login);
+                    foreach (String permission in permissionListUser)
+                    {
+                        checkedListBox1.Items.Add(permission, true);
+                    }
+                    checkedListBox1.Items.Add(Administration.GetUserOperations(login), true);
+                    break;
+                default:
+                    MessageBox.Show("Wybierz użytkownika/grupę");
+                    break;
+            }
+            
+        }
+
+        private void zakończToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void zobaczListęToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            choice = "group";
+            this.listBox1.DataSource = Administration.GetAllGroups();
         }
     }
 }
