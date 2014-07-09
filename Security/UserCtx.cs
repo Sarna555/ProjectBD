@@ -12,7 +12,7 @@ namespace Security
     {
 
         public String uname { get; private set; }
-        public List<string> OpersRoles;
+        public List<string> OpersRoles { get; private set; }
 
         /// <summary>
         /// 
@@ -27,32 +27,41 @@ namespace Security
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="un"></param>
-        /// <param name="OpersRole"></param>
-        public UserCtx(String un, List<String> OpersRole)
+        /// <param name="uname"></param>
+        /// <param name="opersRole"></param>
+        public UserCtx(String uname, List<String> opersRole)
         {
-            uname = un;
-            this.OpersRoles = OpersRole;
+            this.uname = uname;
+            this.OpersRoles = opersRole;
         }
 
-        public void AddOperRole(String OperRoleName)
-        {
-            OpersRoles.Add(OperRoleName);
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="OperRoleName"></param>
+        /// <returns></returns>
         public bool HasRoleRight(String OperRoleName)
         {
-            throw new NotImplementedException();
+            return this.OpersRoles.Contains(OperRoleName);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="GroupName"></param>
+        /// <returns></returns>
         public bool HasGroupRight(String GroupName)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<String> GetAllRoles()
         {
-            throw new NotImplementedException();
+            return OpersRoles;
         }
 
         /// <summary>
@@ -75,13 +84,12 @@ namespace Security
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="uname"></param>
-        /// <param name="pass"></param>
-        /// <param name="uc"></param>
-        /// <returns></returns>
-        public static bool Login(String uname, String pass, out IUserCtx uc)
+        /// <param name="uname">login</param>
+        /// <param name="pass">password</param>
+        /// <param name="uc">User Context</param>
+        /// <returns>If user exists returns true</returns>
+        public static bool Login(String login, String pass, out IUserCtx uc)
         {
-            var roles = new List<string>();
             uc = null;
             var db = new SQLtoLinqDataContext();
 
@@ -89,10 +97,35 @@ namespace Security
             /*roles = (from u in db.Users
                      from o in db.operations
                      where )*/
+            var result = (from p in db.Users
+                          where p.login == login && p.password == pass
+                          select new UserResult
+                          {
+                              user_ID = p.user_ID,
+                              name = p.name,
+                              surname = p.surname,
+                              login = p.login
+                          }).ToArray<UserResult>();
+            if (result.Length != 1)
+                return false;
 
-            uc = new UserCtx(uname, roles);
+            var roles = (from o in db.operations
+                         from u2o in db.users2operations
+                         from u in db.Users
+                         where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.user_ID == result[0].user_ID
+                         select o.name)
+                         .Union
+                         (from o in db.operations
+                          from g2o in db.groups2operations
+                          from u2g in db.users2groups
+                          from u in db.Users
+                          from g in db.groups
+                          where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.user_ID == result[0].user_ID
+                          select o.name).ToList<string>();
+            //tak bardzo brzydko ;(
+            uc = new UserCtx(login, roles);
 
-            GenericIdentity gi = new GenericIdentity(uname);
+            GenericIdentity gi = new GenericIdentity(login);
 
             GenericPrincipal gp = new GenericPrincipal(gi, roles.ToArray());
 
@@ -100,6 +133,12 @@ namespace Security
             Thread.CurrentPrincipal = gp;
             return true;
 
+        }
+
+        public UserResult FindUser(string login, string pass, ref SQLtoLinqDataContext db)
+        {
+            
+            return null;
         }
     }
 }

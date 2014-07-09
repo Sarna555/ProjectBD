@@ -16,7 +16,7 @@ namespace Admin.Logic
         /// 
         /// </summary>
         /// <returns>List of all users</returns>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
+        //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
         public static List<UserResult> GetAllUsers()
         {
 
@@ -47,6 +47,56 @@ namespace Admin.Logic
                 //Nic nie poradze, jak na razie optymalniej nie chce działać :D
             }
             return userResults;
+        }
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
+        public static List<string> GetAllGroups()
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from g in db.groups
+                          select g.name).ToList<string>();
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
+        public static List<string> GetGroupOperations(string name)
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from g in db.groups
+                          where g.name == name
+                          select (from o in db.operations
+                                  from g2o in db.groups2operations
+                                  where g.group_ID == g2o.group_ID && g2o.operation_ID == o.operation_ID
+                                  select o.name).ToList<string>()).ToArray<List<string>>();
+            return result[0];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
+        public static List<string> GetUserOperations(string login)
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from u in db.Users
+                          where u.login == login
+                          select (from o in db.operations
+                                  from u2o in db.users2operations
+                                  where u.user_ID == u2o.user_ID && u2o.operation_ID == o.operation_ID
+                                  select o.name).ToList<string>()).ToArray<List<string>>();
+            return result[0];
         }
     }
 }
