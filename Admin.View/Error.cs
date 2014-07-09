@@ -10,16 +10,21 @@ using System.Windows.Forms;
 
 namespace Admin.View
 {
-    public partial class EditUser : Form
+    public partial class Error : Form
     {
-        public EditUser()
+        public Error()
         {
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Error_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -10,14 +10,24 @@ using System.Windows.Forms;
 
 namespace Admin.View
 {
-    public partial class EditUser : Form
+    public partial class About : Form
     {
-        public EditUser()
+        public About()
         {
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
         }

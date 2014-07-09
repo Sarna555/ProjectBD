@@ -87,16 +87,12 @@ namespace Warehouse
 
         private void button4_Click(object sender, EventArgs e)
         {
-            try
-            {
-                List<String> names = new List<String>();
+           
+        }
 
-                this.listBox1.DataSource = names;
-            }
-            catch (System.Security.SecurityException se)
-            {
-                MessageBox.Show("Permission denied " + se.Message);
-            }
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Admin.View
+﻿using Security;
+
+namespace Admin.View
 {
     partial class Mainwindow
     {
@@ -6,7 +8,7 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
+        private IUserCtx _userCtx;
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -30,16 +32,16 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.użytkownicyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.grupyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pomocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zalogujToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wylogujToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zakończToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.użytkownicyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dodajUżytkownikaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zobaczListęToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grupyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dodajGrupęToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zobaczListęToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pomocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oProgramieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
@@ -71,6 +73,25 @@
             this.plikToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.plikToolStripMenuItem.Text = "Plik";
             // 
+            // zalogujToolStripMenuItem
+            // 
+            this.zalogujToolStripMenuItem.Name = "zalogujToolStripMenuItem";
+            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zalogujToolStripMenuItem.Text = "Zaloguj";
+            this.zalogujToolStripMenuItem.Click += new System.EventHandler(this.zalogujToolStripMenuItem_Click);
+            // 
+            // wylogujToolStripMenuItem
+            // 
+            this.wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
+            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.wylogujToolStripMenuItem.Text = "Wyloguj";
+            // 
+            // zakończToolStripMenuItem
+            // 
+            this.zakończToolStripMenuItem.Name = "zakończToolStripMenuItem";
+            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zakończToolStripMenuItem.Text = "Zakończ";
+            // 
             // użytkownicyToolStripMenuItem
             // 
             this.użytkownicyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -79,6 +100,20 @@
             this.użytkownicyToolStripMenuItem.Name = "użytkownicyToolStripMenuItem";
             this.użytkownicyToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
             this.użytkownicyToolStripMenuItem.Text = "Użytkownicy";
+            // 
+            // dodajUżytkownikaToolStripMenuItem
+            // 
+            this.dodajUżytkownikaToolStripMenuItem.Name = "dodajUżytkownikaToolStripMenuItem";
+            this.dodajUżytkownikaToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.dodajUżytkownikaToolStripMenuItem.Text = "Dodaj użytkownika";
+            this.dodajUżytkownikaToolStripMenuItem.Click += new System.EventHandler(this.dodajUżytkownikaToolStripMenuItem_Click);
+            // 
+            // zobaczListęToolStripMenuItem
+            // 
+            this.zobaczListęToolStripMenuItem.Name = "zobaczListęToolStripMenuItem";
+            this.zobaczListęToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.zobaczListęToolStripMenuItem.Text = "Zobacz listę ";
+            this.zobaczListęToolStripMenuItem.Click += new System.EventHandler(this.zobaczListęToolStripMenuItem_Click);
             // 
             // grupyToolStripMenuItem
             // 
@@ -89,6 +124,19 @@
             this.grupyToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.grupyToolStripMenuItem.Text = "Grupy";
             // 
+            // dodajGrupęToolStripMenuItem
+            // 
+            this.dodajGrupęToolStripMenuItem.Name = "dodajGrupęToolStripMenuItem";
+            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dodajGrupęToolStripMenuItem.Text = "Dodaj grupę";
+            this.dodajGrupęToolStripMenuItem.Click += new System.EventHandler(this.dodajGrupęToolStripMenuItem_Click);
+            // 
+            // zobaczListęToolStripMenuItem1
+            // 
+            this.zobaczListęToolStripMenuItem1.Name = "zobaczListęToolStripMenuItem1";
+            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.zobaczListęToolStripMenuItem1.Text = "Zobacz listę";
+            // 
             // pomocToolStripMenuItem
             // 
             this.pomocToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -97,53 +145,12 @@
             this.pomocToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.pomocToolStripMenuItem.Text = "Pomoc";
             // 
-            // zalogujToolStripMenuItem
-            // 
-            this.zalogujToolStripMenuItem.Name = "zalogujToolStripMenuItem";
-            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.zalogujToolStripMenuItem.Text = "Zaloguj";
-            // 
-            // wylogujToolStripMenuItem
-            // 
-            this.wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
-            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.wylogujToolStripMenuItem.Text = "Wyloguj";
-            // 
-            // zakończToolStripMenuItem
-            // 
-            this.zakończToolStripMenuItem.Name = "zakończToolStripMenuItem";
-            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.zakończToolStripMenuItem.Text = "Zakończ";
-            // 
-            // dodajUżytkownikaToolStripMenuItem
-            // 
-            this.dodajUżytkownikaToolStripMenuItem.Name = "dodajUżytkownikaToolStripMenuItem";
-            this.dodajUżytkownikaToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.dodajUżytkownikaToolStripMenuItem.Text = "Dodaj użytkownika";
-            // 
-            // zobaczListęToolStripMenuItem
-            // 
-            this.zobaczListęToolStripMenuItem.Name = "zobaczListęToolStripMenuItem";
-            this.zobaczListęToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.zobaczListęToolStripMenuItem.Text = "Zobacz listę ";
-            // 
-            // dodajGrupęToolStripMenuItem
-            // 
-            this.dodajGrupęToolStripMenuItem.Name = "dodajGrupęToolStripMenuItem";
-            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.dodajGrupęToolStripMenuItem.Text = "Dodaj grupę";
-            // 
-            // zobaczListęToolStripMenuItem1
-            // 
-            this.zobaczListęToolStripMenuItem1.Name = "zobaczListęToolStripMenuItem1";
-            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.zobaczListęToolStripMenuItem1.Text = "Zobacz listę";
-            // 
             // oProgramieToolStripMenuItem
             // 
             this.oProgramieToolStripMenuItem.Name = "oProgramieToolStripMenuItem";
-            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.oProgramieToolStripMenuItem.Text = "O programie";
+            this.oProgramieToolStripMenuItem.Click += new System.EventHandler(this.oProgramieToolStripMenuItem_Click);
             // 
             // listBox1
             // 
@@ -169,6 +176,7 @@
             this.button1.TabIndex = 3;
             this.button1.Text = "Modyfikuj zaznaczenie";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
