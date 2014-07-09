@@ -98,7 +98,6 @@ namespace Admin.View
                     {
                         checkedListBox1.Items.Add(permission, true);
                     }
-                    checkedListBox1.Items.Add(Administration.GetUserOperations(login), true);
                     break;
                 default:
                     MessageBox.Show("Wybierz użytkownika/grupę");
