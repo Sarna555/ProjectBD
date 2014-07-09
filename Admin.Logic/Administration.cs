@@ -29,13 +29,22 @@ namespace Admin.Logic
                                    surname = p.surname,
                                    login = p.login
                                }).ToList<UserResult>();
-            foreach(UserResult ele in userResults)
-            {
-                ele.operations = (from o in db.operations
-                                  from u2o in db.users2operations
-                                  from u in db.Users
-                                  where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.user_ID == ele.user_ID
-                                  select o.name)
+            return userResults;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        public static List<string> GetAllUserOperations(string login)
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from o in db.operations
+                              from u2o in db.users2operations
+                              from u in db.Users
+                              where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.user_ID == ele.user_ID
+                              select o.name)
                                 .Union
                                 (from o in db.operations
                                  from g2o in db.groups2operations
@@ -44,9 +53,8 @@ namespace Admin.Logic
                                  from g in db.groups
                                  where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.user_ID == ele.user_ID
                                  select o.name).ToList<string>();
-                //Nic nie poradze, jak na razie optymalniej nie chce działać :D
-            }
-            return userResults;
+            return result;
+            //Nic nie poradze, jak na razie optymalniej nie chce działać :D
         }
 
         
@@ -85,7 +93,7 @@ namespace Admin.Logic
         /// 
         /// </summary>
         /// <param name="login"></param>
-        /// <returns></returns>
+        /// <returns>user operations</returns>
         //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
         public static List<string> GetUserOperations(string login)
         {
