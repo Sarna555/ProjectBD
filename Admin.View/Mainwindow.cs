@@ -93,7 +93,7 @@ namespace Admin.View
 
                     break;
                 case "user":
-                    var permissionListUser = Administration.GetUserOperations(login);
+                    var permissionListUser = Administration.GetAllUserOperations(login);
                     foreach (String permission in permissionListUser)
                     {
                         checkedListBox1.Items.Add(permission, true);
