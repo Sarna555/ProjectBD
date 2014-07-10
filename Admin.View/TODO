@@ -1,13 +1,5 @@
 //put requested methods here
 
-List<UserResult> ReturnAllUsers();  //Zwraca wszystkich userów
-List<GroupResult> ReturnAllGroups(); //Zwraca wszystkie grupy
-
-List<string> ReturnUserPrivelages(); // Zwraca uprawnienia usera
-List<string> ReturnGroupPrivelages();// Zwraca uprawnienia grupy
-
-List<string> Login(string username,string password); // Loguje i zwraca uprawnienia usera
-void Logout();
 
 void UpdateUser(string name, string surname, string e-mail, string password); // modyfikuje usera; tworzy nowego jak brak w bazie
 void UpdateGroup(string name); // modyfikuje grupę; tworzy nową jak brak w bazie
@@ -18,5 +10,3 @@ void RemoveUser(string login); //Usuwa usera
 void RemoveGroup(string groupname); //Usuwa grupę
 
 void AddToGroup(string login, string groupname) //Dodaje usera do grupy
-
-List<string> UserInGroups(string login); //Zwraca w jakich grupach jest user
