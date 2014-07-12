@@ -7,30 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Admin.Logic;
-using Security;
+
 namespace Admin.View
 {
-    public partial class Login : Form
+    public partial class AddPermission : Form
     {
-        public string ReturnValue1 { get; set; }
-        public string ReturnValue2 { get; set; }
-
-        public Login()
+        public string returnValue1;
+        public AddPermission()
         {
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
-            
-            this.Close();
+            returnValue1 = this.textBox1.Text;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ReturnValue1 = this.textBox1.Text;
-            ReturnValue2 = this.textBox2.Text; //DOROBIC KRYPTOGRAFIE
+            this.Close();
         }
     }
 }

@@ -47,6 +47,10 @@ namespace Admin.View
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
+            this.uprawnieniaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dodajNoweUprawnienieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,10 +60,11 @@ namespace Admin.View
             this.plikToolStripMenuItem,
             this.użytkownicyToolStripMenuItem,
             this.grupyToolStripMenuItem,
+            this.uprawnieniaToolStripMenuItem,
             this.pomocToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(332, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(491, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -76,20 +81,20 @@ namespace Admin.View
             // zalogujToolStripMenuItem
             // 
             this.zalogujToolStripMenuItem.Name = "zalogujToolStripMenuItem";
-            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.zalogujToolStripMenuItem.Text = "Zaloguj";
             this.zalogujToolStripMenuItem.Click += new System.EventHandler(this.zalogujToolStripMenuItem_Click);
             // 
             // wylogujToolStripMenuItem
             // 
             this.wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
-            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.wylogujToolStripMenuItem.Text = "Wyloguj";
             // 
             // zakończToolStripMenuItem
             // 
             this.zakończToolStripMenuItem.Name = "zakończToolStripMenuItem";
-            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.zakończToolStripMenuItem.Text = "Zakończ";
             this.zakończToolStripMenuItem.Click += new System.EventHandler(this.zakończToolStripMenuItem_Click);
             // 
@@ -128,7 +133,7 @@ namespace Admin.View
             // dodajGrupęToolStripMenuItem
             // 
             this.dodajGrupęToolStripMenuItem.Name = "dodajGrupęToolStripMenuItem";
-            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dodajGrupęToolStripMenuItem.Text = "Dodaj grupę";
             this.dodajGrupęToolStripMenuItem.Click += new System.EventHandler(this.dodajGrupęToolStripMenuItem_Click);
             // 
@@ -150,7 +155,7 @@ namespace Admin.View
             // oProgramieToolStripMenuItem
             // 
             this.oProgramieToolStripMenuItem.Name = "oProgramieToolStripMenuItem";
-            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.oProgramieToolStripMenuItem.Text = "O programie";
             this.oProgramieToolStripMenuItem.Click += new System.EventHandler(this.oProgramieToolStripMenuItem_Click);
             // 
@@ -159,7 +164,7 @@ namespace Admin.View
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(13, 28);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(150, 212);
+            this.listBox1.Size = new System.Drawing.Size(150, 199);
             this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -168,12 +173,12 @@ namespace Admin.View
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(170, 28);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(150, 214);
+            this.checkedListBox1.Size = new System.Drawing.Size(150, 199);
             this.checkedListBox1.TabIndex = 2;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(13, 247);
+            this.button1.Location = new System.Drawing.Point(12, 233);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(150, 23);
             this.button1.TabIndex = 3;
@@ -183,24 +188,59 @@ namespace Admin.View
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(13, 276);
+            this.button2.Location = new System.Drawing.Point(170, 233);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(150, 23);
             this.button2.TabIndex = 4;
             this.button2.Text = "Usuń zaznaczenie";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // checkedListBox2
+            // 
+            this.checkedListBox2.FormattingEnabled = true;
+            this.checkedListBox2.Location = new System.Drawing.Point(327, 28);
+            this.checkedListBox2.Name = "checkedListBox2";
+            this.checkedListBox2.Size = new System.Drawing.Size(150, 199);
+            this.checkedListBox2.TabIndex = 5;
+            // 
+            // uprawnieniaToolStripMenuItem
+            // 
+            this.uprawnieniaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dodajNoweUprawnienieToolStripMenuItem});
+            this.uprawnieniaToolStripMenuItem.Name = "uprawnieniaToolStripMenuItem";
+            this.uprawnieniaToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
+            this.uprawnieniaToolStripMenuItem.Text = "Uprawnienia";
+            // 
+            // dodajNoweUprawnienieToolStripMenuItem
+            // 
+            this.dodajNoweUprawnienieToolStripMenuItem.Name = "dodajNoweUprawnienieToolStripMenuItem";
+            this.dodajNoweUprawnienieToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.dodajNoweUprawnienieToolStripMenuItem.Text = "Dodaj nowe uprawnienie";
+            this.dodajNoweUprawnienieToolStripMenuItem.Click += new System.EventHandler(this.dodajNoweUprawnienieToolStripMenuItem_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(327, 233);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(152, 23);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "Zapisz zmiany";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
             // Mainwindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 327);
+            this.ClientSize = new System.Drawing.Size(491, 327);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.checkedListBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.MinimumSize = new System.Drawing.Size(348, 365);
             this.Name = "Mainwindow";
             this.Text = "Security Admnistrator";
             this.menuStrip1.ResumeLayout(false);
@@ -229,6 +269,10 @@ namespace Admin.View
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ToolStripMenuItem uprawnieniaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dodajNoweUprawnienieToolStripMenuItem;
+        private System.Windows.Forms.CheckedListBox checkedListBox2;
+        private System.Windows.Forms.Button button3;
 
       
 

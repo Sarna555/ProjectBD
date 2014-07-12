@@ -50,6 +50,12 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddPermission.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddPermission.Designer.cs">
+      <DependentUpon>AddPermission.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddToGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +96,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddPermission.resx">
+      <DependentUpon>AddPermission.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddToGroup.resx">
       <DependentUpon>AddToGroup.cs</DependentUpon>

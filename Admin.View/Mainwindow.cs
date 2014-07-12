@@ -39,7 +39,15 @@ namespace Admin.View
 
         private void zalogujToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new Login().Show();
+            var logging = new Login();
+            var result = logging.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string username = logging.ReturnValue1;            //values preserved after close
+                string password = logging.ReturnValue2;
+                this.listBox1.Items.Add(username);
+                this.listBox1.Items.Add(password);
+            }
         }
 
         private void oProgramieToolStripMenuItem_Click(object sender, EventArgs e)
@@ -58,6 +66,7 @@ namespace Admin.View
             try
             {
                 choice = "user";
+                this.checkedListBox2.Show();
                 var userslist = Administration.GetAllUsers();
                 List<String> usernamelist = new List<String>();
                 foreach(UserResult result in userslist)
@@ -82,10 +91,12 @@ namespace Admin.View
         {
             string login = this.listBox1.SelectedItem.ToString();
             checkedListBox1.Items.Clear();
+            checkedListBox2.Items.Clear();
             switch (choice)
             {
                 case "group":
                     var permissionListGroups = Administration.GetGroupOperations(login);
+                    
                     foreach (String permission in permissionListGroups)
                     {
                         checkedListBox1.Items.Add(permission, true);
@@ -94,10 +105,21 @@ namespace Admin.View
                     break;
                 case "user":
                     var permissionListUser = Administration.GetAllUserOperations(login);
+                    var allGroups = Administration.GetAllGroups();
+                    //var userGroups = Administration.GetUserGroups(login);
                     foreach (String permission in permissionListUser)
                     {
                         checkedListBox1.Items.Add(permission, true);
                     }
+                    foreach (String group in allGroups)
+                    {
+                        checkedListBox2.Items.Add(group, false);
+                    }
+                    //foreach (String group in userGroups)
+                    //{
+                    //    checkedListBox2.Items.Remove(group);
+                    //    checkedListBox2.Items.Add(group, true);
+                    //}
                     break;
                 default:
                     MessageBox.Show("Wybierz użytkownika/grupę");
@@ -114,7 +136,14 @@ namespace Admin.View
         private void zobaczListęToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             choice = "group";
+            this.checkedListBox2.Items.Clear();
+            this.checkedListBox2.Hide();
             this.listBox1.DataSource = Administration.GetAllGroups();
+        }
+
+        private void dodajNoweUprawnienieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AddPermission().Show();
         }
     }
 }
