@@ -10,3 +10,10 @@ void RemoveUser(string login); //Usuwa usera
 void RemoveGroup(string groupname); //Usuwa grupę
 
 void AddToGroup(string login, string groupname) //Dodaje usera do grupy
+
+//Update 12.07.2014
+
+List<String> GetUserGroups(string username); // zwraca grupy do jakich należy user
+List<String> GetAllPermissions(); // zwraca wszystkie uprawnienia z bazy
+
+void AddPermission(string permissionname); //Dodaj uprawnienie do bazy
