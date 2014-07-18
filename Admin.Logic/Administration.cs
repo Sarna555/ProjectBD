@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.Security.Permissions;
 using Security;
 
+
 namespace Admin.Logic
 {
     public class Administration
@@ -33,7 +34,7 @@ namespace Admin.Logic
         }
 
         /// <summary>
-        /// 
+        /// Returns all user operations included in operations and groups
         /// </summary>
         /// <param name="login"></param>
         /// <returns></returns>
@@ -41,23 +42,26 @@ namespace Admin.Logic
         {
             var db = new SQLtoLinqDataContext();
             var result = (from o in db.operations
-                              from u2o in db.users2operations
-                              from u in db.Users
-                              where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.login == login
-                              select o.name)
+                          from u2o in db.users2operations
+                          from u in db.Users
+                          where o.operation_ID == u2o.operation_ID &&
+                          u.user_ID == u2o.user_ID && u.login == login
+                          select o.name)
                                 .Union
                                 (from o in db.operations
                                  from g2o in db.groups2operations
                                  from u2g in db.users2groups
                                  from u in db.Users
                                  from g in db.groups
-                                 where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.login == login
+                                 where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID &&
+                                 g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID &&
+                                 u.login == login
                                  select o.name).ToList<string>();
             return result;
             //Nic nie poradze, jak na razie optymalniej nie chce działać :D
         }
 
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -74,37 +78,365 @@ namespace Admin.Logic
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name"></param>
         /// <returns></returns>
+        public static List<string> GetAllOperations()
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from o in db.operations
+                          select o.name).ToList<string>();
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>List of group operations</returns>
         //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
         public static List<string> GetGroupOperations(string name)
         {
             var db = new SQLtoLinqDataContext();
             var result = (from g in db.groups
-                          where g.name == name
-                          select (from o in db.operations
-                                  from g2o in db.groups2operations
-                                  where g.group_ID == g2o.group_ID && g2o.operation_ID == o.operation_ID
-                                  select o.name).ToList<string>()).ToArray<List<string>>();
-            return result[0];
+                          from o in db.operations
+                          from g2o in db.groups2operations
+                          where g.group_ID == g2o.group_ID && g2o.operation_ID == o.operation_ID
+                          && g.name == name
+                          select o.name).ToList<string>();
+            return result;
+        }
+
+        /// <summary>
+        /// Returns user operations. Operations in group are omitted
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns>user operations</returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated=true)]
+        public static List<string> GetUserOperations(string login)
+        {
+            var db = new SQLtoLinqDataContext();
+
+            var result = (from u in db.Users
+                          from o in db.operations
+                          from u2o in db.users2operations
+                          where u.user_ID == u2o.user_ID && u2o.operation_ID == o.operation_ID
+                          && u.login == login
+                          select o.name).ToList<string>();
+            return result;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="login"></param>
-        /// <returns>user operations</returns>
-        //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
-        public static List<string> GetUserOperations(string login)
+        /// <returns></returns>
+        public static List<string> GetUserGroups(string login)
+        {
+            var db = new SQLtoLinqDataContext();
+
+            var result = (from u in db.Users
+                          from g in db.groups
+                          from u2g in db.users2groups
+                          where u.user_ID == u2g.user_ID && u2g.group_ID == g.group_ID
+                          && u.login == login
+                          select g.name).ToList<string>();
+            return result;
+        }
+
+
+        /// <summary>
+        /// Changes user info, if parameter is null then it will remain unchanged
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="name"></param>
+        /// <param name="surname"></param>
+        /// <param name="password"></param>
+        /// <exception cref="ArgumentNullException">When login is null</exception>
+        /// <exception cref="InvalidOperationException">When user is not in database</exception>
+        public static void UpdateUser(string login, string name, string surname, string password)
         {
             var db = new SQLtoLinqDataContext();
             var result = (from u in db.Users
                           where u.login == login
-                          select (from o in db.operations
-                                  from u2o in db.users2operations
-                                  where u.user_ID == u2o.user_ID && u2o.operation_ID == o.operation_ID
-                                  select o.name).ToList<string>()).ToArray<List<string>>();
-            return result[0];
+                          select u).Single();
+            if (name != null)
+                result.name = name;
+            if (surname != null)
+                result.surname = surname;
+            if (password != null)
+                result.password = UserCtx.Encrypt(password);
+
+            db.SubmitChanges();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="operations">List of ALL user operations</param>
+        public static void AddUserOperations(string login, List<string> operations)
+        {
+            var db = new SQLtoLinqDataContext();
+
+            var result = (from u in db.Users
+                          from o in db.operations
+                          from u2o in db.users2operations
+                          where u.login == login && u.user_ID == u2o.user_ID
+                          && u2o.operation_ID == o.operation_ID
+                          select u2o);
+
+            db.users2operations.DeleteAllOnSubmit(result);
+            db.SubmitChanges();
+
+            foreach (string s in operations)
+            {
+                var result1 = (from u in db.Users
+                               from o in db.operations
+                               where u.login == login && o.name == s
+                               select new users2operation
+                               {
+                                   user_ID = u.user_ID,
+                                   operation_ID = o.operation_ID
+                               }).SingleOrDefault();
+                if (result1 == null)
+                    db.users2operations.InsertOnSubmit(result1);
+            }
+            db.SubmitChanges();
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <param name="name"></param>
+        /// <param name="surname"></param>
+        public static void AddUser(string login, string password, string name, string surname)
+        {
+            var db = new SQLtoLinqDataContext();
+            var user = new User();
+
+            user.login = login;
+            user.password = UserCtx.Encrypt(password);
+            user.name = name;
+            user.surname = surname;
+
+            db.Users.InsertOnSubmit(user);
+            db.SubmitChanges();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <exception cref="Exception">When group already exists</exception>
+        public static void AddGroup(string name)
+        {
+            var db = new SQLtoLinqDataContext();
+            var group = new group();
+
+            var result = (from g in db.groups
+                          where g.name == name
+                          select g).SingleOrDefault();
+
+            if (result != null)
+                throw new Exception("Group already exists");
+            group.name = name;
+            db.groups.InsertOnSubmit(group);
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Changes group info
+        /// </summary>
+        /// <param name="name"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException">When group is not in database</exception>
+        public static void UpdateGroup(string name)
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from g in db.groups
+                          where g.name == name
+                          select g).Single();
+
+            result.name = name;
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="operations"></param>
+        /// <exception cref="Exception">When group is not found</exception>
+        public static void UpdateGroup(string name, List<string> operations)
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from g in db.groups
+                          from o in db.operations
+                          from g2o in db.groups2operations
+                          where g.name == name && g.group_ID == g2o.group_ID
+                          && g2o.operation_ID == o.operation_ID
+                          select g2o).ToList<groups2operation>();
+
+            if (result.Count == 0)
+                throw new Exception("No such group");
+
+            db.groups2operations.DeleteAllOnSubmit(result);
+
+            foreach (string oper in operations)
+            {
+                var result1 = (from g in db.groups
+                               from o in db.operations
+                               where g.name == name && o.name == oper
+                               select new groups2operation
+                               {
+                                   group_ID = g.group_ID,
+                                   operation_ID = o.operation_ID
+                               }).SingleOrDefault();
+                if (result1 == null)
+                    db.groups2operations.InsertOnSubmit(result1);
+            }
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// Adds operation to database
+        /// </summary>
+        /// <param name="name"></param>
+        /// <exception cref="Exception">When operation already exists</exception>
+        public static void AddOperation(string name)
+        {
+            var db = new SQLtoLinqDataContext();
+            var operation = new operation();
+
+            var result = (from g in db.groups
+                          where g.name == name
+                          select g).SingleOrDefault();
+            if (result != null)
+                throw new Exception("Operation already exists");
+
+            operation.name = name;
+            db.operations.InsertOnSubmit(operation);
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="groups"></param>
+        public static void AddUserGroups(string login, List<string> groups)
+        {
+            var db = new SQLtoLinqDataContext();
+
+            var result = (from u in db.Users
+                          from g in db.groups
+                          from u2g in db.users2groups
+                          where u.login == login && u.user_ID == u2g.user_ID
+                          && u2g.group_ID == g.group_ID
+                          select u2g);
+            db.users2groups.DeleteAllOnSubmit(result);
+            db.SubmitChanges();
+
+            foreach (string s in groups)
+            {
+                var result1 = (from u in db.Users
+                               from g in db.groups
+                               where u.login == login && g.name == s
+                               select new users2group
+                               {
+                                   user_ID = u.user_ID,
+                                   group_ID = g.group_ID
+                               }).SingleOrDefault();
+                if (result1 == null)
+                    db.users2groups.InsertOnSubmit(result1);
+            }
+            db.SubmitChanges();
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        public static void DeleteUser(string login)
+        {
+            var db = new SQLtoLinqDataContext();
+            var user = (from u in db.Users
+                        where u.login == login
+                        select u).Single();
+
+            var operations = (from u2o in db.users2operations
+                          where u2o.user_ID == user.user_ID
+                          select u2o);
+            db.users2operations.DeleteAllOnSubmit(operations);
+            db.SubmitChanges();
+
+            var groups = (from u2g in db.users2groups
+                      where u2g.user_ID == user.user_ID
+                      select u2g);
+            db.users2groups.DeleteAllOnSubmit(groups);
+            db.SubmitChanges();
+
+            db.Users.DeleteOnSubmit(user);
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        public static void DeleteGroup(string name)
+        {
+            var db = new SQLtoLinqDataContext();
+            var groupa = (from g in db.groups
+                         where g.name == name
+                         select g).Single();
+
+            var users = (from u2g in db.users2groups
+                         where u2g.group_ID == groupa.group_ID
+                         select u2g);
+            db.users2groups.DeleteAllOnSubmit(users);
+            db.SubmitChanges();
+
+            var operations = (from g2o in db.groups2operations
+                              where g2o.group_ID == groupa.group_ID
+                              select g2o);
+            db.groups2operations.DeleteAllOnSubmit(operations);
+            db.SubmitChanges();
+
+            db.groups.DeleteOnSubmit(groupa);
+            db.SubmitChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        public static void DeleteOperation(string name)
+        {
+            var db = new SQLtoLinqDataContext();
+            var operation = (from o in db.operations
+                         where o.name == name
+                         select o).Single();
+
+            var users = (from u2o in db.users2operations
+                         where u2o.operation_ID == operation.operation_ID
+                         select u2o);
+            db.users2operations.DeleteAllOnSubmit(users);
+            db.SubmitChanges();
+
+            var groups = (from g2o in db.groups2operations
+                              where g2o.operation_ID == operation.operation_ID
+                              select g2o);
+            db.groups2operations.DeleteAllOnSubmit(groups);
+            db.SubmitChanges();
+
+            db.operations.DeleteOnSubmit(operation);
+            db.SubmitChanges();
+        }
+
     }
 }

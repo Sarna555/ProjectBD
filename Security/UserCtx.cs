@@ -5,11 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Security.Principal;
+using System.Security.Cryptography;
+using System.IO;
 
 namespace Security
 {
     public class UserCtx : IUserCtx
     {
+        static readonly string PasswordHash = "S@jW$sk12";
+        static readonly string SaltKey = "kW23!1@#maS";
+        static readonly string VIKey = "@fB2x3d1e5W6g0H8";
 
         public String uname { get; private set; }
         public List<string> OpersRoles { get; private set; }
@@ -92,11 +97,7 @@ namespace Security
         {
             uc = null;
             var db = new SQLtoLinqDataContext();
-
-            // autentykacja (tu następuje sprawdzenie z tablicą user/pass z Bazy Danych)
-            /*roles = (from u in db.Users
-                     from o in db.operations
-                     where )*/
+            pass = UserCtx.Encrypt(pass);
             var result = (from p in db.Users
                           where p.login == login && p.password == pass
                           select new UserResult
@@ -105,14 +106,14 @@ namespace Security
                               name = p.name,
                               surname = p.surname,
                               login = p.login
-                          }).ToArray<UserResult>();
-            if (result.Length != 1)
+                          }).SingleOrDefault();
+            if (result == null)
                 return false;
 
             var roles = (from o in db.operations
                          from u2o in db.users2operations
                          from u in db.Users
-                         where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.user_ID == result[0].user_ID
+                         where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.user_ID == result.user_ID
                          select o.name)
                          .Union
                          (from o in db.operations
@@ -120,25 +121,47 @@ namespace Security
                           from u2g in db.users2groups
                           from u in db.Users
                           from g in db.groups
-                          where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.user_ID == result[0].user_ID
+                          where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.user_ID == result.user_ID
                           select o.name).ToList<string>();
-            //tak bardzo brzydko ;(
             uc = new UserCtx(login, roles);
 
             GenericIdentity gi = new GenericIdentity(login);
 
             GenericPrincipal gp = new GenericPrincipal(gi, roles.ToArray());
 
-            // przypisanie kontekstu (żeby działał mechanizm)
             Thread.CurrentPrincipal = gp;
             return true;
 
         }
 
-        public UserResult FindUser(string login, string pass, ref SQLtoLinqDataContext db)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <returns></returns>
+        public static string Encrypt(string plainText)
         {
-            
-            return null;
+            byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+
+            byte[] keyBytes = new Rfc2898DeriveBytes(PasswordHash, Encoding.ASCII.GetBytes(SaltKey)).GetBytes(256 / 8);
+            var symmetricKey = new RijndaelManaged() { Mode = CipherMode.CBC, Padding = PaddingMode.Zeros };
+            var encryptor = symmetricKey.CreateEncryptor(keyBytes, Encoding.ASCII.GetBytes(VIKey));
+
+            byte[] cipherTextBytes;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                {
+                    cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                    cryptoStream.FlushFinalBlock();
+                    cipherTextBytes = memoryStream.ToArray();
+                    cryptoStream.Close();
+                }
+                memoryStream.Close();
+            }
+            return Convert.ToBase64String(cipherTextBytes);
         }
     }
 }
