@@ -1,19 +1,4 @@
 //put requested methods here
 
 
-void UpdateUser(string name, string surname, string e-mail, string password); // modyfikuje usera; tworzy nowego jak brak w bazie
-void UpdateGroup(string name); // modyfikuje grupę; tworzy nową jak brak w bazie
-void UpdateUserPrivelages(List<string>, string login); //aktualizuje uprawnienia userów
-void UpdateGroupPrivelages(List<string>,string groupname); // aktualizuje uprawnienia grupy
 
-void RemoveUser(string login); //Usuwa usera
-void RemoveGroup(string groupname); //Usuwa grupę
-
-void AddToGroup(string login, string groupname) //Dodaje usera do grupy
-
-//Update 12.07.2014
-
-List<String> GetUserGroups(string username); // zwraca grupy do jakich należy user
-List<String> GetAllPermissions(); // zwraca wszystkie uprawnienia z bazy
-
-void AddPermission(string permissionname); //Dodaj uprawnienie do bazy
