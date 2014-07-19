@@ -39,6 +39,15 @@ namespace Security
     partial void Insertgroup(group instance);
     partial void Updategroup(group instance);
     partial void Deletegroup(group instance);
+    partial void Insertusers2group(users2group instance);
+    partial void Updateusers2group(users2group instance);
+    partial void Deleteusers2group(users2group instance);
+    partial void Insertgroups2operation(groups2operation instance);
+    partial void Updategroups2operation(groups2operation instance);
+    partial void Deletegroups2operation(groups2operation instance);
+    partial void Insertusers2operation(users2operation instance);
+    partial void Updateusers2operation(users2operation instance);
+    partial void Deleteusers2operation(users2operation instance);
     #endregion
 		
 		public SQLtoLinqDataContext() : 
@@ -71,30 +80,6 @@ namespace Security
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<users2group> users2groups
-		{
-			get
-			{
-				return this.GetTable<users2group>();
-			}
-		}
-		
-		public System.Data.Linq.Table<users2operation> users2operations
-		{
-			get
-			{
-				return this.GetTable<users2operation>();
-			}
-		}
-		
-		public System.Data.Linq.Table<groups2operation> groups2operations
-		{
-			get
-			{
-				return this.GetTable<groups2operation>();
-			}
-		}
-		
 		public System.Data.Linq.Table<User> Users
 		{
 			get
@@ -118,139 +103,28 @@ namespace Security
 				return this.GetTable<group>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.users2groups")]
-	public partial class users2group
-	{
 		
-		private int _user_ID;
-		
-		private int _group_ID;
-		
-		public users2group()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_ID", DbType="Int NOT NULL")]
-		public int user_ID
+		public System.Data.Linq.Table<users2group> users2groups
 		{
 			get
 			{
-				return this._user_ID;
-			}
-			set
-			{
-				if ((this._user_ID != value))
-				{
-					this._user_ID = value;
-				}
+				return this.GetTable<users2group>();
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_group_ID", DbType="Int NOT NULL")]
-		public int group_ID
+		public System.Data.Linq.Table<groups2operation> groups2operations
 		{
 			get
 			{
-				return this._group_ID;
-			}
-			set
-			{
-				if ((this._group_ID != value))
-				{
-					this._group_ID = value;
-				}
+				return this.GetTable<groups2operation>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.users2operation")]
-	public partial class users2operation
-	{
 		
-		private int _user_ID;
-		
-		private int _operation_ID;
-		
-		public users2operation()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_ID", DbType="Int NOT NULL")]
-		public int user_ID
+		public System.Data.Linq.Table<users2operation> users2operations
 		{
 			get
 			{
-				return this._user_ID;
-			}
-			set
-			{
-				if ((this._user_ID != value))
-				{
-					this._user_ID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_operation_ID", DbType="Int NOT NULL")]
-		public int operation_ID
-		{
-			get
-			{
-				return this._operation_ID;
-			}
-			set
-			{
-				if ((this._operation_ID != value))
-				{
-					this._operation_ID = value;
-				}
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.groups2operations")]
-	public partial class groups2operation
-	{
-		
-		private int _group_ID;
-		
-		private int _operation_ID;
-		
-		public groups2operation()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_group_ID", DbType="Int NOT NULL")]
-		public int group_ID
-		{
-			get
-			{
-				return this._group_ID;
-			}
-			set
-			{
-				if ((this._group_ID != value))
-				{
-					this._group_ID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_operation_ID", DbType="Int NOT NULL")]
-		public int operation_ID
-		{
-			get
-			{
-				return this._operation_ID;
-			}
-			set
-			{
-				if ((this._operation_ID != value))
-				{
-					this._operation_ID = value;
-				}
+				return this.GetTable<users2operation>();
 			}
 		}
 	}
@@ -271,6 +145,10 @@ namespace Security
 		
 		private string _password;
 		
+		private EntitySet<users2group> _users2groups;
+		
+		private EntitySet<users2operation> _users2operations;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -289,6 +167,8 @@ namespace Security
 		
 		public User()
 		{
+			this._users2groups = new EntitySet<users2group>(new Action<users2group>(this.attach_users2groups), new Action<users2group>(this.detach_users2groups));
+			this._users2operations = new EntitySet<users2operation>(new Action<users2operation>(this.attach_users2operations), new Action<users2operation>(this.detach_users2operations));
 			OnCreated();
 		}
 		
@@ -392,6 +272,32 @@ namespace Security
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_users2group", Storage="_users2groups", ThisKey="user_ID", OtherKey="user_ID")]
+		public EntitySet<users2group> users2groups
+		{
+			get
+			{
+				return this._users2groups;
+			}
+			set
+			{
+				this._users2groups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_users2operation", Storage="_users2operations", ThisKey="user_ID", OtherKey="user_ID")]
+		public EntitySet<users2operation> users2operations
+		{
+			get
+			{
+				return this._users2operations;
+			}
+			set
+			{
+				this._users2operations.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -411,6 +317,30 @@ namespace Security
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_users2groups(users2group entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_users2groups(users2group entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_users2operations(users2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_users2operations(users2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.operations")]
@@ -422,6 +352,10 @@ namespace Security
 		private int _operation_ID;
 		
 		private string _name;
+		
+		private EntitySet<groups2operation> _groups2operations;
+		
+		private EntitySet<users2operation> _users2operations;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -435,6 +369,8 @@ namespace Security
 		
 		public operation()
 		{
+			this._groups2operations = new EntitySet<groups2operation>(new Action<groups2operation>(this.attach_groups2operations), new Action<groups2operation>(this.detach_groups2operations));
+			this._users2operations = new EntitySet<users2operation>(new Action<users2operation>(this.attach_users2operations), new Action<users2operation>(this.detach_users2operations));
 			OnCreated();
 		}
 		
@@ -478,6 +414,32 @@ namespace Security
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="operation_groups2operation", Storage="_groups2operations", ThisKey="operation_ID", OtherKey="operation_ID")]
+		public EntitySet<groups2operation> groups2operations
+		{
+			get
+			{
+				return this._groups2operations;
+			}
+			set
+			{
+				this._groups2operations.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="operation_users2operation", Storage="_users2operations", ThisKey="operation_ID", OtherKey="operation_ID")]
+		public EntitySet<users2operation> users2operations
+		{
+			get
+			{
+				return this._users2operations;
+			}
+			set
+			{
+				this._users2operations.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -497,6 +459,30 @@ namespace Security
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_groups2operations(groups2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.operation = this;
+		}
+		
+		private void detach_groups2operations(groups2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.operation = null;
+		}
+		
+		private void attach_users2operations(users2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.operation = this;
+		}
+		
+		private void detach_users2operations(users2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.operation = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.groups")]
@@ -508,6 +494,10 @@ namespace Security
 		private int _group_ID;
 		
 		private string _name;
+		
+		private EntitySet<users2group> _users2groups;
+		
+		private EntitySet<groups2operation> _groups2operations;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -521,6 +511,8 @@ namespace Security
 		
 		public group()
 		{
+			this._users2groups = new EntitySet<users2group>(new Action<users2group>(this.attach_users2groups), new Action<users2group>(this.detach_users2groups));
+			this._groups2operations = new EntitySet<groups2operation>(new Action<groups2operation>(this.attach_groups2operations), new Action<groups2operation>(this.detach_groups2operations));
 			OnCreated();
 		}
 		
@@ -560,6 +552,632 @@ namespace Security
 					this._name = value;
 					this.SendPropertyChanged("name");
 					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="group_users2group", Storage="_users2groups", ThisKey="group_ID", OtherKey="group_ID")]
+		public EntitySet<users2group> users2groups
+		{
+			get
+			{
+				return this._users2groups;
+			}
+			set
+			{
+				this._users2groups.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="group_groups2operation", Storage="_groups2operations", ThisKey="group_ID", OtherKey="group_ID")]
+		public EntitySet<groups2operation> groups2operations
+		{
+			get
+			{
+				return this._groups2operations;
+			}
+			set
+			{
+				this._groups2operations.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_users2groups(users2group entity)
+		{
+			this.SendPropertyChanging();
+			entity.group = this;
+		}
+		
+		private void detach_users2groups(users2group entity)
+		{
+			this.SendPropertyChanging();
+			entity.group = null;
+		}
+		
+		private void attach_groups2operations(groups2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.group = this;
+		}
+		
+		private void detach_groups2operations(groups2operation entity)
+		{
+			this.SendPropertyChanging();
+			entity.group = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.users2groups")]
+	public partial class users2group : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _user_ID;
+		
+		private int _group_ID;
+		
+		private int _id;
+		
+		private EntityRef<group> _group;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onuser_IDChanging(int value);
+    partial void Onuser_IDChanged();
+    partial void Ongroup_IDChanging(int value);
+    partial void Ongroup_IDChanged();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    #endregion
+		
+		public users2group()
+		{
+			this._group = default(EntityRef<group>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_ID", DbType="Int NOT NULL")]
+		public int user_ID
+		{
+			get
+			{
+				return this._user_ID;
+			}
+			set
+			{
+				if ((this._user_ID != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onuser_IDChanging(value);
+					this.SendPropertyChanging();
+					this._user_ID = value;
+					this.SendPropertyChanged("user_ID");
+					this.Onuser_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_group_ID", DbType="Int NOT NULL")]
+		public int group_ID
+		{
+			get
+			{
+				return this._group_ID;
+			}
+			set
+			{
+				if ((this._group_ID != value))
+				{
+					if (this._group.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Ongroup_IDChanging(value);
+					this.SendPropertyChanging();
+					this._group_ID = value;
+					this.SendPropertyChanged("group_ID");
+					this.Ongroup_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="group_users2group", Storage="_group", ThisKey="group_ID", OtherKey="group_ID", IsForeignKey=true)]
+		public group group
+		{
+			get
+			{
+				return this._group.Entity;
+			}
+			set
+			{
+				group previousValue = this._group.Entity;
+				if (((previousValue != value) 
+							|| (this._group.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._group.Entity = null;
+						previousValue.users2groups.Remove(this);
+					}
+					this._group.Entity = value;
+					if ((value != null))
+					{
+						value.users2groups.Add(this);
+						this._group_ID = value.group_ID;
+					}
+					else
+					{
+						this._group_ID = default(int);
+					}
+					this.SendPropertyChanged("group");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_users2group", Storage="_User", ThisKey="user_ID", OtherKey="user_ID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.users2groups.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.users2groups.Add(this);
+						this._user_ID = value.user_ID;
+					}
+					else
+					{
+						this._user_ID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.groups2operations")]
+	public partial class groups2operation : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _group_ID;
+		
+		private int _operation_ID;
+		
+		private int _id;
+		
+		private EntityRef<group> _group;
+		
+		private EntityRef<operation> _operation;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Ongroup_IDChanging(int value);
+    partial void Ongroup_IDChanged();
+    partial void Onoperation_IDChanging(int value);
+    partial void Onoperation_IDChanged();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    #endregion
+		
+		public groups2operation()
+		{
+			this._group = default(EntityRef<group>);
+			this._operation = default(EntityRef<operation>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_group_ID", DbType="Int NOT NULL")]
+		public int group_ID
+		{
+			get
+			{
+				return this._group_ID;
+			}
+			set
+			{
+				if ((this._group_ID != value))
+				{
+					if (this._group.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Ongroup_IDChanging(value);
+					this.SendPropertyChanging();
+					this._group_ID = value;
+					this.SendPropertyChanged("group_ID");
+					this.Ongroup_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_operation_ID", DbType="Int NOT NULL")]
+		public int operation_ID
+		{
+			get
+			{
+				return this._operation_ID;
+			}
+			set
+			{
+				if ((this._operation_ID != value))
+				{
+					if (this._operation.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onoperation_IDChanging(value);
+					this.SendPropertyChanging();
+					this._operation_ID = value;
+					this.SendPropertyChanged("operation_ID");
+					this.Onoperation_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="group_groups2operation", Storage="_group", ThisKey="group_ID", OtherKey="group_ID", IsForeignKey=true)]
+		public group group
+		{
+			get
+			{
+				return this._group.Entity;
+			}
+			set
+			{
+				group previousValue = this._group.Entity;
+				if (((previousValue != value) 
+							|| (this._group.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._group.Entity = null;
+						previousValue.groups2operations.Remove(this);
+					}
+					this._group.Entity = value;
+					if ((value != null))
+					{
+						value.groups2operations.Add(this);
+						this._group_ID = value.group_ID;
+					}
+					else
+					{
+						this._group_ID = default(int);
+					}
+					this.SendPropertyChanged("group");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="operation_groups2operation", Storage="_operation", ThisKey="operation_ID", OtherKey="operation_ID", IsForeignKey=true)]
+		public operation operation
+		{
+			get
+			{
+				return this._operation.Entity;
+			}
+			set
+			{
+				operation previousValue = this._operation.Entity;
+				if (((previousValue != value) 
+							|| (this._operation.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._operation.Entity = null;
+						previousValue.groups2operations.Remove(this);
+					}
+					this._operation.Entity = value;
+					if ((value != null))
+					{
+						value.groups2operations.Add(this);
+						this._operation_ID = value.operation_ID;
+					}
+					else
+					{
+						this._operation_ID = default(int);
+					}
+					this.SendPropertyChanged("operation");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.users2operation")]
+	public partial class users2operation : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _user_ID;
+		
+		private int _operation_ID;
+		
+		private int _id;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<operation> _operation;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onuser_IDChanging(int value);
+    partial void Onuser_IDChanged();
+    partial void Onoperation_IDChanging(int value);
+    partial void Onoperation_IDChanged();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    #endregion
+		
+		public users2operation()
+		{
+			this._User = default(EntityRef<User>);
+			this._operation = default(EntityRef<operation>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_user_ID", DbType="Int NOT NULL")]
+		public int user_ID
+		{
+			get
+			{
+				return this._user_ID;
+			}
+			set
+			{
+				if ((this._user_ID != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onuser_IDChanging(value);
+					this.SendPropertyChanging();
+					this._user_ID = value;
+					this.SendPropertyChanged("user_ID");
+					this.Onuser_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_operation_ID", DbType="Int NOT NULL")]
+		public int operation_ID
+		{
+			get
+			{
+				return this._operation_ID;
+			}
+			set
+			{
+				if ((this._operation_ID != value))
+				{
+					if (this._operation.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onoperation_IDChanging(value);
+					this.SendPropertyChanging();
+					this._operation_ID = value;
+					this.SendPropertyChanged("operation_ID");
+					this.Onoperation_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_users2operation", Storage="_User", ThisKey="user_ID", OtherKey="user_ID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.users2operations.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.users2operations.Add(this);
+						this._user_ID = value.user_ID;
+					}
+					else
+					{
+						this._user_ID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="operation_users2operation", Storage="_operation", ThisKey="operation_ID", OtherKey="operation_ID", IsForeignKey=true)]
+		public operation operation
+		{
+			get
+			{
+				return this._operation.Entity;
+			}
+			set
+			{
+				operation previousValue = this._operation.Entity;
+				if (((previousValue != value) 
+							|| (this._operation.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._operation.Entity = null;
+						previousValue.users2operations.Remove(this);
+					}
+					this._operation.Entity = value;
+					if ((value != null))
+					{
+						value.users2operations.Add(this);
+						this._operation_ID = value.operation_ID;
+					}
+					else
+					{
+						this._operation_ID = default(int);
+					}
+					this.SendPropertyChanged("operation");
 				}
 			}
 		}

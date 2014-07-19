@@ -120,7 +120,7 @@ namespace Admin.Logic
         public static List<string> GetUserOperations(string login)
         {
             var db = new SQLtoLinqDataContext();
-
+            
             var result = (from u in db.Users
                           from o in db.operations
                           from u2o in db.users2operations
@@ -188,7 +188,7 @@ namespace Admin.Logic
         public static void AddUserOperations(string login, List<string> operations)
         {
             var db = new SQLtoLinqDataContext();
-
+            db.Log = Console.Out;
             var result = (from u in db.Users
                           from o in db.operations
                           from u2o in db.users2operations
@@ -204,13 +204,19 @@ namespace Admin.Logic
                 var result1 = (from u in db.Users
                                from o in db.operations
                                where u.login == login && o.name == s
-                               select new users2operation
+                               select new
                                {
                                    user_ID = u.user_ID,
                                    operation_ID = o.operation_ID
                                }).SingleOrDefault();
-                if (result1 == null)
-                    db.users2operations.InsertOnSubmit(result1);
+                if (result1 != null)
+                {
+                    var temp = new users2operation();
+                    temp.user_ID = result1.user_ID;
+                    temp.operation_ID = result1.operation_ID;
+                    db.users2operations.InsertOnSubmit(temp);
+                }
+
             }
             db.SubmitChanges();
 
@@ -366,13 +372,18 @@ namespace Admin.Logic
                 var result1 = (from u in db.Users
                                from g in db.groups
                                where u.login == login && g.name == s
-                               select new users2group
+                               select new 
                                {
                                    user_ID = u.user_ID,
                                    group_ID = g.group_ID
                                }).SingleOrDefault();
-                if (result1 == null)
-                    db.users2groups.InsertOnSubmit(result1);
+                if (result1 != null)
+                {
+                    var temp = new users2group();
+                    temp.group_ID = result1.group_ID;
+                    temp.user_ID = result1.user_ID;
+                    db.users2groups.InsertOnSubmit(temp);
+                }
             }
             db.SubmitChanges();
 
