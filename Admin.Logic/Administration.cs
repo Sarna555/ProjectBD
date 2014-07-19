@@ -154,18 +154,21 @@ namespace Admin.Logic
         /// Changes user info, if parameter is null then it will remain unchanged
         /// </summary>
         /// <param name="login"></param>
+        /// <param name="newLogin"></param>
         /// <param name="name"></param>
         /// <param name="surname"></param>
         /// <param name="password"></param>
         /// <exception cref="ArgumentNullException">When login is null</exception>
         /// <exception cref="InvalidOperationException">When user is not in database</exception>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        public static void UpdateUser(string login, string name, string surname, string password)
+        public static void UpdateUser(string login, string newLogin, string name, string surname, string password)
         {
             var db = new SQLtoLinqDataContext();
             var result = (from u in db.Users
                           where u.login == login
                           select u).Single();
+            if (newLogin != null)
+                result.login = newLogin;
             if (name != null)
                 result.name = name;
             if (surname != null)
@@ -245,7 +248,7 @@ namespace Admin.Logic
         public static void AddGroup(string name)
         {
             var db = new SQLtoLinqDataContext();
-            var group = new group();
+            var newGroup = new group();
 
             var result = (from g in db.groups
                           where g.name == name
@@ -253,8 +256,9 @@ namespace Admin.Logic
 
             if (result != null)
                 throw new Exception("Group already exists");
-            group.name = name;
-            db.groups.InsertOnSubmit(group);
+
+            newGroup.name = name;
+            db.groups.InsertOnSubmit(newGroup);
             db.SubmitChanges();
         }
 
@@ -265,14 +269,14 @@ namespace Admin.Logic
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException">When group is not in database</exception>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        public static void UpdateGroup(string name)
+        public static void UpdateGroup(string oldName, string newName)
         {
             var db = new SQLtoLinqDataContext();
             var result = (from g in db.groups
-                          where g.name == name
+                          where g.name == oldName
                           select g).Single();
 
-            result.name = name;
+            result.name = newName;
             db.SubmitChanges();
         }
 
@@ -323,16 +327,18 @@ namespace Admin.Logic
         public static void AddOperation(string name)
         {
             var db = new SQLtoLinqDataContext();
-            var operation = new operation();
+            var newOperation = new operation();
+            db.Log = Console.Out;
 
-            var result = (from g in db.groups
-                          where g.name == name
-                          select g).SingleOrDefault();
+            var result = (from o in db.operations
+                          where o.name == name
+                          select o).SingleOrDefault();
             if (result != null)
                 throw new Exception("Operation already exists");
 
-            operation.name = name;
-            db.operations.InsertOnSubmit(operation);
+            newOperation.operation_ID = db.operations.Max(i => i.operation_ID) + 1;
+            newOperation.name = name;
+            db.operations.InsertOnSubmit(newOperation);
             db.SubmitChanges();
         }
 

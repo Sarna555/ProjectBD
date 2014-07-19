@@ -28,9 +28,9 @@ namespace Security.Properties {
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\UsersDatabase.mdf;In" +
             "tegrated Security=True")]
-        public string Database1ConnectionString {
+        public string SQLtoLinqConnectionString {
             get {
-                return ((string)(this["Database1ConnectionString"]));
+                return ((string)(this["SQLtoLinqConnectionString"]));
             }
         }
     }
