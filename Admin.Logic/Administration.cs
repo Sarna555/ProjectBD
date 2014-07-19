@@ -16,6 +16,7 @@ namespace Admin.Logic
         /// <summary>
         /// 
         /// </summary>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>List of all users</returns>
         //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
         public static List<UserResult> GetAllUsers()
@@ -37,7 +38,8 @@ namespace Admin.Logic
         /// Returns all user operations included in operations and groups
         /// </summary>
         /// <param name="login"></param>
-        /// <returns></returns>
+        /// <exception cref="SqlException">When error with database occurs</exception>
+        /// <returns>List of all user operations including operations form groups</returns>
         public static List<string> GetAllUserOperations(string login)
         {
             var db = new SQLtoLinqDataContext();
@@ -65,7 +67,8 @@ namespace Admin.Logic
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
+        /// <exception cref="SqlException">When error with database occurs</exception>
+        /// <returns>List of all groups</returns>
         //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
         public static List<string> GetAllGroups()
         {
@@ -78,7 +81,8 @@ namespace Admin.Logic
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
+        /// <exception cref="SqlException">When error with database occurs</exception>
+        /// <returns>List of all operations</returns>
         public static List<string> GetAllOperations()
         {
             var db = new SQLtoLinqDataContext();
@@ -91,6 +95,7 @@ namespace Admin.Logic
         /// 
         /// </summary>
         /// <param name="name"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>List of group operations</returns>
         //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
         public static List<string> GetGroupOperations(string name)
@@ -109,6 +114,7 @@ namespace Admin.Logic
         /// Returns user operations. Operations in group are omitted
         /// </summary>
         /// <param name="login"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>user operations</returns>
         [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated=true)]
         public static List<string> GetUserOperations(string login)
@@ -129,6 +135,7 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="login"></param>
         /// <returns></returns>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static List<string> GetUserGroups(string login)
         {
             var db = new SQLtoLinqDataContext();
@@ -152,6 +159,7 @@ namespace Admin.Logic
         /// <param name="password"></param>
         /// <exception cref="ArgumentNullException">When login is null</exception>
         /// <exception cref="InvalidOperationException">When user is not in database</exception>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void UpdateUser(string login, string name, string surname, string password)
         {
             var db = new SQLtoLinqDataContext();
@@ -173,6 +181,7 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="login"></param>
         /// <param name="operations">List of ALL user operations</param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void AddUserOperations(string login, List<string> operations)
         {
             var db = new SQLtoLinqDataContext();
@@ -211,6 +220,7 @@ namespace Admin.Logic
         /// <param name="password"></param>
         /// <param name="name"></param>
         /// <param name="surname"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void AddUser(string login, string password, string name, string surname)
         {
             var db = new SQLtoLinqDataContext();
@@ -231,6 +241,7 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <exception cref="Exception">When group already exists</exception>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void AddGroup(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -253,6 +264,7 @@ namespace Admin.Logic
         /// <param name="name"></param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException">When group is not in database</exception>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void UpdateGroup(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -270,6 +282,7 @@ namespace Admin.Logic
         /// <param name="name"></param>
         /// <param name="operations"></param>
         /// <exception cref="Exception">When group is not found</exception>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void UpdateGroup(string name, List<string> operations)
         {
             var db = new SQLtoLinqDataContext();
@@ -306,6 +319,7 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <exception cref="Exception">When operation already exists</exception>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void AddOperation(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -327,6 +341,7 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="login"></param>
         /// <param name="groups"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void AddUserGroups(string login, List<string> groups)
         {
             var db = new SQLtoLinqDataContext();
@@ -361,6 +376,7 @@ namespace Admin.Logic
         /// 
         /// </summary>
         /// <param name="login"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void DeleteUser(string login)
         {
             var db = new SQLtoLinqDataContext();
@@ -388,6 +404,7 @@ namespace Admin.Logic
         /// 
         /// </summary>
         /// <param name="name"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void DeleteGroup(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -415,6 +432,7 @@ namespace Admin.Logic
         /// 
         /// </summary>
         /// <param name="name"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         public static void DeleteOperation(string name)
         {
             var db = new SQLtoLinqDataContext();

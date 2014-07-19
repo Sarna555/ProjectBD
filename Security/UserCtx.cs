@@ -45,7 +45,7 @@ namespace Security
         /// </summary>
         /// <param name="OperRoleName"></param>
         /// <returns></returns>
-        public bool HasRoleRight(String OperRoleName)
+        public bool HasRoleRight(String operRoleName)
         {
             return this.OpersRoles.Contains(OperRoleName);
         }
@@ -55,7 +55,7 @@ namespace Security
         /// </summary>
         /// <param name="GroupName"></param>
         /// <returns></returns>
-        public bool HasGroupRight(String GroupName)
+        public bool HasGroupRight(String groupName)
         {
             throw new NotImplementedException();
         }
@@ -92,6 +92,7 @@ namespace Security
         /// <param name="uname">login</param>
         /// <param name="pass">password</param>
         /// <param name="uc">User Context</param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>If user exists returns true</returns>
         public static bool Login(String login, String pass, out IUserCtx uc)
         {

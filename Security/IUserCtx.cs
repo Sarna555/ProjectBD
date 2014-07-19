@@ -10,9 +10,9 @@ namespace Security
     {
         String uname { get; }
 
-        bool HasRoleRight(string OperRoleName);
+        bool HasRoleRight(string operRoleName);
 
-        bool HasGroupRight(string GroupName);
+        bool HasGroupRight(string groupName);
 
 
         List<string> GetAllRoles();
