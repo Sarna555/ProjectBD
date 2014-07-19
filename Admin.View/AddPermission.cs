@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Admin.Logic;
 namespace Admin.View
 {
     public partial class AddPermission : Form
@@ -26,6 +26,20 @@ namespace Admin.View
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Administration.AddOperation(this.textBox1.Text);
+                this.Close();
+            }
+            catch (Exception penis)
+            {
+                MessageBox.Show(penis.Message);
+            }
+
         }
     }
 }

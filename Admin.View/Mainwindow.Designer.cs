@@ -41,6 +41,8 @@ namespace Admin.View
             this.grupyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dodajGrupęToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zobaczListęToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.uprawnieniaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dodajNoweUprawnienieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pomocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oProgramieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -48,8 +50,6 @@ namespace Admin.View
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
-            this.uprawnieniaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dodajNoweUprawnienieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -88,8 +88,9 @@ namespace Admin.View
             // wylogujToolStripMenuItem
             // 
             this.wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
-            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.wylogujToolStripMenuItem.Text = "Wyloguj";
+            this.wylogujToolStripMenuItem.Click += new System.EventHandler(this.wylogujToolStripMenuItem_Click);
             // 
             // zakończToolStripMenuItem
             // 
@@ -133,16 +134,31 @@ namespace Admin.View
             // dodajGrupęToolStripMenuItem
             // 
             this.dodajGrupęToolStripMenuItem.Name = "dodajGrupęToolStripMenuItem";
-            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.dodajGrupęToolStripMenuItem.Text = "Dodaj grupę";
             this.dodajGrupęToolStripMenuItem.Click += new System.EventHandler(this.dodajGrupęToolStripMenuItem_Click);
             // 
             // zobaczListęToolStripMenuItem1
             // 
             this.zobaczListęToolStripMenuItem1.Name = "zobaczListęToolStripMenuItem1";
-            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
             this.zobaczListęToolStripMenuItem1.Text = "Zobacz listę";
             this.zobaczListęToolStripMenuItem1.Click += new System.EventHandler(this.zobaczListęToolStripMenuItem1_Click);
+            // 
+            // uprawnieniaToolStripMenuItem
+            // 
+            this.uprawnieniaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dodajNoweUprawnienieToolStripMenuItem});
+            this.uprawnieniaToolStripMenuItem.Name = "uprawnieniaToolStripMenuItem";
+            this.uprawnieniaToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
+            this.uprawnieniaToolStripMenuItem.Text = "Uprawnienia";
+            // 
+            // dodajNoweUprawnienieToolStripMenuItem
+            // 
+            this.dodajNoweUprawnienieToolStripMenuItem.Name = "dodajNoweUprawnienieToolStripMenuItem";
+            this.dodajNoweUprawnienieToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.dodajNoweUprawnienieToolStripMenuItem.Text = "Dodaj nowe uprawnienie";
+            this.dodajNoweUprawnienieToolStripMenuItem.Click += new System.EventHandler(this.dodajNoweUprawnienieToolStripMenuItem_Click);
             // 
             // pomocToolStripMenuItem
             // 
@@ -155,7 +171,7 @@ namespace Admin.View
             // oProgramieToolStripMenuItem
             // 
             this.oProgramieToolStripMenuItem.Name = "oProgramieToolStripMenuItem";
-            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.oProgramieToolStripMenuItem.Text = "O programie";
             this.oProgramieToolStripMenuItem.Click += new System.EventHandler(this.oProgramieToolStripMenuItem_Click);
             // 
@@ -203,21 +219,6 @@ namespace Admin.View
             this.checkedListBox2.Size = new System.Drawing.Size(150, 199);
             this.checkedListBox2.TabIndex = 5;
             // 
-            // uprawnieniaToolStripMenuItem
-            // 
-            this.uprawnieniaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dodajNoweUprawnienieToolStripMenuItem});
-            this.uprawnieniaToolStripMenuItem.Name = "uprawnieniaToolStripMenuItem";
-            this.uprawnieniaToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
-            this.uprawnieniaToolStripMenuItem.Text = "Uprawnienia";
-            // 
-            // dodajNoweUprawnienieToolStripMenuItem
-            // 
-            this.dodajNoweUprawnienieToolStripMenuItem.Name = "dodajNoweUprawnienieToolStripMenuItem";
-            this.dodajNoweUprawnienieToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.dodajNoweUprawnienieToolStripMenuItem.Text = "Dodaj nowe uprawnienie";
-            this.dodajNoweUprawnienieToolStripMenuItem.Click += new System.EventHandler(this.dodajNoweUprawnienieToolStripMenuItem_Click);
-            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(327, 233);
@@ -226,6 +227,7 @@ namespace Admin.View
             this.button3.TabIndex = 6;
             this.button3.Text = "Zapisz zmiany";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // Mainwindow
             // 

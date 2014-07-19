@@ -16,10 +16,21 @@ namespace Admin.View
         {
             InitializeComponent();
         }
+        public EditGroup(string name)
+        {
+            InitializeComponent();
+            this.textBox1.Text = name;
+            this.Update();
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
