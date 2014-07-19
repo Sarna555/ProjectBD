@@ -230,10 +230,18 @@ namespace Admin.Logic
         /// <param name="name"></param>
         /// <param name="surname"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
+        /// <exception cref="Exception">When user already exists</exception>
         public static void AddUser(string login, string password, string name, string surname)
         {
             var db = new SQLtoLinqDataContext();
             var user = new User();
+
+            var result = (from u in db.Users
+                          where login == u.login
+                          select u).SingleOrDefault();
+
+            if (result != null)
+                throw new Exception("User already exists");
 
             user.login = login;
             user.password = UserCtx.Encrypt(password);
