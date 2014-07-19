@@ -47,7 +47,7 @@ namespace Security
         /// <returns></returns>
         public bool HasRoleRight(String operRoleName)
         {
-            return this.OpersRoles.Contains(OperRoleName);
+            return this.OpersRoles.Contains(operRoleName);
         }
 
         /// <summary>
