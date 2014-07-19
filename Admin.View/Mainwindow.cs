@@ -30,7 +30,10 @@ namespace Admin.View
                     editGroup.Show();
                     break;
                 case "user":
-                    new EditUser().Show();
+                    //var penis = Administration.
+                    //var editUser = new EditUser();
+
+
                     break;
                 default:
                     MessageBox.Show("Wybierz element do modyfikacji");
@@ -107,9 +110,13 @@ namespace Admin.View
             {
                 case "group":
                     var permissionListGroups = Administration.GetGroupOperations(login);
-                    
+                    foreach (String permission in allPermissions)
+                    {
+                        checkedListBox1.Items.Add(permission, false);
+                    }
                     foreach (String permission in permissionListGroups)
                     {
+                        checkedListBox1.Items.Remove(permission);
                         checkedListBox1.Items.Add(permission, true);
                     }
 

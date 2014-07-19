@@ -14,6 +14,7 @@ namespace Admin.View
     public partial class EditUser : Form
     {
         private string switchi;
+        public string oldlogin,name,surname,password;
         public EditUser()
         {
             InitializeComponent();
@@ -22,6 +23,15 @@ namespace Admin.View
         {
             switchi = type;
             InitializeComponent();
+        }
+        public EditUser(string type, string login, string name, string surname, string password)
+        {
+            InitializeComponent();
+            switchi = type;
+            textBox1.Text = name;
+            textBox2.Text = surname;
+            textBox3.Text = login;
+            textBox4.Text = password;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -42,11 +52,7 @@ namespace Admin.View
                                                this.textBox2.Text);
                         break;
                     case "exists":
-                        Administration.UpdateUser(/*oldlogin,*/
-                                                  this.textBox3.Text,
-                                                  this.textBox1.Text,
-                                                  this.textBox2.Text,
-                                                  this.textBox4.Text);
+                        Administration.UpdateUser(oldlogin,this.textBox3.Text,this.textBox1.Text,this.textBox2.Text,this.textBox4.Text);
                         break;
                 }
             }
