@@ -64,7 +64,8 @@ namespace Admin.View
 
         private void dodajUżytkownikaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new EditUser().Show();
+            var editUser = new EditUser("new");
+            editUser.Show();
         }
 
         private void zobaczListęToolStripMenuItem_Click(object sender, EventArgs e)
@@ -180,22 +181,71 @@ namespace Admin.View
         {
             new AddPermission().Show();
         }
-
+        
         private void button3_Click(object sender, EventArgs e)
         {
             try
             {
-                //Update
+                var login = this.listBox1.SelectedItem.ToString();
+
+                switch (choice)
+                {
+                    case "user":
+                        List<string> userGroups = new List<string>();
+                        List<string> userPermissions = new List<string>();
+                        foreach (String group in checkedListBox2.CheckedItems)
+                        {
+                            userGroups.Add(group);
+                        }
+                        foreach (String permission in checkedListBox1.CheckedItems)
+                        {
+                            userPermissions.Add(permission);
+                        }
+                        Administration.AddUserOperations(login, userPermissions);
+                        Administration.AddUserGroups(login, userGroups);
+                        break;
+
+                    case "group":
+                        List<string> groupPermissions = new List<string>();
+                        foreach (String permission in checkedListBox1.CheckedItems)
+                        {
+                            groupPermissions.Add(permission);
+                        }
+                        Administration.UpdateGroup(login, groupPermissions);
+                        break;
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Database error:\n" + ex.Message);
             }
             catch (System.Security.SecurityException se)
             {
                 MessageBox.Show("Permission denied " + se.Message);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+          
         }
 
         private void wylogujToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UserCtx.Logout(ref _userCtx);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            switch (choice)
+            {
+                case "user":
+                    Administration.DeleteUser(this.listBox1.SelectedItem.ToString());
+                    break;
+                case "group":
+                    Administration.DeleteGroup(this.listBox1.SelectedItem.ToString());
+                    break;
+            }
         }
     }
 }

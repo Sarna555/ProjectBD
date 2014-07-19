@@ -51,6 +51,7 @@ namespace Admin.View
             this.button2 = new System.Windows.Forms.Button();
             this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,7 +89,7 @@ namespace Admin.View
             // wylogujToolStripMenuItem
             // 
             this.wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
-            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.wylogujToolStripMenuItem.Text = "Wyloguj";
             this.wylogujToolStripMenuItem.Click += new System.EventHandler(this.wylogujToolStripMenuItem_Click);
             // 
@@ -204,12 +205,13 @@ namespace Admin.View
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(170, 233);
+            this.button2.Location = new System.Drawing.Point(14, 262);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(150, 23);
             this.button2.TabIndex = 4;
             this.button2.Text = "Usuń zaznaczenie";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // checkedListBox2
             // 
@@ -221,7 +223,7 @@ namespace Admin.View
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(327, 233);
+            this.button3.Location = new System.Drawing.Point(327, 292);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(152, 23);
             this.button3.TabIndex = 6;
@@ -229,11 +231,21 @@ namespace Admin.View
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(170, 233);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(150, 23);
+            this.button4.TabIndex = 7;
+            this.button4.Text = "Usuń uprawnienie";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
             // Mainwindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 327);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.checkedListBox2);
             this.Controls.Add(this.button2);
@@ -275,6 +287,7 @@ namespace Admin.View
         private System.Windows.Forms.ToolStripMenuItem dodajNoweUprawnienieToolStripMenuItem;
         private System.Windows.Forms.CheckedListBox checkedListBox2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
 
       
 

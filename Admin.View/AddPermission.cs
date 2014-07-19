@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Admin.Logic;
+using System.Data.SqlClient;
 namespace Admin.View
 {
     public partial class AddPermission : Form
@@ -35,9 +36,9 @@ namespace Admin.View
                 Administration.AddOperation(this.textBox1.Text);
                 this.Close();
             }
-            catch (Exception penis)
+            catch (SqlException ex)
             {
-                MessageBox.Show(penis.Message);
+                MessageBox.Show(ex.Message);
             }
 
         }
