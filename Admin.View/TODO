@@ -1,5 +1,2 @@
 //put requested methods here
 
-
-
-UserResult GetUser(string login); //zwraca wszelakie informacje o userze
