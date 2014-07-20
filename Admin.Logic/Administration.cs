@@ -13,6 +13,27 @@ namespace Admin.Logic
 {
     public class Administration
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <exception cref="SqlException">When error with database occurs</exception>
+        /// <exception cref="InvalidOperationException">When user is not found</exception>
+        /// <returns>user</returns>
+        public static UserResult GetUser(string login)
+        {
+            var db = new SQLtoLinqDataContext();
+            var user = (from u in db.Users
+                        where u.login == login
+                        select new UserResult
+                        {
+                            login = u.login,
+                            name = u.name,
+                            surname = u.surname
+                        }).Single();
+            return user;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -188,13 +209,10 @@ namespace Admin.Logic
         public static void AddUserOperations(string login, List<string> operations)
         {
             var db = new SQLtoLinqDataContext();
-            db.Log = Console.Out;
             var result = (from u in db.Users
-                          from o in db.operations
                           from u2o in db.users2operations
                           where u.login == login && u.user_ID == u2o.user_ID
-                          && u2o.operation_ID == o.operation_ID
-                          select u2o);
+                          select u2o).ToList<users2operation>();
 
             db.users2operations.DeleteAllOnSubmit(result);
             db.SubmitChanges();
@@ -350,7 +368,6 @@ namespace Admin.Logic
             if (result != null)
                 throw new Exception("Operation already exists");
 
-            newOperation.operation_ID = db.operations.Max(i => i.operation_ID) + 1;
             newOperation.name = name;
             db.operations.InsertOnSubmit(newOperation);
             db.SubmitChanges();
