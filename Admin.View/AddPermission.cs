@@ -34,6 +34,7 @@ namespace Admin.View
             try
             {
                 Administration.AddOperation(this.textBox1.Text);
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (SqlException ex)

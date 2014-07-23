@@ -12,16 +12,24 @@ namespace Admin.View
 {
     public partial class EditGroup : Form
     {
-        private string old;
+        private string oldName;
+        private string choice;
         public EditGroup()
         {
             InitializeComponent();
         }
-        public EditGroup(string name)
+        public EditGroup(string switchi, string name)
         {
+            choice = switchi;
+            oldName = name;
             InitializeComponent();
             this.textBox1.Text = name;
-            this.Update();
+     
+        }
+        public EditGroup(string switchi)
+        {
+            choice = switchi;
+            InitializeComponent();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -36,7 +44,22 @@ namespace Admin.View
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //Administration.UpdateGroup(old,this.textBox1.Text);
+            switch (choice)
+            {
+                case "new":
+                    if (this.textBox1.Text != null)
+                        Administration.AddGroup(this.textBox1.Text);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                    break;
+
+                case "exists":
+                    if (this.textBox1.Text != null)
+                        this.DialogResult = DialogResult.OK;
+                    Administration.UpdateGroup(oldName, this.textBox1.Text);
+                    this.Close();
+                    break;
+            }
         }
     }
 }
