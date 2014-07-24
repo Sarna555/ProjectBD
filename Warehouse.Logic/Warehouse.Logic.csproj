@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PalletResult.cs" />
+    <Compile Include="OrderResult.cs" />
+    <Compile Include="ProductResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Warehouse.cs" />
   </ItemGroup>

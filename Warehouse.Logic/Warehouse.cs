@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Linq;
-using Security;
+using Warehouse.Database;
 
-
-/*
-Nadprogramowe funkcje:
-
-    Uwzględniony stan zamówienia (tabela Stan):
-        public static void AddOrder2(string sender, string reciever, date sent, date recieved, string state)
-        public static void UpdateOrder2(string orderID, string sender, string reciever, date sent, date recieved, string state)
-
-    Uwzględnione miejsce palety w magazynie (tabela Miejsce_w_mag):
-        public static void AddPallet2(string idOrder, string code, string spot_code)
-
-    Uwzględnione ww. miejsce oraz id zamówienia
-        public static void UpdatePallet2(string palletID, string code, string orderID, string spot_code)
-
-*/
 
 
 namespace Warehouse.Logic
 {
     class Warehouse
     {
+
+        /// <summary>
+        /// Dodaje zamówienie bez uwzględnienia pola stanu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="reciever"></param>
+        /// <param name="sent"></param>
+        /// <param name="recieved"></param>
         public static void AddOrder(string sender, string reciever, DateTime sent, DateTime recieved)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -37,18 +29,25 @@ namespace Warehouse.Logic
 	        order.data_nadania = sent;
 	        order.data_odbioru = recieved;
 
-	        db.Zamowienie.InsertOnSubmit(order);
+	        db.Zamowienies.InsertOnSubmit(order);
 	        db.SubmitChanges();
         }
 
 
-        //jw, ale z dodaniem stanu zamowienia z tabeli Stan
-        public static void AddOrder2(string sender, string reciever, DateTime sent, DateTime recieved, string state)
+        /// <summary>
+        /// Dodaje zamówienie z uwzględnieniem pola stanu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="reciever"></param>
+        /// <param name="sent"></param>
+        /// <param name="recieved"></param>
+        /// <param name="state"></param>
+        public static void AddOrder(string sender, string reciever, DateTime sent, DateTime recieved, string state)
         {
 	        var db = new SQLtoLinqDataContext();
 	        var order = new Zamowienie();
 
-	        var stan = (from s in db.Stan
+	        var stan = (from s in db.Stans
 				          where s.nazwa_stanu == state
 				          select s).Single();
 	
@@ -56,123 +55,174 @@ namespace Warehouse.Logic
 	        order.odbiorca = reciever;
 	        order.data_nadania = sent;
 	        order.data_odbioru = recieved;
-	        order.id_stanu = stan.id;
-	        db.Zamowienie.InsertOnSubmit(order);
+	        order.id_stanu = stan.Id;
+	        db.Zamowienies.InsertOnSubmit(order);
 	        db.SubmitChanges();
         }
 
+
+        /// <summary>
+        /// Dodaje paletę do zamówienia bez uwzględnienia jej miejsca w magazynie
+        /// </summary>
+        /// <param name="idOrder"></param>
+        /// <param name="code"></param>
         public static void AddPallet(string idOrder, string code)
         {
 	        var db = new SQLtoLinqDataContext();
 	        var paleta = new Paleta();
 
-	        paleta.id_zamowienia = idOrder;
+	        paleta.id_zamowienia = Convert.ToInt32(idOrder);
 	        paleta.kod = code;
 
-	        db.Paleta.InsertOnSubmit(paleta);
+	        db.Paletas.InsertOnSubmit(paleta);
 	        db.SubmitChanges();
         }
 
-        //jw, ale z dodaniem id miejsca w magazynie
-        public static void AddPallet2(string idOrder, string code, string spot_code)
+        /// <summary>
+        /// Dodaje paletę do zamówienia z uwzględnieniem jej miejsca w magazynie
+        /// Tabela Miejsce_w_mag ma id(int) i kod(string). Metoda szuka po kodzie, którego id przypisywane
+        /// jest do pola id_miejsca_w_mag w obiekcie palety.
+        /// </summary>
+        /// <param name="idOrder"></param>
+        /// <param name="code"></param>
+        /// <param name="spot_code"></param>
+        public static void AddPallet(string idOrder, string code, string spot_code)
         {
 	        var db = new SQLtoLinqDataContext();
 	        var paleta = new Paleta();
 
-	        var spot = (from m in db.Miejsce_w_mag
+	        var spot = (from m in db.Miejsce_w_mags
 				          where m.kod == spot_code
 				          select m).Single();
 	
 	
-	        paleta.id_zamowienia = idOrder;
+	        paleta.id_zamowienia = Convert.ToInt32(idOrder);
 	        paleta.kod = code;
-	        paleta.id_miejsca_w_mag = spot.id;
+	        paleta.id_miejsca_w_mag = spot.Id;
 	
-	        db.Paleta.InsertOnSubmit(paleta);
+	        db.Paletas.InsertOnSubmit(paleta);
 	        db.SubmitChanges();
         }
 
-        public static void AddProduct(string idPallet, string name, DateTime bestBefore, string category)
+
+        /// <summary>
+        /// Dodaje produkt do palety o podanym kodzie 
+        /// </summary>
+        /// <param name="idPallet"></param>
+        /// <param name="name"></param>
+        /// <param name="bestBefore"></param>
+        /// <param name="category"></param>
+        public static void AddProduct(string PalletCode, string name, DateTime bestBefore, string category)
         {
 	        var db = new SQLtoLinqDataContext();
 	        var product = new Produkt();
 
-	        var cat = (from k in db.Kategoria_produktu
+	        var cat = (from k in db.Kategoria_produktus
 				          where k.nazwa == category
 				          select k).Single();
-	
-	        product.nazwa = name;
-	        product.id_kategorii = cat.id;
-	        product.data_przydatnosci = bestBefore;
-	        product.id_palety = idPallet;
 
-	        db.Produkt.InsertOnSubmit(product);
+            var pal = (from p in db.Paletas
+                       where p.kod == PalletCode
+                       select p).Single();
+
+	        product.nazwa = name;
+	        product.id_kategorii = cat.Id;
+	        product.data_przydatnosci = bestBefore;
+            product.id_palety = Convert.ToInt32(pal.Id);
+
+	        db.Produkts.InsertOnSubmit(product);
 	        db.SubmitChanges();
         }
 
+        /// <summary>
+        /// Zwraca wszystkie zamówienia
+        /// </summary>
+        /// <returns></returns>
         public static List<OrderResult> GetAllOrders()
         {
 
 	        var db = new SQLtoLinqDataContext();
-	        var OrderResult = (from z in db.Zamowienie
-						        from s in db.Stan
-						        where z.id_stanu == s.Id 
-						
-					   
-					           select new OrderResult
-					           {
-						           zamowienie_ID = z.Id,
-						           stan = s.nazwa_stanu,
-						           nadawca = z.nadawca,
-						           odbiorca = z.odbiorca
-						           data_nadania = z.data_nadania
-						           data_odbioru = z.data_odbioru
-					           }).ToList<OrderResult>();
+            var OrderResult = (from z in db.Zamowienies
+                               from s in db.Stans
+                               where z.id_stanu == s.Id
+                               select new OrderResult
+                               {
+                                   Id = z.Id,
+                                   nazwa_stanu = s.nazwa_stanu,
+                                   nadawca = z.nadawca,
+                                   odbiorca = z.odbiorca,
+                                   data_nadania = z.data_nadania ?? DateTime.MinValue,
+                                   data_odbioru = z.data_odbioru ?? DateTime.MinValue
+                               }
+                               ).ToList<OrderResult>();
 	        return OrderResult;
         }
 
-
+        /// <summary>
+        /// Zwraca wszystkie palety w zamówieniu o podanym id.
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <returns></returns>
         public static List<PalletResult> GetAllPallets(string orderID)
         {
 
 	        var db = new SQLtoLinqDataContext();
-	        var PalletResult = (from p in db.Paleta
-						        join m in db.Miejsce_w_magazynie
-						        on p.id_miejsca_w_mag equals m.id into pallet
+	        var PalletResult = (from p in db.Paletas
+						        join m in db.Miejsce_w_mags
+						        on p.id_miejsca_w_mag equals m.Id into pallet
 						        from m in pallet.DefaultIfEmpty()
-						        where p.id_zamowienia == orderID
+						        where p.id_zamowienia == Convert.ToInt32(orderID)
 					           select new PalletResult
 					           {
-						           pallet_ID = p.id,
+                                   Id = p.Id,
 						           kod_miejsca_w_mag = m.kod,
 						           kod_palety = p.kod,
-						           id_zamowienia = p.id_zamowienia
+						           id_zamowienia = Convert.ToInt32(p.id_zamowienia)
 					           }).ToList<PalletResult>();
 	        return PalletResult;
         }
 
-        public static List<ProductResult> GetAllProducts(string PalletID)
+        /// <summary>
+        /// Zwraca wszystkie produkty na palecie o podanym kodzie palety.
+        /// </summary>
+        /// <param name="PalletID"></param>
+        /// <returns></returns>
+        public static List<ProductResult> GetAllProducts(string PalletCode)
         {
 
 	        var db = new SQLtoLinqDataContext();
-	        var ProductResult = (from p in db.Produkt
-						        from k in db.Kategoria_produktu
-						        where p.Id_kategorii == k.Id && p.Id_palety == PalletID
+
+            var pal = (from p in db.Paletas
+                       where p.kod == PalletCode
+                       select p).Single();
+            
+            var ProductResult = (from p in db.Produkts   
+						        from k in db.Kategoria_produktus
+                                 where p.id_kategorii == k.Id && p.id_palety == pal.Id
 					           select new ProductResult
 					           {
-						           product_ID = p.Id,
-						           nazwa = p.Nazwa,
-						           nazwa_kategorii = k.Nazwa,
-						           data_przydatnosci = p.Data_przydatnosci
+						           Id = p.Id,
+						           nazwa = p.nazwa,
+						           nazwa_kategorii = k.nazwa,
+                                   data_przydatnosci = p.data_przydatnosci ?? DateTime.MinValue
 					           }).ToList<ProductResult>();
 	        return ProductResult;
         }
 
+
+        /// <summary>
+        /// Aktualizuje dane zamówienia, nie uwzględnia pola id_stanu zamówienia
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <param name="sender"></param>
+        /// <param name="reciever"></param>
+        /// <param name="sent"></param>
+        /// <param name="recieved"></param>
         public static void UpdateOrder(string orderID, string sender, string reciever, DateTime sent, DateTime recieved)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var result = (from z in db.Zamowienie
-				          where z.id == orderID
+	        var result = (from z in db.Zamowienies
+				          where z.Id == Convert.ToInt32(orderID)
 				          select z).Single();
 	        if (sender != null)
 		        result.nadawca = sender;
@@ -186,16 +236,21 @@ namespace Warehouse.Logic
 	        db.SubmitChanges();
         }
 
-        //jw, ale z uwzglednieniem zmiany stanu zamowienia z tabeli Stan
-        public static void UpdateOrder2(string orderID, string sender, string reciever, DateTime sent, DateTime recieved, string state)
+        /// <summary>
+        /// Aktualizuje dane zamówienia z uwzględnieniem pola id_stanu zamówienia
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <param name="sender"></param>
+        /// <param name="reciever"></param>
+        /// <param name="sent"></param>
+        /// <param name="recieved"></param>
+        /// <param name="state"></param>
+        public static void UpdateOrder(string orderID, string sender, string reciever, DateTime sent, DateTime recieved, string state)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var result = (from z in db.Zamowienie
-				          where z.id == orderID
+	        var result = (from z in db.Zamowienies
+				          where z.Id == Convert.ToInt32(orderID)
 				          select z).Single();
-				  
-				  
-				  
 				  
 	        if (sender != null)
 		        result.nadawca = sender;
@@ -206,47 +261,60 @@ namespace Warehouse.Logic
 	        if (recieved != null)
 		        result.data_odbioru = recieved;
 	        if (state != null){
-		        var stan = (from s in db.Stan
+		        var stan = (from s in db.Stans
 				          where s.nazwa_stanu == state
 				          select s).Single();
-		        result.id_stanu = stan.id;
+		        result.id_stanu = stan.Id;
 	        }	
 		
 	        db.SubmitChanges();
         }
 
+        /// <summary>
+        /// Aktualizuje dane palety bez uwzględnienia id zamówienia oraz id miejsca w magazynie
+        /// </summary>
+        /// <param name="palletID"></param>
+        /// <param name="code"></param>
         public static void UpdatePallet(string palletID, string code)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var result = (from p in db.Paleta
-				          where p.id == palletID
+	        var result = (from p in db.Paletas
+				          where p.Id == Convert.ToInt32(palletID)
 				          select p).Single();
 	        if (code != null)
-		        result.Kod = code;
+		        result.kod = code;
 	
 
 	        db.SubmitChanges();
         }
 
-        //jw, ale z uwzglednieniem zmiany id zamowienia oraz id miejsca w magazynie
-        public static void UpdatePallet2(string palletID, string code, string orderID, string spot_code)
+
+        /// <summary>
+        /// Aktualizuje dane palety z uwzględnieniem id zamówienia oraz id miejsca w magazynie. Te ostatnie jest 
+        /// wyciągane w metodzie - jej argument przyjmuje kod miejsca.
+        /// </summary>
+        /// <param name="palletID"></param>
+        /// <param name="code"></param>
+        /// <param name="orderID"></param>
+        /// <param name="spot_code"></param>
+        public static void UpdatePallet(string palletID, string code, string orderID, string spot_code)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var result = (from p in db.Paleta
-				          where p.id == palletID
+	        var result = (from p in db.Paletas
+				          where p.Id == Convert.ToInt32(palletID)
 				          select p).Single();
 				  
 			  
 				  
 	        if (code != null)
-		        result.Kod = code;
+		        result.kod = code;
 	        if (orderID != null)
-		        result.id_zamowienia = orderID;
+		        result.id_zamowienia = Convert.ToInt32(orderID);
 	        if (spot_code != null){
-		        var spot = (from m in db.Miejsce_w_mag
+		        var spot = (from m in db.Miejsce_w_mags
 				          where m.kod == spot_code
 				          select m).Single();	
-		        result.id_miejsca_w_mag = spot.id;
+		        result.id_miejsca_w_mag = spot.Id;
 	        }
 	
 	
@@ -254,122 +322,159 @@ namespace Warehouse.Logic
 	        db.SubmitChanges();
         }
 
-
+        /// <summary>
+        /// Aktualizuje dane o produkcie
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="name"></param>
+        /// <param name="bestBefore"></param>
+        /// <param name="category"></param>
         public static void UpdateProduct(string productID, string name, DateTime bestBefore, string category)
         {
 	        var db = new SQLtoLinqDataContext();
 	
-	        var cat = (from k in db.Kategoria_produktu
+	        var cat = (from k in db.Kategoria_produktus
 				          where k.nazwa == category
 				          select k).Single();
 	
-	        var result = (from p in db.Produkt
-				          where p.id == productID
+	        var result = (from p in db.Produkts
+				          where p.Id == Convert.ToInt32(productID)
 				          select p).Single();
 	        if (name != null)
 		        result.nazwa = name;
 	        if (bestBefore != null)
 		        result.data_przydatnosci = bestBefore;
 	        if (category != null)
-		        result.id_kategorii = cat.id;
+		        result.id_kategorii = cat.Id;
 
 
 	        db.SubmitChanges();
         }
 
+
+        /// <summary>
+        /// Zwraca zamówienie o podanym ID
+        /// </summary>
+        /// <param name="orderID"></param>
+        /// <returns></returns>
         public static OrderResult GetOrder(string orderID)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var order = (from z in db.Zamowienie
-				        from s in db.Stan
-				        where z.id_stanu == s.Id && z.id == orderID
-				        select new UserResult
+	        var order = (from z in db.Zamowienies
+				        from s in db.Stans
+				        where z.id_stanu == s.Id && z.Id == Convert.ToInt32(orderID)
+                         select new OrderResult
 				        {
-				           zamowienie_ID = z.Id,
-				           stan = s.nazwa_stanu,
+                           Id = z.Id,
+                           nazwa_stanu = s.nazwa_stanu,
 				           nadawca = z.nadawca,
-				           odbiorca = z.odbiorca
-				           data_nadania = z.data_nadania
-				           data_odbioru = z.data_odbioru
-				           id_palety = z.id_palety
+				           odbiorca = z.odbiorca,
+                           data_nadania = z.data_nadania ?? DateTime.MinValue,
+                           data_odbioru = z.data_odbioru ?? DateTime.MinValue
 				        }).Single();
 	        return order;
         }
 
-        public static PalletResult GetPallet(string palletID)
+
+        /// <summary>
+        /// Zwraca paletę o podanym kodzie
+        /// </summary>
+        /// <param name="palletCode"></param>
+        /// <returns></returns>
+        public static PalletResult GetPallet(string palletCode)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var pallet = (from p in db.Paleta
-					        join m in db.Miejsce_w_magazynie
-					        on p.id_miejsca_w_mag equals m.id into pallet
+	        var pall = (from p in db.Paletas
+					        join m in db.Miejsce_w_mags
+					        on p.id_miejsca_w_mag equals m.Id into pallet
 					        from m in pallet.DefaultIfEmpty()
-					        where p.id_zamowienia == orderID
+					        where p.kod == palletCode
 				           select new PalletResult
 				           {
-					           pallet_ID = p.id,
+                               Id = p.Id,
 					           kod_miejsca_w_mag = m.kod,
 					           kod_palety = p.kod,
-					           id_zamowienia = p.id_zamowienia
+					           id_zamowienia = Convert.ToInt32(p.id_zamowienia)
 				           }).Single();
-	        return pallet;
-        }	
+	        return pall;
+        }
 
 
-        public static GetProduct(string productID)
+
+        /// <summary>
+        /// Zwraca produkt o podanym ID
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <returns></returns>
+        public static ProductResult GetProduct(string productID)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var product = (from p in db.Produkt
-				        from k in db.Kategoria_produktu
-				        where p.Id_kategorii == k.Id && p.id == productID
+	        var product = (from p in db.Produkts
+				        from k in db.Kategoria_produktus
+				        where p.id_kategorii == k.Id && p.Id == Convert.ToInt32(productID)
 				        select new ProductResult
 				        {
-				           product_ID = p.Id,
-				           nazwa = p.Nazwa,
-				           nazwa_kategorii = k.Nazwa,
-				           data_przydatnosci = p.Data_przydatnosci
+                            Id = p.Id,
+				           nazwa = p.nazwa,
+				           nazwa_kategorii = k.nazwa,
+                           data_przydatnosci = p.data_przydatnosci ?? DateTime.MinValue
 				        }).Single();
 	        return product;
         }		
 		
-		
+		/// <summary>
+		/// Usuwa zamówienie o podanym ID
+		/// </summary>
+		/// <param name="orderID"></param>
         public static void DeleteOrder(string orderID)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var order = (from z in db.Zamowienie
-				        where z.id == orderID
+	        var order = (from z in db.Zamowienies
+				        where z.Id == Convert.ToInt32(orderID)
 				        select z).Single();
 
-	        db.Zamowienie.DeleteOnSubmit(order);
+	        db.Zamowienies.DeleteOnSubmit(order);
 	        db.SubmitChanges();
         }	
 
-        //usuwa paletę wraz z produktami na niej
-        public static void DeletePallet(string palletID)
+        /// <summary>
+        /// Usuwa paletę o podanym kodzie wraz z wszystkimi produktami na niej
+        /// </summary>
+        /// <param name="palletCode"></param>
+        public static void DeletePallet(string palletCode)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var pallet = (from p in db.Paleta
-				        where p.id == palletID
-				        select p).Single();
+	        var pall = (from p in db.Paletas
+					        join m in db.Miejsce_w_mags
+					        on p.id_miejsca_w_mag equals m.Id into pallet
+					        from m in pallet.DefaultIfEmpty()
+					        where p.kod == palletCode
+				           select p).Single();
 
-	        var products = (from p in db.Produkt
-				        where p.id_palety == pallet.id
+	        var products = (from p in db.Produkts
+                            where p.id_palety == pall.Id
 				        select p);
-	        db.Produkt.DeleteAllOnSubmit(products);
+	        db.Produkts.DeleteAllOnSubmit(products);
 	        db.SubmitChanges();			
 				
 				
-	        db.Paleta.DeleteOnSubmit(pallet);
+	        db.Paletas.DeleteOnSubmit(pall);
 	        db.SubmitChanges();
         }	
 
+
+        /// <summary>
+        /// Usuwa produkt o podanym ID
+        /// </summary>
+        /// <param name="productID"></param>
         public static void DeleteProduct(string productID)
         {
 	        var db = new SQLtoLinqDataContext();
-	        var product = (from p in db.Produkt
-				        where p.id == productID
+	        var product = (from p in db.Produkts
+				        where p.Id == Convert.ToInt32(productID)
 				        select p).Single();
 
-	        db.Produkt.DeleteOnSubmit(product);
+	        db.Produkts.DeleteOnSubmit(product);
 	        db.SubmitChanges();
         }	
 
