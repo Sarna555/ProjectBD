@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Admin.Logic;
 using System.Data.SqlClient;
+using Security;
 namespace Admin.View
 {
     public partial class EditUser : Form
     {
         private string switchi;
-        public string oldlogin,name,surname,password;
+        private string oldlogin,newlogin,name,surname,password;
         public EditUser()
         {
             InitializeComponent();
@@ -24,14 +25,19 @@ namespace Admin.View
             switchi = type;
             InitializeComponent();
         }
-        public EditUser(string type, string login, string name, string surname, string password)
+        public EditUser(string type, UserResult input)
         {
             InitializeComponent();
-            switchi = type;
-            textBox1.Text = name;
-            textBox2.Text = surname;
-            textBox3.Text = login;
-            textBox4.Text = password;
+            this.switchi = type;
+            this.oldlogin = input.login;
+            this.name = input.name;
+            this.surname = input.surname;
+            this.newlogin = input.login;
+            this.password = null;
+            textBox1.Text = input.name;
+            textBox2.Text = input.surname;
+            textBox3.Text = input.login;
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -50,9 +56,30 @@ namespace Admin.View
                                                this.textBox4.Text,
                                                this.textBox1.Text,
                                                this.textBox2.Text);
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
                         break;
                     case "exists":
-                        Administration.UpdateUser(oldlogin,this.textBox3.Text,this.textBox1.Text,this.textBox2.Text,this.textBox4.Text);
+
+                        if (!string.Equals(this.textBox4.Text, ""))
+                        {
+                            password = this.textBox4.Text;
+                        }
+                        if (!string.Equals(this.textBox1.Text, ""))
+                        {
+                            name = this.textBox1.Text;
+                        }
+                        if (!string.Equals(this.textBox2.Text, ""))
+                        {
+                            surname = this.textBox2.Text;
+                        }
+                        if (!string.Equals(this.textBox3.Text, ""))
+                        {
+                            newlogin = this.textBox3.Text;
+                        }                       
+                        Administration.UpdateUser(oldlogin,newlogin,name,surname,password);
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
                         break;
                 }
             }

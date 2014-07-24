@@ -26,13 +26,50 @@ namespace Admin.View
             switch (choice)
             {
                 case "group":
-                    var editGroup = new EditGroup(this.listBox1.SelectedItem.ToString());
-                    editGroup.Show();
+                    var editGroup = new EditGroup("exists",this.listBox1.SelectedItem.ToString());
+                    var result = editGroup.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        try
+                        {
+                            this.listBox1.DataSource = Administration.GetAllGroups();
+                        }
+                        catch (SqlException ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                        catch (System.Security.SecurityException se)
+                            {
+                                MessageBox.Show("Permission denied " + se.Message);
+                            } 
+                    }
+
                     break;
                 case "user":
-                    //var penis = Administration.
-                    //var editUser = new EditUser();
-
+                    var userToEdit = Administration.GetUser(listBox1.SelectedItem.ToString());
+                    var editUser = new EditUser("exists",userToEdit);
+                    var resultuser = editUser.ShowDialog();
+                    if (resultuser == DialogResult.OK)
+                    {
+                        try
+                        {
+                            var userslist = Administration.GetAllUsers();
+                            List<String> usernamelist = new List<String>();
+                            foreach (UserResult resultlist in userslist)
+                            {
+                                usernamelist.Add(resultlist.login);
+                            }
+                            this.listBox1.DataSource = usernamelist;
+                        }
+                        catch (System.Security.SecurityException se)
+                        {
+                            MessageBox.Show("Permission denied " + se.Message);
+                        }
+                        catch (SqlException ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
 
                     break;
                 default:
@@ -40,13 +77,14 @@ namespace Admin.View
                     break;
             }
         }
-
+        
         private void zalogujToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
             var logging = new Login();
             var result = logging.ShowDialog();
             if (result == DialogResult.OK)
+
             {
                 string username = logging.ReturnValue1;            //values preserved after close
                 string password = logging.ReturnValue2;
@@ -68,7 +106,17 @@ namespace Admin.View
         private void dodajUżytkownikaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var editUser = new EditUser("new");
-            editUser.Show();
+             var result = editUser.ShowDialog();
+             if (result == DialogResult.OK && this.choice !=null) 
+             {
+                 var userslist = Administration.GetAllUsers();
+                 List<String> usernamelist = new List<String>();
+                 foreach (UserResult resultuser in userslist)
+                 {
+                     usernamelist.Add(resultuser.login);
+                 }
+                 this.listBox1.DataSource = usernamelist;
+             }
         }
 
         private void zobaczListęToolStripMenuItem_Click(object sender, EventArgs e)
@@ -97,7 +145,7 @@ namespace Admin.View
 
         private void dodajGrupęToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new EditGroup().Show();
+            new EditGroup("new").Show();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -106,55 +154,62 @@ namespace Admin.View
             string login = this.listBox1.SelectedItem.ToString();
             checkedListBox1.Items.Clear();
             checkedListBox2.Items.Clear();
-            switch (choice)
+            try
             {
-                case "group":
-                    var permissionListGroups = Administration.GetGroupOperations(login);
-                    foreach (String permission in allPermissions)
-                    {
-                        checkedListBox1.Items.Add(permission, false);
-                    }
-                    foreach (String permission in permissionListGroups)
-                    {
-                        checkedListBox1.Items.Remove(permission);
-                        checkedListBox1.Items.Add(permission, true);
-                    }
 
-                    break;
-                case "user":
-                    
-                    var userPermissions = Administration.GetAllUserOperations(login);
-                    var allGroups = Administration.GetAllGroups();
-                    var userGroups = Administration.GetUserGroups(login);
-                    
-                    foreach (String permission in allPermissions)
-                    {
-                        checkedListBox1.Items.Add(permission, false);
-                    }
+                switch (choice)
+                {
+                    case "group":
+                        var permissionListGroups = Administration.GetGroupOperations(login);
+                        foreach (String permission in allPermissions)
+                        {
+                            checkedListBox1.Items.Add(permission, false);
+                        }
+                        foreach (String permission in permissionListGroups)
+                        {
+                            checkedListBox1.Items.Remove(permission);
+                            checkedListBox1.Items.Add(permission, true);
+                        }
 
-                    foreach (String permission in userPermissions)
-                    {
-                        checkedListBox1.Items.Remove(permission);
-                        checkedListBox1.Items.Add(permission, true);
-                        checkedListBox1.Sorted = true;
-                        
-                    }
-                    foreach (String group in allGroups)
-                    {
-                        checkedListBox2.Items.Add(group, false);
-                    }
-                    foreach (String group in userGroups)
-                    {
-                        checkedListBox2.Items.Remove(group);
-                        checkedListBox2.Items.Add(group, true);
-                        checkedListBox2.Sorted = true;
-                    }
-                    break;
-                default:
-                    MessageBox.Show("Wybierz użytkownika/grupę");
-                    break;
+                        break;
+                    case "user":
+                        var userPermissions = Administration.GetUserOperations(login);
+                        var allGroups = Administration.GetAllGroups();
+                        var userGroups = Administration.GetUserGroups(login);
+
+                        foreach (String permission in allPermissions)
+                        {
+                            checkedListBox1.Items.Add(permission, false);
+                        }
+
+                        foreach (String permission in userPermissions)
+                        {
+                            checkedListBox1.Items.Remove(permission);
+                            checkedListBox1.Items.Add(permission, true);
+                            checkedListBox1.Sorted = true;
+
+                        }
+                        foreach (String group in allGroups)
+                        {
+                            checkedListBox2.Items.Add(group, false);
+                        }
+                        foreach (String group in userGroups)
+                        {
+                            checkedListBox2.Items.Remove(group);
+                            checkedListBox2.Items.Add(group, true);
+                            checkedListBox2.Sorted = true;
+                        }
+                        break;
+                    default:
+                        MessageBox.Show("Wybierz użytkownika/grupę");
+                        break;
+                }
+
             }
-            
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied: " + se.Message);
+            }
         }
 
         private void zakończToolStripMenuItem_Click(object sender, EventArgs e)
@@ -186,7 +241,57 @@ namespace Admin.View
 
         private void dodajNoweUprawnienieToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new AddPermission().Show();
+            var addPermission = new AddPermission();
+            var result = addPermission.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                var allPermissions = Administration.GetAllOperations();
+                string login = this.listBox1.SelectedItem.ToString();
+                try
+                {
+                    switch (choice)
+                    {
+                        case "group":
+                            checkedListBox1.Items.Clear();
+                            var permissionListGroups = Administration.GetGroupOperations(login);
+                            foreach (String permission in allPermissions)
+                            {
+                                checkedListBox1.Items.Add(permission, false);
+                            }
+                            foreach (String permission in permissionListGroups)
+                            {
+                                checkedListBox1.Items.Remove(permission);
+                                checkedListBox1.Items.Add(permission, true);
+                            }
+
+                            break;
+                        case "user":
+                            checkedListBox1.Items.Clear();
+                            var userPermissions = Administration.GetUserOperations(login);
+                            foreach (String permission in allPermissions)
+                            {
+                                checkedListBox1.Items.Add(permission, false);
+                            }
+
+                            foreach (String permission in userPermissions)
+                            {
+                                checkedListBox1.Items.Remove(permission);
+                                checkedListBox1.Items.Add(permission, true);
+                                checkedListBox1.Sorted = true;
+
+                            }
+                            break;
+                        default:
+                            MessageBox.Show("Wystąpił błąd");
+                            break;
+                    }
+
+                }
+                catch (System.Security.SecurityException se)
+                {
+                    MessageBox.Show("Permission denied: " + se.Message);
+                }
+            }
         }
         
         private void button3_Click(object sender, EventArgs e)
@@ -248,10 +353,92 @@ namespace Admin.View
             {
                 case "user":
                     Administration.DeleteUser(this.listBox1.SelectedItem.ToString());
+                    try
+                    {
+                        var userslist = Administration.GetAllUsers();
+                        List<String> usernamelist = new List<String>();
+                        foreach (UserResult resultlist in userslist)
+                        {
+                            usernamelist.Add(resultlist.login);
+                        }
+                        this.listBox1.DataSource = usernamelist;
+                    }
+                    catch (System.Security.SecurityException se)
+                    {
+                        MessageBox.Show("Permission denied " + se.Message);
+                    }
+                    catch (SqlException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                     break;
                 case "group":
                     Administration.DeleteGroup(this.listBox1.SelectedItem.ToString());
+                    try
+                    {
+                        this.listBox1.DataSource = Administration.GetAllGroups();
+                    }
+                    catch (SqlException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    catch (System.Security.SecurityException se)
+                    {
+                        MessageBox.Show("Permission denied " + se.Message);
+                    } 
                     break;
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Administration.DeleteOperation(this.checkedListBox1.SelectedItem.ToString());
+            var allPermissions = Administration.GetAllOperations();
+            string login = this.listBox1.SelectedItem.ToString();
+            try
+            {
+
+                switch (choice)
+                {
+                    case "group":
+                        checkedListBox1.Items.Clear();
+                        var permissionListGroups = Administration.GetGroupOperations(login);
+                        foreach (String permission in allPermissions)
+                        {
+                            checkedListBox1.Items.Add(permission, false);
+                        }
+                        foreach (String permission in permissionListGroups)
+                        {
+                            checkedListBox1.Items.Remove(permission);
+                            checkedListBox1.Items.Add(permission, true);
+                        }
+
+                        break;
+                    case "user":
+                        checkedListBox1.Items.Clear();
+                        var userPermissions = Administration.GetUserOperations(login);
+                        foreach (String permission in allPermissions)
+                        {
+                            checkedListBox1.Items.Add(permission, false);
+                        }
+
+                        foreach (String permission in userPermissions)
+                        {
+                            checkedListBox1.Items.Remove(permission);
+                            checkedListBox1.Items.Add(permission, true);
+                            checkedListBox1.Sorted = true;
+
+                        }
+                        break;
+                    default:
+                        MessageBox.Show("Wystąpił błąd");
+                        break;
+                }
+
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied: " + se.Message);
             }
         }
     }
