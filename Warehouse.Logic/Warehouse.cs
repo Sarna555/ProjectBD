@@ -9,7 +9,7 @@ using Warehouse.Database;
 
 namespace Warehouse.Logic
 {
-    class Warehouse
+    public class Warehouse
     {
 
         /// <summary>
