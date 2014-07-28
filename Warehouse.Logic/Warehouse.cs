@@ -151,8 +151,8 @@ namespace Warehouse.Logic
                                    nazwa_stanu = s.nazwa_stanu,
                                    nadawca = z.nadawca,
                                    odbiorca = z.odbiorca,
-                                   data_nadania = z.data_nadania ?? DateTime.MinValue,
-                                   data_odbioru = z.data_odbioru ?? DateTime.MinValue
+                                   data_nadania = (DateTime)z.data_nadania /*?? DateTime.MinValue*/,
+                                   data_odbioru = (DateTime)z.data_odbioru /*?? DateTime.MinValue*/
                                }
                                ).ToList<OrderResult>();
 	        return OrderResult;
@@ -204,7 +204,7 @@ namespace Warehouse.Logic
 						           Id = p.Id,
 						           nazwa = p.nazwa,
 						           nazwa_kategorii = k.nazwa,
-                                   data_przydatnosci = p.data_przydatnosci ?? DateTime.MinValue
+                                   data_przydatnosci = (DateTime)p.data_przydatnosci
 					           }).ToList<ProductResult>();
 	        return ProductResult;
         }
@@ -369,8 +369,8 @@ namespace Warehouse.Logic
                            nazwa_stanu = s.nazwa_stanu,
 				           nadawca = z.nadawca,
 				           odbiorca = z.odbiorca,
-                           data_nadania = z.data_nadania ?? DateTime.MinValue,
-                           data_odbioru = z.data_odbioru ?? DateTime.MinValue
+                           data_nadania = (DateTime)z.data_nadania,
+                           data_odbioru = (DateTime)z.data_odbioru
 				        }).Single();
 	        return order;
         }

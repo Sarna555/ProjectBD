@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Warehouse.Logic
 {
-    class PalletResult
+    public class PalletResult
     {
         public int Id { get; set; }
         public String kod_miejsca_w_mag { get; set; }

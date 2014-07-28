@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Warehouse.Logic;
 
-namespace Warehouse
+namespace Warehouse.View
 {
     public partial class LoginForm : Form
     {
@@ -20,6 +21,7 @@ namespace Warehouse
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+            
         }
 
         private void button1_Click(object sender, EventArgs e)

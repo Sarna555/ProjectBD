@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Warehouse
+namespace Warehouse.View
 {
     partial class LoginForm
     {
