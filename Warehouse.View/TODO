@@ -1,21 +1,4 @@
 //put requested methods here
 
-void AddOrder(string sender, string reciever, date sent, date recieved);
-void AddPallet(string idOrder, string code);
-void AddProduct(string idPallet, string name, date bestBefore, string category);
-
-List</*jakiś OrderResult*/> GetAllOrders(); //Zwraca listę zamówień- najlepiej z jakimś ID, żeby się dało po czymś wybierać
-List</*jakiś PalletResult*/> GetAllPallets(string orderID); //Zwraca listę palet z ID
-List</*jakiś ProductResult*/> GetAllProducts(string PalletID); //Zwraca liste produktów z ID
-
-void UpdateOrder(string orderID, string sender, string reciever, date sent, date recieved); //wprowadza zmiany do zamówienia z orderID
-void UpdatePallet(string palletID, string code); //analogowo co wyżej
-void UpdateProduct(string productID, string name, date bestBefore, string category); // j.w
-
-OrderResult GetOrder(string orderID);       //zwraca jedno zamówienie
-PalletResult GetPallet(string palletID);    //zwraca jedną palete 
-ProductResult GetProduct(string productID); //zwraca jeden produkt
-
-void DeleteOrder(string orderID);     //Usuwa zamówienie o zadanym ID
-void DeletePallet(string palletID);   //Usuwa paletę o zadanym ID
-void DeleteProduct(string productID); //Usuwa produkt o zadanym ID
+List<string> GetAllCategories(); //zwraca wszystkie występujące kategorie produktu
+void AddCategory(string name); //Dodaje nową kategorię produktów
