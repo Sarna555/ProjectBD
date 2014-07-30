@@ -476,7 +476,36 @@ namespace Warehouse.Logic
 
 	        db.Produkts.DeleteOnSubmit(product);
 	        db.SubmitChanges();
-        }	
+        }
+
+
+        /// <summary>
+        /// zwraca wszystkie występujące kategorie produktu
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetAllCategories()
+        {
+            var db = new SQLtoLinqDataContext();
+            var result = (from k in db.Kategoria_produktus
+                               select k.nazwa
+                               ).ToList<string>();
+            return result;
+
+        }
+
+        /// <summary>
+        /// Dodaje nową kategorię produktów
+        /// </summary>
+        /// <param name="name"></param>
+        public static void AddCategory(string name)
+        {
+            var db = new SQLtoLinqDataContext();
+            var cat = new Kategoria_produktu();
+
+            cat.nazwa = name;
+            db.Kategoria_produktus.InsertOnSubmit(cat);
+            db.SubmitChanges();
+        }
 
 
     }
