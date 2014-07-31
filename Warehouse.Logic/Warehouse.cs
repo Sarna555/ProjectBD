@@ -431,7 +431,7 @@ namespace Warehouse.Logic
 	        var db = new SQLtoLinqDataContext();
 	        var order = (from z in db.Zamowienies
 				        where z.Id == Convert.ToInt32(orderID)
-				        select z).Single();
+                         select z).SingleOrDefault();
 
 	        db.Zamowienies.DeleteOnSubmit(order);
 	        db.SubmitChanges();
@@ -449,7 +449,7 @@ namespace Warehouse.Logic
 					        on p.id_miejsca_w_mag equals m.Id into pallet
 					        from m in pallet.DefaultIfEmpty()
 					        where p.kod == palletCode
-				           select p).Single();
+                        select p).SingleOrDefault();
 
 	        var products = (from p in db.Produkts
                             where p.id_palety == pall.Id
@@ -472,7 +472,7 @@ namespace Warehouse.Logic
 	        var db = new SQLtoLinqDataContext();
 	        var product = (from p in db.Produkts
 				        where p.Id == Convert.ToInt32(productID)
-				        select p).Single();
+                           select p).SingleOrDefault();
 
 	        db.Produkts.DeleteOnSubmit(product);
 	        db.SubmitChanges();
