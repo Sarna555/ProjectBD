@@ -15,6 +15,8 @@ namespace Warehouse.View
     {
         public string palletCode, warehouseCode, orderID, palletID;
         private string switchi;
+        List<ProductResult> productsOnPallet;
+        private ProductResult currentProduct;
 
         public Pallet(string switchiIin,string orderIDIn)
         {
@@ -32,10 +34,10 @@ namespace Warehouse.View
             this.textBox1.Text = palletCodeInput;
             this.warehouseCode = warehouseCodeInput;
             this.textBox2.Text = warehouseCodeInput;
+            productsOnPallet = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);   
             if (switchi == "exists")
             {
-                var productlist = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);
-                foreach (ProductResult product in productlist)
+                foreach (ProductResult product in productsOnPallet)
                 {
                     this.listBox1.Items.Add(product.nazwa);
                 }
@@ -47,10 +49,11 @@ namespace Warehouse.View
             
             var addProduct = new Product("new", palletCode, null, null, DateTime.Today);
             var productResult = addProduct.ShowDialog();
+
             if (productResult == DialogResult.OK)
             {
                 this.listBox1.Items.Clear();
-                var productsOnPallet = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);
+                 
                 foreach (ProductResult product in productsOnPallet)
                 {
                     this.listBox1.Items.Add(product.nazwa);
@@ -79,7 +82,7 @@ namespace Warehouse.View
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            Warehouse.Logic.Warehouse.DeleteProduct(currentProduct.Id.ToString());
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -95,6 +98,15 @@ namespace Warehouse.View
                 {
                     this.listBox1.Items.Add(product.nazwa);
                 }
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (ProductResult product in productsOnPallet)
+            {
+                if (product.nazwa == this.listBox1.SelectedItem.ToString())
+                this.currentProduct = product;
             }
         }
     }
