@@ -433,6 +433,12 @@ namespace Warehouse.Logic
 				        where z.Id == Convert.ToInt32(orderID)
                          select z).SingleOrDefault();
 
+            List<PalletResult> pall = GetAllPallets(order.Id.ToString());
+            foreach (PalletResult element in pall)
+            {
+                DeletePallet(element.kod_palety);
+            }
+
 	        db.Zamowienies.DeleteOnSubmit(order);
 	        db.SubmitChanges();
         }	
