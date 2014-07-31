@@ -15,12 +15,14 @@ namespace Warehouse.View
         public string sender, reciever, orderID;
         public PalletResult currentPallet;
         public DateTime dateSent, dateRecieved;
+        private string switchi;
         public Order()
         {
             InitializeComponent();
         }
-        public Order(string switchi,string orderIDIn, string senderIn, string recieverIn, DateTime dateSentIn, DateTime dateRecievedIn)
+        public Order(string switchiIn,string orderIDIn, string senderIn, string recieverIn, DateTime dateSentIn, DateTime dateRecievedIn, string state)
         {
+            switchi = switchiIn;
             switch (switchi)
             {
                 case "new":
@@ -29,8 +31,8 @@ namespace Warehouse.View
                     reciever = recieverIn;
                     dateSent = dateSentIn;
                     dateRecieved = dateRecievedIn;
-
                     InitializeComponent();
+                    this.comboBox1.SelectedIndex = comboBox1.Items.IndexOf(state);
                     break;
                 case "exists":
                     InitializeComponent();
@@ -43,6 +45,7 @@ namespace Warehouse.View
                     dateSent = dateSentIn;
                     this.dateTimePicker2.Value = dateRecievedIn;
                     dateRecieved = dateRecievedIn;
+                    this.comboBox1.SelectedIndex = comboBox1.Items.IndexOf(state);
                     var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
                     
                     foreach (PalletResult pallet in palletslist)
@@ -50,11 +53,15 @@ namespace Warehouse.View
                         listBox1.Items.Add(pallet.kod_palety);
                     };
 
-                    listBox1.SelectedIndex = 0;
-                    var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
-                    foreach (ProductResult product in palletProducts)
+                    if (listBox1.Items.Count != 0)
                     {
-                        this.listBox2.Items.Add(product.nazwa);
+                        listBox1.SelectedIndex = 0;
+                        this.listBox2.Items.Clear();
+                        var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
+                        foreach (ProductResult product in palletProducts)
+                        {
+                            this.listBox2.Items.Add(product.nazwa);
+                        }
                     }
                     break;
             }
@@ -73,37 +80,53 @@ namespace Warehouse.View
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.sender = this.textBox1.Text;
-            this.reciever = this.textBox2.Text;
-            this.dateSent = this.dateTimePicker1.Value;
-            this.dateRecieved = this.dateTimePicker2.Value;
+
+            switch (switchi)
+            {
+                case "new":
+                    Warehouse.Logic.Warehouse.AddOrder(this.textBox1.Text, this.textBox2.Text, this.dateTimePicker1.Value, this.dateTimePicker2.Value,this.comboBox1.SelectedItem.ToString());
+                    break;
+                case "exists":
+                    Warehouse.Logic.Warehouse.UpdateOrder(orderID, this.textBox1.Text, this.textBox2.Text, this.dateTimePicker1.Value, this.dateTimePicker2.Value,this.comboBox1.SelectedItem.ToString());
+                    break;
+            }
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var newPallet = new Pallet(orderID);
-            var palletResult = newPallet.ShowDialog();
-
-            if (palletResult == DialogResult.OK) ;
+            if (!string.Equals(this.textBox1.Text, "") && !string.Equals(this.textBox2.Text, "") && switchi == "new")
             {
-                var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
-
-                foreach (PalletResult pallet in palletslist)
+                var newPallet = new Pallet("new", orderID);
+                var palletResult = newPallet.ShowDialog();
+                Warehouse.Logic.Warehouse.AddOrder(this.textBox1.Text, this.textBox2.Text, this.dateTimePicker1.Value, this.dateTimePicker2.Value, this.comboBox1.SelectedItem.ToString());
+                if (palletResult == DialogResult.OK)
                 {
-                    listBox1.Items.Add(pallet.kod_palety);
-                };
+                    this.listBox1.Items.Clear();
+                    this.listBox2.Items.Clear();
+                    var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
 
-                listBox1.SelectedIndex = 0;
-                var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
-                foreach (ProductResult product in palletProducts)
-                {
-                    this.listBox2.Items.Add(product.nazwa);
+                    foreach (PalletResult pallet in palletslist)
+                    {
+                        listBox1.Items.Add(pallet.kod_palety);
+                    };
+
+                    listBox1.SelectedIndex = 0;
+                    var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
+                    foreach (ProductResult product in palletProducts)
+                    {
+                        this.listBox2.Items.Add(product.nazwa);
+                    }
+
                 }
-                
+                newPallet.Dispose();
             }
-            newPallet.Dispose();
+            else
+            {
+                MessageBox.Show("Najpierw uzupełnij dane zamówienia!");
+            }
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -132,30 +155,38 @@ namespace Warehouse.View
 
         private void button5_Click(object sender, EventArgs e)
         {
-            currentPallet = Warehouse.Logic.Warehouse.GetPallet(listBox1.SelectedItem.ToString());
-            var editPallet = new Pallet(orderID,currentPallet.kod_palety, currentPallet.kod_miejsca_w_mag);
-            var modifyResult = editPallet.ShowDialog();
-            if (modifyResult == DialogResult.OK)
+            if (this.listBox1.Items.Count >= 1)
             {
-                this.listBox1.Items.Clear();
-                this.listBox2.Items.Clear();
-                var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
+                currentPallet = Warehouse.Logic.Warehouse.GetPallet(listBox1.SelectedItem.ToString());
 
-                foreach (PalletResult pallet in palletslist)
+                var editPallet = new Pallet("exists", orderID, currentPallet.kod_palety, currentPallet.kod_miejsca_w_mag, currentPallet.Id.ToString());
+                var modifyResult = editPallet.ShowDialog();
+                if (modifyResult == DialogResult.OK)
                 {
-                    listBox1.Items.Add(pallet.kod_palety);
-                };
+                    this.listBox1.Items.Clear();
+                    this.listBox2.Items.Clear();
+                    var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
 
-                listBox1.SelectedIndex = 0;
-                var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
-                foreach (ProductResult product in palletProducts)
-                {
-                    this.listBox2.Items.Add(product.nazwa);
+                    foreach (PalletResult pallet in palletslist)
+                    {
+                        listBox1.Items.Add(pallet.kod_palety);
+                    };
+
+                    listBox1.SelectedIndex = 0;
+                    var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
+                    foreach (ProductResult product in palletProducts)
+                    {
+                        this.listBox2.Items.Add(product.nazwa);
+                    }
+
                 }
-                
             }
-
+            else
+            {
+                MessageBox.Show("Najpierw utwórz i zaznacz paletę!");
+            }
       
         }
+
     }
 }

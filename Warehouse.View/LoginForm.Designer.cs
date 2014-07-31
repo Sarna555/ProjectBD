@@ -57,9 +57,9 @@ namespace Warehouse.View
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 32);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "login";
+            this.label1.Text = "Login";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
@@ -67,9 +67,9 @@ namespace Warehouse.View
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 62);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
+            this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "password";
+            this.label2.Text = "Hasło";
             // 
             // button1
             // 
@@ -110,7 +110,7 @@ namespace Warehouse.View
             this.MinimumSize = new System.Drawing.Size(208, 166);
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Login";
+            this.Text = "Logowanie";
             this.ResumeLayout(false);
             this.PerformLayout();
 

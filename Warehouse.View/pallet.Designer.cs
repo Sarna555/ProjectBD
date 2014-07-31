@@ -68,14 +68,14 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(148, 30);
+            this.textBox1.Location = new System.Drawing.Point(148, 9);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(124, 20);
             this.textBox1.TabIndex = 3;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(148, 5);
+            this.textBox2.Location = new System.Drawing.Point(148, 34);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(124, 20);
             this.textBox2.TabIndex = 4;
@@ -118,6 +118,7 @@
             this.button4.TabIndex = 8;
             this.button4.Text = "Zmień";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 

@@ -31,10 +31,19 @@ namespace Warehouse.View
                                                          this.currentOrder.nadawca,
                                                          this.currentOrder.odbiorca,
                                                          this.currentOrder.data_nadania,
-                                                         this.currentOrder.data_odbioru);
+                                                         this.currentOrder.data_odbioru,
+                                                         this.currentOrder.nazwa_stanu);
                     orderModify.orderID = this.listBox1.SelectedItem.ToString();
+                    orderModify.ShowDialog();
 
-                    var modifyResult = orderModify.ShowDialog();
+                    this.listBox1.Items.Clear();
+                    this.listBox2.Items.Clear();
+                    var ordersList = Warehouse.Logic.Warehouse.GetAllOrders();
+                    foreach (OrderResult orders in ordersList)
+                    {
+                        this.listBox1.Items.Add(orders.Id);
+                        this.listBox2.Items.Add(orders.nadawca + " stan: " + orders.nazwa_stanu);
+                    }
                 }
                 else
                 {
@@ -102,7 +111,7 @@ namespace Warehouse.View
             try
             {
 
-                Warehouse.Logic.Warehouse.DeletePallet(this.listBox1.SelectedItem.ToString());
+                Warehouse.Logic.Warehouse.DeleteOrder(this.listBox1.SelectedItem.ToString());
                 this.listBox1.Items.Clear();
                 var ordersList = Warehouse.Logic.Warehouse.GetAllOrders();
                 foreach (OrderResult orderFromList in ordersList)
@@ -125,17 +134,18 @@ namespace Warehouse.View
             try
             {
 
-                var order = new Order("new", null, null, null, DateTime.MinValue, DateTime.MinValue);
+                var order = new Order("new", null, null, null, DateTime.MinValue, DateTime.MinValue, "oczekujaca");
                 var resultOrder = order.ShowDialog();
                 if (resultOrder == DialogResult.OK)
                 {
-                    Warehouse.Logic.Warehouse.AddOrder(order.sender, order.reciever, order.dateSent, order.dateRecieved);
                     this.listBox1.Items.Clear();
+                    this.listBox2.Items.Clear();
                     order.Dispose();
                     var ordersList = Warehouse.Logic.Warehouse.GetAllOrders();
                     foreach (OrderResult orderFromList in ordersList)
                     {
                         this.listBox1.Items.Add(orderFromList.Id);
+                        this.listBox2.Items.Add(orderFromList.nadawca + " stan: " + orderFromList.nazwa_stanu);
                     }
                 }
             }
@@ -159,7 +169,7 @@ namespace Warehouse.View
                 foreach (OrderResult orders in ordersList)
                 {
                     this.listBox1.Items.Add(orders.Id);
-                    this.listBox2.Items.Add(orders.nadawca);
+                    this.listBox2.Items.Add(orders.nadawca + " stan: " + orders.nazwa_stanu);
                 }
             }
             catch (SqlException se)
@@ -170,6 +180,12 @@ namespace Warehouse.View
             {
                 MessageBox.Show("Brak uprawnień" + se.Message);
             }
+        }
+
+        private void dodajKategorięProduktówToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var addCategory = new Category();
+            addCategory.ShowDialog();
         }
     }
 }

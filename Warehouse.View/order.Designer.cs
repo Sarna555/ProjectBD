@@ -43,6 +43,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.button5 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -111,7 +113,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(278, 142);
+            this.button1.Location = new System.Drawing.Point(278, 159);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(118, 23);
             this.button1.TabIndex = 8;
@@ -122,7 +124,7 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(21, 142);
+            this.listBox1.Location = new System.Drawing.Point(21, 159);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(75, 82);
             this.listBox1.TabIndex = 9;
@@ -130,7 +132,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(278, 200);
+            this.button2.Location = new System.Drawing.Point(278, 217);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(118, 23);
             this.button2.TabIndex = 10;
@@ -161,20 +163,42 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(112, 142);
+            this.listBox2.Location = new System.Drawing.Point(112, 159);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(145, 82);
             this.listBox2.TabIndex = 13;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(278, 171);
+            this.button5.Location = new System.Drawing.Point(278, 188);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(118, 23);
             this.button5.TabIndex = 14;
             this.button5.Text = "Modyfikuj paletę";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(18, 130);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Stan";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "oczekujaca",
+            "nadana",
+            "odebrana",
+            "odrzucona"});
+            this.comboBox1.Location = new System.Drawing.Point(77, 127);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(303, 21);
+            this.comboBox1.TabIndex = 16;
             // 
             // Order
             // 
@@ -183,6 +207,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button4;
             this.ClientSize = new System.Drawing.Size(408, 281);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.button4);
@@ -222,5 +248,7 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
