@@ -19,6 +19,7 @@ namespace Warehouse.Logic
         /// <param name="reciever"></param>
         /// <param name="sent"></param>
         /// <param name="recieved"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated=true)]
         public static void AddOrder(string sender, string reciever, DateTime sent, DateTime recieved)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -42,6 +43,7 @@ namespace Warehouse.Logic
         /// <param name="sent"></param>
         /// <param name="recieved"></param>
         /// <param name="state"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void AddOrder(string sender, string reciever, DateTime sent, DateTime recieved, string state)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -66,6 +68,7 @@ namespace Warehouse.Logic
         /// </summary>
         /// <param name="idOrder"></param>
         /// <param name="code"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void AddPallet(string idOrder, string code)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -86,6 +89,7 @@ namespace Warehouse.Logic
         /// <param name="idOrder"></param>
         /// <param name="code"></param>
         /// <param name="spot_code"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void AddPallet(string idOrder, string code, string spot_code)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -112,6 +116,7 @@ namespace Warehouse.Logic
         /// <param name="name"></param>
         /// <param name="bestBefore"></param>
         /// <param name="category"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void AddProduct(string PalletCode, string name, DateTime bestBefore, string category)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -138,6 +143,7 @@ namespace Warehouse.Logic
         /// Zwraca wszystkie zamówienia
         /// </summary>
         /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static List<OrderResult> GetAllOrders()
         {
 
@@ -163,6 +169,7 @@ namespace Warehouse.Logic
         /// </summary>
         /// <param name="orderID"></param>
         /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static List<PalletResult> GetAllPallets(string orderID)
         {
 
@@ -187,6 +194,7 @@ namespace Warehouse.Logic
         /// </summary>
         /// <param name="PalletID"></param>
         /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static List<ProductResult> GetAllProducts(string PalletCode)
         {
 
@@ -218,6 +226,7 @@ namespace Warehouse.Logic
         /// <param name="reciever"></param>
         /// <param name="sent"></param>
         /// <param name="recieved"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void UpdateOrder(string orderID, string sender, string reciever, DateTime sent, DateTime recieved)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -245,6 +254,7 @@ namespace Warehouse.Logic
         /// <param name="sent"></param>
         /// <param name="recieved"></param>
         /// <param name="state"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void UpdateOrder(string orderID, string sender, string reciever, DateTime sent, DateTime recieved, string state)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -275,6 +285,7 @@ namespace Warehouse.Logic
         /// </summary>
         /// <param name="palletID"></param>
         /// <param name="code"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void UpdatePallet(string palletID, string code)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -297,6 +308,7 @@ namespace Warehouse.Logic
         /// <param name="code"></param>
         /// <param name="orderID"></param>
         /// <param name="spot_code"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void UpdatePallet(string palletID, string code, string orderID, string spot_code)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -329,6 +341,7 @@ namespace Warehouse.Logic
         /// <param name="name"></param>
         /// <param name="bestBefore"></param>
         /// <param name="category"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void UpdateProduct(string productID, string name, DateTime bestBefore, string category)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -357,6 +370,7 @@ namespace Warehouse.Logic
         /// </summary>
         /// <param name="orderID"></param>
         /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static OrderResult GetOrder(string orderID)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -381,6 +395,7 @@ namespace Warehouse.Logic
         /// </summary>
         /// <param name="palletCode"></param>
         /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static PalletResult GetPallet(string palletCode)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -406,6 +421,7 @@ namespace Warehouse.Logic
         /// </summary>
         /// <param name="productID"></param>
         /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static ProductResult GetProduct(string productID)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -426,6 +442,7 @@ namespace Warehouse.Logic
 		/// Usuwa zamówienie o podanym ID
 		/// </summary>
 		/// <param name="orderID"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void DeleteOrder(string orderID)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -447,6 +464,7 @@ namespace Warehouse.Logic
         /// Usuwa paletę o podanym kodzie wraz z wszystkimi produktami na niej
         /// </summary>
         /// <param name="palletCode"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void DeletePallet(string palletCode)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -473,6 +491,7 @@ namespace Warehouse.Logic
         /// Usuwa produkt o podanym ID
         /// </summary>
         /// <param name="productID"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void DeleteProduct(string productID)
         {
 	        var db = new SQLtoLinqDataContext();
@@ -489,6 +508,7 @@ namespace Warehouse.Logic
         /// zwraca wszystkie występujące kategorie produktu
         /// </summary>
         /// <returns></returns>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static List<string> GetAllCategories()
         {
             var db = new SQLtoLinqDataContext();
@@ -503,6 +523,7 @@ namespace Warehouse.Logic
         /// Dodaje nową kategorię produktów
         /// </summary>
         /// <param name="name"></param>
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
         public static void AddCategory(string name)
         {
             var db = new SQLtoLinqDataContext();
