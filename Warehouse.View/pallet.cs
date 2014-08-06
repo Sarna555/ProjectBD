@@ -26,55 +26,87 @@ namespace Warehouse.View
         }
         public Pallet(string switchiIn,string orderIDIn, string palletCodeInput, string warehouseCodeInput, string palletIDin)
         {
-            InitializeComponent();
-            switchi = switchiIn;
-            palletID = palletIDin;
-            this.orderID = orderIDIn;
-            this.palletCode = palletCodeInput;
-            this.textBox1.Text = palletCodeInput;
-            this.warehouseCode = warehouseCodeInput;
-            this.textBox2.Text = warehouseCodeInput;
-            productsOnPallet = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);   
-            if (switchi == "exists")
+            try
             {
-                foreach (ProductResult product in productsOnPallet)
+                InitializeComponent();
+                switchi = switchiIn;
+                palletID = palletIDin;
+                this.orderID = orderIDIn;
+                this.palletCode = palletCodeInput;
+                this.textBox1.Text = palletCodeInput;
+                this.warehouseCode = warehouseCodeInput;
+                this.textBox2.Text = warehouseCodeInput;
+                productsOnPallet = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);   
+                if (switchi == "exists")
                 {
-                    this.listBox1.Items.Add(product.nazwa);
+                    foreach (ProductResult product in productsOnPallet)
+                    {
+                        this.listBox1.Items.Add(product.nazwa);
+                    }
                 }
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
-            var addProduct = new Product("new", palletCode, null, null, DateTime.Today);
-            var productResult = addProduct.ShowDialog();
-
-            if (productResult == DialogResult.OK)
+            try
             {
-                this.listBox1.Items.Clear();
-                 
-                foreach (ProductResult product in productsOnPallet)
+                var addProduct = new Product("new", palletCode, null, null, DateTime.Today);
+                var productResult = addProduct.ShowDialog();
+    
+                if (productResult == DialogResult.OK)
                 {
-                    this.listBox1.Items.Add(product.nazwa);
+                    this.listBox1.Items.Clear();
+                     
+                    foreach (ProductResult product in productsOnPallet)
+                    {
+                        this.listBox1.Items.Add(product.nazwa);
+                    }
                 }
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            switch (switchi)
+            try
             {
-                case "new":
-                    if ( (orderID != null) && (!string.Equals(this.textBox1.Text,"")) && (!string.Equals(this.textBox2.Text,"")) )
-                    Warehouse.Logic.Warehouse.AddPallet(orderID,this.textBox1.Text, this.textBox2.Text);
-                    this.DialogResult = DialogResult.OK;
-                    break;
-                case "exists":
-                    if ((orderID != null) && (!string.Equals(this.textBox1.Text, "")) && (!string.Equals(this.textBox2.Text, "")))
-                        Warehouse.Logic.Warehouse.UpdatePallet(palletID, this.textBox1.Text, orderID, this.textBox2.Text);
-                    this.DialogResult = DialogResult.OK;
-                    break;
+                switch (switchi)
+                {
+                    case "new":
+                        if ( (orderID != null) && (!string.Equals(this.textBox1.Text,"")) && (!string.Equals(this.textBox2.Text,"")) )
+                        Warehouse.Logic.Warehouse.AddPallet(orderID,this.textBox1.Text, this.textBox2.Text);
+                        this.DialogResult = DialogResult.OK;
+                        break;
+                    case "exists":
+                        if ((orderID != null) && (!string.Equals(this.textBox1.Text, "")) && (!string.Equals(this.textBox2.Text, "")))
+                            Warehouse.Logic.Warehouse.UpdatePallet(palletID, this.textBox1.Text, orderID, this.textBox2.Text);
+                        this.DialogResult = DialogResult.OK;
+                        break;
+                }
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
             }
             this.Close();
         }
@@ -82,22 +114,44 @@ namespace Warehouse.View
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Warehouse.Logic.Warehouse.DeleteProduct(currentProduct.Id.ToString());
+            try
+            {
+                Warehouse.Logic.Warehouse.DeleteProduct(currentProduct.Id.ToString());
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            var productCategory = Warehouse.Logic.Warehouse.GetProduct(this.listBox1.SelectedItem.ToString());
-            var addProduct = new Product("exists", palletCode, this.listBox1.SelectedItem.ToString(),null, DateTime.Today);
-            var productResult = addProduct.ShowDialog();
-            if (productResult == DialogResult.OK)
+            try
             {
-                this.listBox1.Items.Clear();
-                var productsOnPallet = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);
-                foreach (ProductResult product in productsOnPallet)
+                var productCategory = Warehouse.Logic.Warehouse.GetProduct(this.listBox1.SelectedItem.ToString());
+                var addProduct = new Product("exists", palletCode, this.listBox1.SelectedItem.ToString(),null, DateTime.Today);
+                var productResult = addProduct.ShowDialog();
+                if (productResult == DialogResult.OK)
                 {
-                    this.listBox1.Items.Add(product.nazwa);
+                    this.listBox1.Items.Clear();
+                    var productsOnPallet = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);
+                    foreach (ProductResult product in productsOnPallet)
+                    {
+                        this.listBox1.Items.Add(product.nazwa);
+                    }
                 }
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
             }
         }
 
