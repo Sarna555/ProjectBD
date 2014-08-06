@@ -79,11 +79,22 @@ namespace Warehouse.View
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
-            this.listBox2.Items.Clear();
-            foreach (ProductResult product in palletProducts)
+            try
             {
-                this.listBox2.Items.Add(product.nazwa);
+                var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
+                this.listBox2.Items.Clear();
+                foreach (ProductResult product in palletProducts)
+                {
+                    this.listBox2.Items.Add(product.nazwa);
+                }
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
             }
         }
 
