@@ -68,30 +68,54 @@ namespace Warehouse.View
 
         private void loginToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm();
-            DialogResult loginresult = loginForm.ShowDialog(this);
-            if (loginresult == DialogResult.OK)
+            try{
+            
+                LoginForm loginForm = new LoginForm();
+                DialogResult loginresult = loginForm.ShowDialog(this);
+                if (loginresult == DialogResult.OK)
+                {
+                    string email = loginForm.email;
+                    string password = loginForm.password;
+    
+    
+                    if (UserCtx.Login(email, password, out uctx))
+                    {
+                        label1.Text = email;
+                    }
+                    else
+                    {
+                        MessageBox.Show("No such user exists");
+                    }
+                }
+                    
+            }
+             catch (System.Security.SecurityException se)
             {
-                string email = loginForm.email;
-                string password = loginForm.password;
-
-
-                if (UserCtx.Login(email, password, out uctx))
-                {
-                    label1.Text = email;
-                }
-                else
-                {
-                    MessageBox.Show("No such user exists");
-                }
+                MessageBox.Show("Permission denied" + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
             }
             loginForm.Dispose();
         }
 
         private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            try{
             UserCtx.Logout(ref uctx);
-            label1.Text = "Nie jesteś zalogowany";
+            }
+              catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
+            }
+            label1.Text = "Not logged in";
+            this.listBox1.Items.Clear;
+            this.listBox2.Items.Clear;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -103,6 +127,7 @@ namespace Warehouse.View
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.currentOrder = Warehouse.Logic.Warehouse.GetOrder(this.listBox1.SelectedItem.ToString());
+            this.listBox2.SetSelected(this.listbox1.SelectedIndex,true);
         }
 
 
