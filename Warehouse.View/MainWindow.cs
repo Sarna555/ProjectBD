@@ -87,7 +87,7 @@ namespace Warehouse.View
                         MessageBox.Show("No such user exists");
                     }
                 }
-                    
+                loginForm.Dispose();        
             }
              catch (System.Security.SecurityException se)
             {
@@ -97,7 +97,7 @@ namespace Warehouse.View
             {
                 MessageBox.Show(se.Message);
             }
-            loginForm.Dispose();
+            
         }
 
         private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -114,8 +114,8 @@ namespace Warehouse.View
                 MessageBox.Show(se.Message);
             }
             label1.Text = "Not logged in";
-            this.listBox1.Items.Clear;
-            this.listBox2.Items.Clear;
+            this.listBox1.Items.Clear();
+            this.listBox2.Items.Clear();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -127,7 +127,7 @@ namespace Warehouse.View
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.currentOrder = Warehouse.Logic.Warehouse.GetOrder(this.listBox1.SelectedItem.ToString());
-            this.listBox2.SetSelected(this.listbox1.SelectedIndex,true);
+            this.listBox2.SetSelected(this.listBox1.SelectedIndex,true);
         }
 
 
