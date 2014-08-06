@@ -20,10 +20,11 @@ namespace Warehouse.View
         {
             InitializeComponent();
         }
-        public Order(string switchiIn,string orderIDIn, string senderIn, string recieverIn, DateTime dateSentIn, DateTime dateRecievedIn, string state)
+        public Order(string switchiIn, string orderIDIn, string senderIn, string recieverIn, DateTime dateSentIn, DateTime dateRecievedIn, string state)
         {
             switchi = switchiIn;
-            try{
+            try
+            {
                 switch (switchi)
                 {
                     case "new":
@@ -48,12 +49,12 @@ namespace Warehouse.View
                         dateRecieved = dateRecievedIn;
                         this.comboBox1.SelectedIndex = comboBox1.Items.IndexOf(state);
                         var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
-                        
+
                         foreach (PalletResult pallet in palletslist)
                         {
                             listBox1.Items.Add(pallet.kod_palety);
                         };
-    
+
                         if (listBox1.Items.Count != 0)
                         {
                             listBox1.SelectedIndex = 0;
@@ -100,14 +101,15 @@ namespace Warehouse.View
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try{
+            try
+            {
                 switch (switchi)
                 {
                     case "new":
-                        Warehouse.Logic.Warehouse.AddOrder(this.textBox1.Text, this.textBox2.Text, this.dateTimePicker1.Value, this.dateTimePicker2.Value,this.comboBox1.SelectedItem.ToString());
+                        Warehouse.Logic.Warehouse.AddOrder(this.textBox1.Text, this.textBox2.Text, this.dateTimePicker1.Value, this.dateTimePicker2.Value, this.comboBox1.SelectedItem.ToString());
                         break;
                     case "exists":
-                        Warehouse.Logic.Warehouse.UpdateOrder(orderID, this.textBox1.Text, this.textBox2.Text, this.dateTimePicker1.Value, this.dateTimePicker2.Value,this.comboBox1.SelectedItem.ToString());
+                        Warehouse.Logic.Warehouse.UpdateOrder(orderID, this.textBox1.Text, this.textBox2.Text, this.dateTimePicker1.Value, this.dateTimePicker2.Value, this.comboBox1.SelectedItem.ToString());
                         break;
                 }
                 this.DialogResult = DialogResult.OK;
@@ -137,12 +139,12 @@ namespace Warehouse.View
                         this.listBox1.Items.Clear();
                         this.listBox2.Items.Clear();
                         var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
-    
+
                         foreach (PalletResult pallet in palletslist)
                         {
                             listBox1.Items.Add(pallet.kod_palety);
                         };
-    
+
                         listBox1.SelectedIndex = 0;
                         var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
                         foreach (ProductResult product in palletProducts)
@@ -150,21 +152,22 @@ namespace Warehouse.View
                             this.listBox2.Items.Add(product.nazwa);
                         }
                     }
-                     else
+                    else
                     {
                         MessageBox.Show("Najpierw uzupełnij dane zamówienia!");
                     }
-            }
-            catch (System.Security.SecurityException se)
-            {
-                MessageBox.Show("Permission denied " + se.Message);
-            }
-            catch (Exception se)
-            {
-                MessageBox.Show(se.Message);
-            }
-            
-            newPallet.Dispose();
+                    newPallet.Dispose();
+                }
+                catch (System.Security.SecurityException se)
+                {
+                    MessageBox.Show("Permission denied " + se.Message);
+                }
+                catch (Exception se)
+                {
+                    MessageBox.Show(se.Message);
+                }
+
+
             }
         }
 
@@ -176,12 +179,12 @@ namespace Warehouse.View
                 this.listBox1.Items.Clear();
                 this.listBox2.Items.Clear();
                 var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
-    
+
                 foreach (PalletResult pallet in palletslist)
                 {
                     listBox1.Items.Add(pallet.kod_palety);
                 };
-    
+
                 if (listBox1.Items.Count >= 1)
                 {
                     listBox1.SelectedIndex = 0;
@@ -206,10 +209,10 @@ namespace Warehouse.View
         {
             if (this.listBox1.Items.Count >= 1)
             {
-            try
-            {
+                try
+                {
                     currentPallet = Warehouse.Logic.Warehouse.GetPallet(listBox1.SelectedItem.ToString());
-    
+
                     var editPallet = new Pallet("exists", orderID, currentPallet.kod_palety, currentPallet.kod_miejsca_w_mag, currentPallet.Id.ToString());
                     var modifyResult = editPallet.ShowDialog();
                     if (modifyResult == DialogResult.OK)
@@ -217,35 +220,34 @@ namespace Warehouse.View
                         this.listBox1.Items.Clear();
                         this.listBox2.Items.Clear();
                         var palletslist = Warehouse.Logic.Warehouse.GetAllPallets(orderID);
-    
+
                         foreach (PalletResult pallet in palletslist)
                         {
                             listBox1.Items.Add(pallet.kod_palety);
                         };
-    
+
                         listBox1.SelectedIndex = 0;
                         var palletProducts = Warehouse.Logic.Warehouse.GetAllProducts(this.listBox1.SelectedItem.ToString());
                         foreach (ProductResult product in palletProducts)
                         {
                             this.listBox2.Items.Add(product.nazwa);
                         }
-    
                     }
-            }
-            catch (System.Security.SecurityException se)
-            {
-                MessageBox.Show("Permission denied " + se.Message);
-            }
-            catch (Exception se)
-            {
-                MessageBox.Show(se.Message);
-            }
-            else
-            {
-                MessageBox.Show("Najpierw utwórz i zaznacz paletę!");
-            }
-      
-        }
+                    else
+                    {
+                        MessageBox.Show("Najpierw utwórz i zaznacz paletę!");
+                    }
 
+                }
+                catch (System.Security.SecurityException se)
+                {
+                    MessageBox.Show("Permission denied " + se.Message);
+                }
+                catch (Exception se)
+                {
+                    MessageBox.Show(se.Message);
+                }
+            }
+        }
     }
 }
