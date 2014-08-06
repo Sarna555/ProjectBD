@@ -19,7 +19,18 @@ namespace Warehouse
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Warehouse.Logic.Warehouse.AddCategory(this.textBox1.Text);
+            try
+            {
+                Warehouse.Logic.Warehouse.AddCategory(this.textBox1.Text);
+            }
+            catch (System.Security.SecurityException se)
+            {
+                MessageBox.Show("Permission denied " + se.Message);
+            }
+            catch (Exception se)
+            {
+                MessageBox.Show(se.Message);
+            }
             this.Close();
         }
     }
