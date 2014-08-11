@@ -363,13 +363,18 @@ namespace Admin.Logic
                 var result1 = (from g in db.groups
                                from o in db.operations
                                where g.name == name && o.name == oper
-                               select new groups2operation
+                               select new
                                {
                                    group_ID = g.group_ID,
                                    operation_ID = o.operation_ID
                                }).SingleOrDefault();
                 if (result1 == null)
-                    db.groups2operations.InsertOnSubmit(result1);
+                {
+                    var newRec = new groups2operation();
+                    newRec.group_ID = result1.group_ID;
+                    newRec.operation_ID = result1.operation_ID;
+                    db.groups2operations.InsertOnSubmit(newRec);
+                }
             }
             db.SubmitChanges();
         }
