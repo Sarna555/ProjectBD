@@ -356,9 +356,6 @@ namespace Admin.Logic
                           && g2o.operation_ID == o.operation_ID
                           select g2o).ToList<groups2operation>();
 
-            if (result.Count == 0)
-                throw new Exception("No such group");
-
             db.groups2operations.DeleteAllOnSubmit(result);
 
             foreach (string oper in operations)
@@ -389,7 +386,6 @@ namespace Admin.Logic
         {
             var db = new SQLtoLinqDataContext();
             var newOperation = new operation();
-            db.Log = Console.Out;
 
             var result = (from o in db.operations
                           where o.name == name
