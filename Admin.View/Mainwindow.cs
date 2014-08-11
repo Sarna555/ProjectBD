@@ -19,6 +19,8 @@ namespace Admin.View
         public Mainwindow()
         {
             InitializeComponent();
+            checkedListBox2.Sorted = true;
+            checkedListBox1.Sorted = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -186,8 +188,6 @@ namespace Admin.View
                         {
                             checkedListBox1.Items.Remove(permission);
                             checkedListBox1.Items.Add(permission, true);
-                            checkedListBox1.Sorted = true;
-
                         }
                         foreach (String group in allGroups)
                         {
@@ -197,7 +197,6 @@ namespace Admin.View
                         {
                             checkedListBox2.Items.Remove(group);
                             checkedListBox2.Items.Add(group, true);
-                            checkedListBox2.Sorted = true;
                         }
                         break;
                     default:
@@ -277,7 +276,6 @@ namespace Admin.View
                             {
                                 checkedListBox1.Items.Remove(permission);
                                 checkedListBox1.Items.Add(permission, true);
-                                checkedListBox1.Sorted = true;
 
                             }
                             break;
@@ -299,7 +297,7 @@ namespace Admin.View
             try
             {
                 var login = this.listBox1.SelectedItem.ToString();
-
+                var allPermissions = Administration.GetAllOperations();
                 switch (choice)
                 {
                     case "user":
@@ -315,6 +313,30 @@ namespace Admin.View
                         }
                         Administration.AddUserOperations(login, userPermissions);
                         Administration.AddUserGroups(login, userGroups);
+                        this.checkedListBox1.Items.Clear();
+                        this.checkedListBox2.Items.Clear();
+                        var allGroups = Administration.GetAllGroups();
+                        var permissionListUser = Administration.GetUserOperations(login);
+                        foreach (String permission in allPermissions)
+                            {
+                                checkedListBox1.Items.Add(permission, false);
+                            }
+                        foreach (String permission in permissionListUser)
+                            {
+                                checkedListBox1.Items.Remove(permission);
+                                checkedListBox1.Items.Add(permission, true);
+                            }
+                        foreach (String group in allGroups)
+                            {
+                                checkedListBox2.Items.Add(group, false);
+                            }
+                        foreach (String group in userGroups)
+                            {
+                                checkedListBox2.Items.Remove(group);
+                                checkedListBox2.Items.Add(group, true);
+                             
+                            }
+                      
                         break;
 
                     case "group":
@@ -323,7 +345,21 @@ namespace Admin.View
                         {
                             groupPermissions.Add(permission);
                         }
+                        
                         Administration.UpdateGroup(login, groupPermissions);
+                        checkedListBox1.Items.Clear();
+                      
+                        var permissionListGroups = Administration.GetGroupOperations(login);
+                           foreach (String permission 
+                               in allPermissions)
+                           {
+                               checkedListBox1.Items.Add(permission, false);
+                           }
+                           foreach (String permission in permissionListGroups)
+                           {
+                               checkedListBox1.Items.Remove(permission);
+                               checkedListBox1.Items.Add(permission, true);
+                           }
                         break;
                 }
             }
@@ -426,7 +462,7 @@ namespace Admin.View
                         {
                             checkedListBox1.Items.Remove(permission);
                             checkedListBox1.Items.Add(permission, true);
-                            checkedListBox1.Sorted = true;
+
 
                         }
                         break;
@@ -440,6 +476,11 @@ namespace Admin.View
             {
                 MessageBox.Show("Permission denied: " + se.Message);
             }
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
