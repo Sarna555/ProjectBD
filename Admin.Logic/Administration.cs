@@ -21,10 +21,12 @@ namespace Admin.Logic
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <exception cref="InvalidOperationException">When user is not found</exception>
         /// <returns>user</returns>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.GetUser)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static UserResult GetUser(string login)
         {
             var db = new SQLtoLinqDataContext();
+            
             var user = (from u in db.Users
                         where u.login == login
                         select new UserResult
@@ -35,13 +37,15 @@ namespace Admin.Logic
                         }).Single();
             return user;
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>List of all users</returns>
         //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.GetAllUsers)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<UserResult> GetAllUsers()
         {
 
@@ -63,7 +67,8 @@ namespace Admin.Logic
         /// <param name="login"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>List of all user operations including operations form groups</returns>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.GetAllUserOperations)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetAllUserOperations(string login)
         {
             var db = new SQLtoLinqDataContext();
@@ -93,8 +98,8 @@ namespace Admin.Logic
         /// </summary>
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>List of all groups</returns>
-        //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.GetAllGroups)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetAllGroups()
         {
             var db = new SQLtoLinqDataContext();
@@ -108,7 +113,8 @@ namespace Admin.Logic
         /// </summary>
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>List of all operations</returns>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.GetAllOperations)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetAllOperations()
         {
             var db = new SQLtoLinqDataContext();
@@ -123,8 +129,8 @@ namespace Admin.Logic
         /// <param name="name"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>List of group operations</returns>
-        //[PrincipalPermissionAttribute(SecurityAction.Demand, Role = "ReadUsers")]
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.GetGroupOperations)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetGroupOperations(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -143,7 +149,8 @@ namespace Admin.Logic
         /// <param name="login"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <returns>user operations</returns>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated=true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.GetGroupOperations)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetUserOperations(string login)
         {
             var db = new SQLtoLinqDataContext();
@@ -163,7 +170,8 @@ namespace Admin.Logic
         /// <param name="login"></param>
         /// <returns></returns>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.GetUserGroups)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetUserGroups(string login)
         {
             var db = new SQLtoLinqDataContext();
@@ -189,7 +197,8 @@ namespace Admin.Logic
         /// <exception cref="ArgumentNullException">When login is null</exception>
         /// <exception cref="InvalidOperationException">When user is not in database</exception>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.UpdateUser)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void UpdateUser(string login, string newLogin, string name, string surname, string password)
         {
             var db = new SQLtoLinqDataContext();
@@ -214,7 +223,8 @@ namespace Admin.Logic
         /// <param name="login"></param>
         /// <param name="operations">List of ALL user operations</param>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.AddUserOperations)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddUserOperations(string login, List<string> operations)
         {
             var db = new SQLtoLinqDataContext();
@@ -258,7 +268,8 @@ namespace Admin.Logic
         /// <param name="surname"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
         /// <exception cref="Exception">When user already exists</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.AddUser)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddUser(string login, string password, string name, string surname)
         {
             var db = new SQLtoLinqDataContext();
@@ -287,7 +298,8 @@ namespace Admin.Logic
         /// <param name="name"></param>
         /// <exception cref="Exception">When group already exists</exception>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.AddGroup)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddGroup(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -312,7 +324,8 @@ namespace Admin.Logic
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException">When group is not in database</exception>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.UpdateGroup)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void UpdateGroup(string oldName, string newName)
         {
             var db = new SQLtoLinqDataContext();
@@ -331,7 +344,8 @@ namespace Admin.Logic
         /// <param name="operations"></param>
         /// <exception cref="Exception">When group is not found</exception>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.UpdateGroup)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void UpdateGroup(string name, List<string> operations)
         {
             var db = new SQLtoLinqDataContext();
@@ -369,7 +383,8 @@ namespace Admin.Logic
         /// <param name="name"></param>
         /// <exception cref="Exception">When operation already exists</exception>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.AddOperation)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddOperation(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -393,7 +408,8 @@ namespace Admin.Logic
         /// <param name="login"></param>
         /// <param name="groups"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.AddUserGroups)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddUserGroups(string login, List<string> groups)
         {
             var db = new SQLtoLinqDataContext();
@@ -434,7 +450,8 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="login"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.DeleteUser)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void DeleteUser(string login)
         {
             var db = new SQLtoLinqDataContext();
@@ -463,7 +480,8 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.DeleteGroup)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void DeleteGroup(string name)
         {
             var db = new SQLtoLinqDataContext();
@@ -492,7 +510,8 @@ namespace Admin.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <exception cref="SqlException">When error with database occurs</exception>
-        [PrincipalPermissionAttribute(SecurityAction.Demand, Authenticated = true)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role = Operation.DeleteOperation)]
+        [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void DeleteOperation(string name)
         {
             var db = new SQLtoLinqDataContext();

@@ -53,16 +53,6 @@ namespace Security
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="GroupName"></param>
-        /// <returns></returns>
-        public bool HasGroupRight(String groupName)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <returns></returns>
         public List<String> GetAllRoles()
         {

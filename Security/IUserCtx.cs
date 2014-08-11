@@ -12,8 +12,6 @@ namespace Security
 
         bool HasRoleRight(string operRoleName);
 
-        bool HasGroupRight(string groupName);
-
 
         List<string> GetAllRoles();
     }

@@ -71,12 +71,9 @@
     <Compile Include="UserResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UsersDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="UsersDatabase.mdf" />
     <Content Include="UsersDatabase_log.ldf">
       <DependentUpon>UsersDatabase.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
