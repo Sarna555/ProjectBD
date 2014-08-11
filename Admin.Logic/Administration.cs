@@ -13,7 +13,8 @@ namespace Admin.Logic
 {
     public class Administration
     {
-
+        
+        public string ConnString { get; set;};
         /// <summary>
         /// 
         /// </summary>
@@ -368,7 +369,7 @@ namespace Admin.Logic
                                    group_ID = g.group_ID,
                                    operation_ID = o.operation_ID
                                }).SingleOrDefault();
-                if (result1 == null)
+                if (result1 != null)
                 {
                     var newRec = new groups2operation();
                     newRec.group_ID = result1.group_ID;
