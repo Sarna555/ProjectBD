@@ -14,7 +14,7 @@ namespace Admin.Logic
     public class Administration
     {
         
-        public static string ConnString { get; set;};
+        //public static string ConnString { get; set;} = Security.Properties.Settings.Database1ConnectionString;
         /// <summary>
         /// 
         /// </summary>
@@ -26,7 +26,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static UserResult GetUser(string login)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             
             var user = (from u in db.Users
                         where u.login == login
@@ -50,7 +50,7 @@ namespace Admin.Logic
         public static List<UserResult> GetAllUsers()
         {
 
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var userResults = (from p in db.Users
                                select new UserResult
                                {
@@ -72,7 +72,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetAllUserOperations(string login)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from o in db.operations
                           from u2o in db.users2operations
                           from u in db.Users
@@ -103,7 +103,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetAllGroups()
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from g in db.groups
                           select g.name).ToList<string>();
             return result;
@@ -118,7 +118,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetAllOperations()
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from o in db.operations
                           select o.name).ToList<string>();
             return result;
@@ -134,7 +134,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetGroupOperations(string name)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from g in db.groups
                           from o in db.operations
                           from g2o in db.groups2operations
@@ -154,7 +154,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetUserOperations(string login)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             
             var result = (from u in db.Users
                           from o in db.operations
@@ -175,7 +175,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static List<string> GetUserGroups(string login)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
 
             var result = (from u in db.Users
                           from g in db.groups
@@ -202,7 +202,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void UpdateUser(string login, string newLogin, string name, string surname, string password)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from u in db.Users
                           where u.login == login
                           select u).Single();
@@ -228,7 +228,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddUserOperations(string login, List<string> operations)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from u in db.Users
                           from u2o in db.users2operations
                           where u.login == login && u.user_ID == u2o.user_ID
@@ -273,7 +273,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddUser(string login, string password, string name, string surname)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var user = new User();
 
             var result = (from u in db.Users
@@ -303,7 +303,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddGroup(string name)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var newGroup = new group();
 
             var result = (from g in db.groups
@@ -329,7 +329,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void UpdateGroup(string oldName, string newName)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from g in db.groups
                           where g.name == oldName
                           select g).Single();
@@ -349,7 +349,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void UpdateGroup(string name, List<string> operations)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var result = (from g in db.groups
                           from o in db.operations
                           from g2o in db.groups2operations
@@ -390,7 +390,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddOperation(string name)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var newOperation = new operation();
 
             var result = (from o in db.operations
@@ -414,7 +414,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void AddUserGroups(string login, List<string> groups)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
 
             var result = (from u in db.Users
                           from g in db.groups
@@ -456,7 +456,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void DeleteUser(string login)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var user = (from u in db.Users
                         where u.login == login
                         select u).Single();
@@ -486,7 +486,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void DeleteGroup(string name)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var groupa = (from g in db.groups
                          where g.name == name
                          select g).Single();
@@ -516,7 +516,7 @@ namespace Admin.Logic
         [PrincipalPermissionAttribute(SecurityAction.Demand, Role=Operation.Admin)]
         public static void DeleteOperation(string name)
         {
-            var db = new SQLtoLinqDataContext(ConnString);
+            var db = new SQLtoLinqDataContext(/*ConnString*/);
             var operation = (from o in db.operations
                          where o.name == name
                          select o).Single();

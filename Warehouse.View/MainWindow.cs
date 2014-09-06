@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using Security;
 using Warehouse.Logic;
+
 namespace Warehouse.View
 {
     public partial class Form1 : Form
@@ -19,6 +20,45 @@ namespace Warehouse.View
         public Form1()
         {
             InitializeComponent();
+            this.InitialHideComponents();
+        }
+        public void InitialHideComponents()
+        {
+            listBox1.Enabled = false;
+            listBox2.Enabled = false;
+            dodajKategorięProduktówToolStripMenuItem.Enabled = false;
+            wyświelListęToolStripMenuItem.Enabled = false;
+            dodajZamówienieToolStripMenuItem.Enabled = false;
+            button1.Enabled = false;
+            button3.Enabled = false;
+ 
+        }
+        public void ShowComponents(IUserCtx user)
+        {
+            var roles = user.GetAllRoles();
+            foreach (var role in roles)
+            {
+                switch(role)
+                {
+                    case "AddOrder": 
+                        dodajZamówienieToolStripMenuItem.Enabled = true;
+                        break;
+                    case "AddCategory":
+                        dodajKategorięProduktówToolStripMenuItem.Enabled = true;
+                        break;
+                    case "UpdateOrder":
+                        button1.Enabled = true;
+                        break;
+                    case "DeleteOrder":
+                        button3.Enabled = true;
+                        break;
+                    case "GetAllOrders":
+                        wyświelListęToolStripMenuItem.Enabled = true;
+                        listBox1.Enabled = true;
+                        listBox2.Enabled = true;
+                        break;
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -27,7 +67,7 @@ namespace Warehouse.View
             {
                 if (listBox1.SelectedItem != null)
                 {
-                    var orderModify = new Order("exists", this.listBox1.SelectedItem.ToString(),
+                    var orderModify = new Order(uctx,"exists", this.listBox1.SelectedItem.ToString(),
                                                          this.currentOrder.nadawca,
                                                          this.currentOrder.odbiorca,
                                                          this.currentOrder.data_nadania,
@@ -81,6 +121,7 @@ namespace Warehouse.View
                     if (UserCtx.Login(email, password, out uctx))
                     {
                         label1.Text = email;
+                        ShowComponents(uctx);
                     }
                     else
                     {
@@ -102,10 +143,12 @@ namespace Warehouse.View
 
         private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try{
-            UserCtx.Logout(ref uctx);
+            try
+            {
+                UserCtx.Logout(ref uctx);
+                InitialHideComponents();
             }
-              catch (System.Security.SecurityException se)
+            catch (System.Security.SecurityException se)
             {
                 MessageBox.Show("Permission denied " + se.Message);
             }
@@ -159,7 +202,7 @@ namespace Warehouse.View
             try
             {
 
-                var order = new Order("new", null, null, null, DateTime.MinValue, DateTime.MinValue, "oczekujaca");
+                var order = new Order(uctx,"new", null, null, null, DateTime.MinValue, DateTime.MinValue, "oczekujaca");
                 var resultOrder = order.ShowDialog();
                 if (resultOrder == DialogResult.OK)
                 {
@@ -211,6 +254,24 @@ namespace Warehouse.View
         {
             var addCategory = new Category();
             addCategory.ShowDialog();
+        }
+        //private void hideAccordingToPermissions(UserCtx user)
+        //{
+        // if (!user.HasRoleRight(Operation.Admin))
+        // {
+        // }
+        // if (!_userCtx.HasRoleRight(Operation.Admin))
+        //                                                            if (!_userCtx.HasRoleRight(Operation.Admin))
+        //                                                                                if (!_userCtx.HasRoleRight(Operation.Admin))
+        //                                                                                                    if (!_userCtx.HasRoleRight(Operation.Admin))
+        //                                                                                if (!_userCtx.HasRoleRight(Operation.Admin))
+        //                                                                                if (!_userCtx.HasRoleRight(Operation.Admin))
+        //                                                            if (!_userCtx.HasRoleRight(Operation.Admin))
+        //}
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

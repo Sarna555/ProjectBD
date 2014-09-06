@@ -37,6 +37,10 @@ namespace Admin.View
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
+            catch (System.Security.SecurityException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.Message);

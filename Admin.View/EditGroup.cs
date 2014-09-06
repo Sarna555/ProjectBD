@@ -44,21 +44,33 @@ namespace Admin.View
 
         private void button1_Click(object sender, EventArgs e)
         {
-            switch (choice)
+            try
             {
-                case "new":
-                    if (this.textBox1.Text != null)
-                        Administration.AddGroup(this.textBox1.Text);
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                    break;
 
-                case "exists":
-                    if (this.textBox1.Text != null)
+                switch (choice)
+                {
+                    case "new":
+                        if (this.textBox1.Text != null)
+                            Administration.AddGroup(this.textBox1.Text);
                         this.DialogResult = DialogResult.OK;
-                    Administration.UpdateGroup(oldName, this.textBox1.Text);
-                    this.Close();
-                    break;
+                        this.Close();
+                        break;
+
+                    case "exists":
+                        if (this.textBox1.Text != null)
+                            this.DialogResult = DialogResult.OK;
+                        Administration.UpdateGroup(oldName, this.textBox1.Text);
+                        this.Close();
+                        break;
+                }
+            }
+            catch (System.Security.SecurityException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

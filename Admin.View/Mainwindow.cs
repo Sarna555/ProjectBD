@@ -96,6 +96,11 @@ namespace Admin.View
                 {
                     MessageBox.Show("Błąd logowania: nieprawidłowy login lub hasło. \nSpróbuj ponownie");
                 }
+                if (!_userCtx.HasRoleRight(Operation.Admin))
+                {
+                    MessageBox.Show("Użytkownik nie posiada praw administratora");
+                    UserCtx.Logout(ref _userCtx);
+                }
             }
         }
 
@@ -242,52 +247,56 @@ namespace Admin.View
         {
             var addPermission = new AddPermission();
             var result = addPermission.ShowDialog();
+            string login;
             if (result == DialogResult.OK)
             {
                 var allPermissions = Administration.GetAllOperations();
-                string login = this.listBox1.SelectedItem.ToString();
-                try
+                if (this.listBox1.SelectedItem != null)
                 {
-                    switch (choice)
+                    login = this.listBox1.SelectedItem.ToString();
+                    try
                     {
-                        case "group":
-                            checkedListBox1.Items.Clear();
-                            var permissionListGroups = Administration.GetGroupOperations(login);
-                            foreach (String permission in allPermissions)
-                            {
-                                checkedListBox1.Items.Add(permission, false);
-                            }
-                            foreach (String permission in permissionListGroups)
-                            {
-                                checkedListBox1.Items.Remove(permission);
-                                checkedListBox1.Items.Add(permission, true);
-                            }
+                        switch (choice)
+                        {
+                            case "group":
+                                checkedListBox1.Items.Clear();
+                                var permissionListGroups = Administration.GetGroupOperations(login);
+                                foreach (String permission in allPermissions)
+                                {
+                                    checkedListBox1.Items.Add(permission, false);
+                                }
+                                foreach (String permission in permissionListGroups)
+                                {
+                                    checkedListBox1.Items.Remove(permission);
+                                    checkedListBox1.Items.Add(permission, true);
+                                }
 
-                            break;
-                        case "user":
-                            checkedListBox1.Items.Clear();
-                            var userPermissions = Administration.GetUserOperations(login);
-                            foreach (String permission in allPermissions)
-                            {
-                                checkedListBox1.Items.Add(permission, false);
-                            }
+                                break;
+                            case "user":
+                                checkedListBox1.Items.Clear();
+                                var userPermissions = Administration.GetUserOperations(login);
+                                foreach (String permission in allPermissions)
+                                {
+                                    checkedListBox1.Items.Add(permission, false);
+                                }
 
-                            foreach (String permission in userPermissions)
-                            {
-                                checkedListBox1.Items.Remove(permission);
-                                checkedListBox1.Items.Add(permission, true);
+                                foreach (String permission in userPermissions)
+                                {
+                                    checkedListBox1.Items.Remove(permission);
+                                    checkedListBox1.Items.Add(permission, true);
 
-                            }
-                            break;
-                        default:
-                            MessageBox.Show("Wystąpił błąd");
-                            break;
+                                }
+                                break;
+                            default:
+                                MessageBox.Show("Wystąpił błąd");
+                                break;
+                        }
+
                     }
-
-                }
-                catch (System.Security.SecurityException se)
-                {
-                    MessageBox.Show("Permission denied: " + se.Message);
+                    catch (System.Security.SecurityException se)
+                    {
+                        MessageBox.Show("Permission denied: " + se.Message);
+                    }
                 }
             }
         }

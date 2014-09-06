@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Warehouse.Logic;
+using Security;
 namespace Warehouse.View
 {
     public partial class Order : Form
@@ -20,13 +21,53 @@ namespace Warehouse.View
         {
             InitializeComponent();
         }
-        public Order(string switchiIn, string orderIDIn, string senderIn, string recieverIn, DateTime dateSentIn, DateTime dateRecievedIn, string state)
+        public void InitialHideComponents()
         {
+            button1.Enabled = false;
+            button5.Enabled = false;
+            button3.Enabled = false;
+            listBox1.Enabled = false;
+            listBox2.Enabled = false;
+        }
+        public void ShowComponents(IUserCtx user)
+        {
+            var roles = user.GetAllRoles();
+            foreach (var role in roles)
+            {
+                switch (role)
+                {
+                    case "AddPallet":
+                        button1.Enabled = true;
+                        break;
+                    case "UpdatePallet":
+                        button5.Enabled = true;
+                        break;
+                    case "DeletePallet":
+                        button2.Enabled = true;
+                        break;
+                    case "GetAllPallets":
+                        listBox1.Enabled = true;
+                        break;
+                    case "GetAllProducts":
+                        listBox2.Enabled = true;
+                        break;
+                    case "UpdateOrder":
+                        button3.Enabled = true;
+                        break;
+                }
+            }
+        }
+        
+
+        public Order(IUserCtx user, string switchiIn, string orderIDIn, string senderIn, string recieverIn, DateTime dateSentIn, DateTime dateRecievedIn, string state)
+        {
+
             switchi = switchiIn;
             try
             {
                 switch (switchi)
                 {
+                    
                     case "new":
                         orderID = orderIDIn;
                         sender = senderIn;
@@ -34,10 +75,14 @@ namespace Warehouse.View
                         dateSent = dateSentIn;
                         dateRecieved = dateRecievedIn;
                         InitializeComponent();
+                        InitialHideComponents();
+                        ShowComponents(user);
                         this.comboBox1.SelectedIndex = comboBox1.Items.IndexOf(state);
                         break;
                     case "exists":
                         InitializeComponent();
+                        InitialHideComponents();
+                        ShowComponents(user);
                         orderID = orderIDIn;
                         this.textBox1.Text = senderIn;
                         sender = senderIn;

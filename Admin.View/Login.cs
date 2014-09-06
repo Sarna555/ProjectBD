@@ -30,7 +30,7 @@ namespace Admin.View
         private void button1_Click(object sender, EventArgs e)
         {
             ReturnValue1 = this.textBox1.Text;
-            ReturnValue2 = this.textBox2.Text; //DOROBIC KRYPTOGRAFIE
+            ReturnValue2 = this.textBox2.Text;
         }
     }
 }

@@ -76,12 +76,16 @@ namespace Admin.View
                         if (!string.Equals(this.textBox3.Text, ""))
                         {
                             newlogin = this.textBox3.Text;
-                        }                       
-                        Administration.UpdateUser(oldlogin,newlogin,name,surname,password);
+                        }
+                        Administration.UpdateUser(oldlogin, newlogin, name, surname, password);
                         this.DialogResult = DialogResult.OK;
                         this.Close();
                         break;
                 }
+            }
+            catch (System.Security.SecurityException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             catch (SqlException ex)
             {

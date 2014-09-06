@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Warehouse.Logic;
-
+using Security;
 namespace Warehouse.View
 {
     public partial class Pallet : Form
@@ -54,6 +54,41 @@ namespace Warehouse.View
                 MessageBox.Show(se.Message);
             }
         }
+
+        public void InitialHideComponents()
+        {
+            button3.Enabled = false;
+            button4.Enabled = false;
+            button5.Enabled = false;
+            button2.Enabled = false;
+            listBox1.Enabled = false;
+        }
+        public void ShowComponenets(IUserCtx user)
+        {
+            var roles = user.GetAllRoles();
+            foreach (var role in roles)
+            {
+                switch (role)
+                {
+                    case "AddProduct":
+                        button3.Enabled = true;
+                        break;
+                    case "UpdateProduct":
+                        button4.Enabled = true;
+                        break;
+                    case "DeleteProduct":
+                        button5.Enabled = true;
+                        break;
+                    case "GetAllProducts":
+                        listBox1.Enabled = true;
+                        break;
+                    case "UpdatePallet":
+                        button2.Enabled = true;
+                        break;
+                }
+            }
+        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
