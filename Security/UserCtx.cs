@@ -7,6 +7,7 @@ using System.Threading;
 using System.Security.Principal;
 using System.Security.Cryptography;
 using System.IO;
+using System.Configuration;
 
 namespace Security
 {
@@ -87,40 +88,51 @@ namespace Security
         public static bool Login(String login, String pass, out IUserCtx uc)
         {
             uc = null;
-            var db = new SQLtoLinqDataContext();
-            pass = UserCtx.Encrypt(pass);
-            var result = (from p in db.Users
-                          where p.login == login && p.password == pass
-                          select new UserResult
-                          {
-                              user_ID = p.user_ID,
-                              name = p.name,
-                              surname = p.surname,
-                              login = p.login
-                          }).SingleOrDefault();
-            if (result == null)
-                return false;
 
-            var roles = (from o in db.operations
-                         from u2o in db.users2operations
-                         from u in db.Users
-                         where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.user_ID == result.user_ID
-                         select o.name)
-                         .Union
-                         (from o in db.operations
-                          from g2o in db.groups2operations
-                          from u2g in db.users2groups
-                          from u in db.Users
-                          from g in db.groups
-                          where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.user_ID == result.user_ID
-                          select o.name).ToList<string>();
-            uc = new UserCtx(login, roles);
+            try
+            {
+                string lol = ConfigurationManager.ConnectionStrings["AdminDatabase"].ConnectionString;
+                var db = new SQLtoLinqDataContext(ConfigurationManager.ConnectionStrings["AdminDatabase"].ConnectionString);
+                pass = UserCtx.Encrypt(pass);
 
-            GenericIdentity gi = new GenericIdentity(login);
+                var result = (from p in db.Users
+                              where p.login == login && p.password == pass
+                              select new UserResult
+                              {
+                                  user_ID = p.user_ID,
+                                  name = p.name,
+                                  surname = p.surname,
+                                  login = p.login
+                              }).SingleOrDefault();
+                if (result == null)
+                    return false;
 
-            GenericPrincipal gp = new GenericPrincipal(gi, roles.ToArray());
+                var roles = (from o in db.operations
+                             from u2o in db.users2operations
+                             from u in db.Users
+                             where o.operation_ID == u2o.operation_ID && u.user_ID == u2o.user_ID && u.user_ID == result.user_ID
+                             select o.name)
+                             .Union
+                             (from o in db.operations
+                              from g2o in db.groups2operations
+                              from u2g in db.users2groups
+                              from u in db.Users
+                              from g in db.groups
+                              where u.user_ID == u2g.user_ID && g.group_ID == u2g.group_ID && g.group_ID == g2o.group_ID && o.operation_ID == g2o.operation_ID && u.user_ID == result.user_ID
+                              select o.name).ToList<string>();
+                uc = new UserCtx(login, roles);
 
-            Thread.CurrentPrincipal = gp;
+                GenericIdentity gi = new GenericIdentity(login);
+
+                GenericPrincipal gp = new GenericPrincipal(gi, roles.ToArray());
+
+                Thread.CurrentPrincipal = gp;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
             return true;
 
         }
