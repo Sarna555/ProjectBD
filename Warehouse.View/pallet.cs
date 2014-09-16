@@ -152,6 +152,12 @@ namespace Warehouse.View
             try
             {
                 Warehouse.Logic.Warehouse.DeleteProduct(currentProduct.Id.ToString());
+                productsOnPallet = Warehouse.Logic.Warehouse.GetAllProducts(palletCode);
+                listBox1.Items.Clear();
+                foreach (var product in productsOnPallet)
+                {
+                    listBox1.Items.Add(product.nazwa);
+                }
             }
             catch (System.Security.SecurityException se)
             {

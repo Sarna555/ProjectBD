@@ -19,8 +19,48 @@ namespace Admin.View
         public Mainwindow()
         {
             InitializeComponent();
+            InitialHideComponents();
             checkedListBox2.Sorted = true;
             checkedListBox1.Sorted = true;
+        }
+        public void InitialHideComponents()
+        {
+            listBox1.Enabled = false;
+            checkedListBox1.Enabled = false;
+            checkedListBox2.Enabled = false;
+            dodajGrupęToolStripMenuItem.Enabled = false;
+            dodajNoweUprawnienieToolStripMenuItem.Enabled = false;
+            dodajUżytkownikaToolStripMenuItem.Enabled = false;
+            zobaczListęToolStripMenuItem1.Enabled = false;
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = false;
+ 
+        }
+        public void ShowComponents(IUserCtx user)
+        {
+            var roles = user.GetAllRoles();
+            foreach (var role in roles)
+            {
+                switch (role)
+                {
+                    case "admin":
+                        listBox1.Enabled = true;
+                        checkedListBox1.Enabled = true;
+                        checkedListBox2.Enabled = true;
+                        dodajGrupęToolStripMenuItem.Enabled = true;
+                        dodajNoweUprawnienieToolStripMenuItem.Enabled = true;
+                        dodajUżytkownikaToolStripMenuItem.Enabled = true;
+                        zobaczListęToolStripMenuItem1.Enabled = true;
+                        button1.Enabled = true;
+                        button2.Enabled = true;
+                        button3.Enabled = true;
+                        button4.Enabled = true;
+                        break;
+
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -92,6 +132,7 @@ namespace Admin.View
                 string password = logging.ReturnValue2;
          
                 bool loggingResult = UserCtx.Login(username, password, out _userCtx);
+                ShowComponents(_userCtx);
                 if (!loggingResult)
                 {
                     MessageBox.Show("Błąd logowania: nieprawidłowy login lub hasło. \nSpróbuj ponownie");

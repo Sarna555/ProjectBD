@@ -27,7 +27,7 @@ namespace Warehouse.View
             listBox1.Enabled = false;
             listBox2.Enabled = false;
             dodajKategorięProduktówToolStripMenuItem.Enabled = false;
-            wyświelListęToolStripMenuItem.Enabled = false;
+         //   wyświelListęToolStripMenuItem.Enabled = false;
             dodajZamówienieToolStripMenuItem.Enabled = false;
             button1.Enabled = false;
             button3.Enabled = false;
@@ -41,8 +41,8 @@ namespace Warehouse.View
                 switch(role)
                 {
                     case "AddOrder": 
-                        dodajZamówienieToolStripMenuItem.Enabled = true;
-                        break;
+                      dodajZamówienieToolStripMenuItem.Enabled = true;
+                      break;
                     case "AddCategory":
                         dodajKategorięProduktówToolStripMenuItem.Enabled = true;
                         break;
@@ -53,7 +53,7 @@ namespace Warehouse.View
                         button3.Enabled = true;
                         break;
                     case "GetAllOrders":
-                        wyświelListęToolStripMenuItem.Enabled = true;
+                       // wyświelListęToolStripMenuItem.Enabled = true;
                         listBox1.Enabled = true;
                         listBox2.Enabled = true;
                         break;
