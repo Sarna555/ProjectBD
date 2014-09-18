@@ -52,6 +52,7 @@ namespace Admin.View
             this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,27 +77,27 @@ namespace Admin.View
             this.wylogujToolStripMenuItem,
             this.zakończToolStripMenuItem});
             this.plikToolStripMenuItem.Name = "plikToolStripMenuItem";
-            this.plikToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.plikToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.plikToolStripMenuItem.Text = "Plik";
             // 
             // zalogujToolStripMenuItem
             // 
             this.zalogujToolStripMenuItem.Name = "zalogujToolStripMenuItem";
-            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zalogujToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.zalogujToolStripMenuItem.Text = "Zaloguj";
             this.zalogujToolStripMenuItem.Click += new System.EventHandler(this.zalogujToolStripMenuItem_Click);
             // 
             // wylogujToolStripMenuItem
             // 
             this.wylogujToolStripMenuItem.Name = "wylogujToolStripMenuItem";
-            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.wylogujToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.wylogujToolStripMenuItem.Text = "Wyloguj";
             this.wylogujToolStripMenuItem.Click += new System.EventHandler(this.wylogujToolStripMenuItem_Click);
             // 
             // zakończToolStripMenuItem
             // 
             this.zakończToolStripMenuItem.Name = "zakończToolStripMenuItem";
-            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zakończToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.zakończToolStripMenuItem.Text = "Zakończ";
             this.zakończToolStripMenuItem.Click += new System.EventHandler(this.zakończToolStripMenuItem_Click);
             // 
@@ -106,20 +107,20 @@ namespace Admin.View
             this.dodajUżytkownikaToolStripMenuItem,
             this.zobaczListęToolStripMenuItem});
             this.użytkownicyToolStripMenuItem.Name = "użytkownicyToolStripMenuItem";
-            this.użytkownicyToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
+            this.użytkownicyToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.użytkownicyToolStripMenuItem.Text = "Użytkownicy";
             // 
             // dodajUżytkownikaToolStripMenuItem
             // 
             this.dodajUżytkownikaToolStripMenuItem.Name = "dodajUżytkownikaToolStripMenuItem";
-            this.dodajUżytkownikaToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.dodajUżytkownikaToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.dodajUżytkownikaToolStripMenuItem.Text = "Dodaj użytkownika";
             this.dodajUżytkownikaToolStripMenuItem.Click += new System.EventHandler(this.dodajUżytkownikaToolStripMenuItem_Click);
             // 
             // zobaczListęToolStripMenuItem
             // 
             this.zobaczListęToolStripMenuItem.Name = "zobaczListęToolStripMenuItem";
-            this.zobaczListęToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.zobaczListęToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.zobaczListęToolStripMenuItem.Text = "Zobacz listę ";
             this.zobaczListęToolStripMenuItem.Click += new System.EventHandler(this.zobaczListęToolStripMenuItem_Click);
             // 
@@ -135,14 +136,14 @@ namespace Admin.View
             // dodajGrupęToolStripMenuItem
             // 
             this.dodajGrupęToolStripMenuItem.Name = "dodajGrupęToolStripMenuItem";
-            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.dodajGrupęToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.dodajGrupęToolStripMenuItem.Text = "Dodaj grupę";
             this.dodajGrupęToolStripMenuItem.Click += new System.EventHandler(this.dodajGrupęToolStripMenuItem_Click);
             // 
             // zobaczListęToolStripMenuItem1
             // 
             this.zobaczListęToolStripMenuItem1.Name = "zobaczListęToolStripMenuItem1";
-            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.zobaczListęToolStripMenuItem1.Size = new System.Drawing.Size(139, 22);
             this.zobaczListęToolStripMenuItem1.Text = "Zobacz listę";
             this.zobaczListęToolStripMenuItem1.Click += new System.EventHandler(this.zobaczListęToolStripMenuItem1_Click);
             // 
@@ -151,13 +152,13 @@ namespace Admin.View
             this.uprawnieniaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dodajNoweUprawnienieToolStripMenuItem});
             this.uprawnieniaToolStripMenuItem.Name = "uprawnieniaToolStripMenuItem";
-            this.uprawnieniaToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
+            this.uprawnieniaToolStripMenuItem.Size = new System.Drawing.Size(85, 20);
             this.uprawnieniaToolStripMenuItem.Text = "Uprawnienia";
             // 
             // dodajNoweUprawnienieToolStripMenuItem
             // 
             this.dodajNoweUprawnienieToolStripMenuItem.Name = "dodajNoweUprawnienieToolStripMenuItem";
-            this.dodajNoweUprawnienieToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.dodajNoweUprawnienieToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.dodajNoweUprawnienieToolStripMenuItem.Text = "Dodaj nowe uprawnienie";
             this.dodajNoweUprawnienieToolStripMenuItem.Click += new System.EventHandler(this.dodajNoweUprawnienieToolStripMenuItem_Click);
             // 
@@ -166,13 +167,13 @@ namespace Admin.View
             this.pomocToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.oProgramieToolStripMenuItem});
             this.pomocToolStripMenuItem.Name = "pomocToolStripMenuItem";
-            this.pomocToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.pomocToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.pomocToolStripMenuItem.Text = "Pomoc";
             // 
             // oProgramieToolStripMenuItem
             // 
             this.oProgramieToolStripMenuItem.Name = "oProgramieToolStripMenuItem";
-            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.oProgramieToolStripMenuItem.Text = "O programie";
             this.oProgramieToolStripMenuItem.Click += new System.EventHandler(this.oProgramieToolStripMenuItem_Click);
             // 
@@ -241,11 +242,22 @@ namespace Admin.View
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(170, 292);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(151, 23);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "Generuj raport";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // Mainwindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 327);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.checkedListBox2);
@@ -289,6 +301,7 @@ namespace Admin.View
         private System.Windows.Forms.CheckedListBox checkedListBox2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
 
       
 

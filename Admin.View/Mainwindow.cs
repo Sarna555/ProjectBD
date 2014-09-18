@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Admin.Logic;
 using Security;
 using System.Data.SqlClient;
+using System.IO;
 namespace Admin.View
 {
     public partial class Mainwindow : Form
@@ -36,6 +37,7 @@ namespace Admin.View
             button2.Enabled = false;
             button3.Enabled = false;
             button4.Enabled = false;
+            button5.Enabled = false;
  
         }
         public void ShowComponents(IUserCtx user)
@@ -57,6 +59,7 @@ namespace Admin.View
                         button2.Enabled = true;
                         button3.Enabled = true;
                         button4.Enabled = true;
+                        button5.Enabled = true;
                         break;
 
                 }
@@ -193,7 +196,24 @@ namespace Admin.View
 
         private void dodajGrupęToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new EditGroup("new").Show();
+            var adding = new EditGroup("new");
+            var result = adding.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    //listBox1.d
+                    this.listBox1.DataSource = Administration.GetAllGroups();
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                catch (System.Security.SecurityException se)
+                {
+                    MessageBox.Show("Permission denied " + se.Message);
+                }
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -531,6 +551,27 @@ namespace Admin.View
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            StreamWriter writeRaport = new StreamWriter("raport.txt");
+            var users = Administration.GetAllUsers();
+            foreach (UserResult person in users)
+            {
+                writeRaport.WriteLine(person.name + " " + person.surname);
+                writeRaport.WriteLine("Login: " + person.login);
+                writeRaport.WriteLine();
+                writeRaport.WriteLine("Uprawnienia: ");
+                var permissions = Administration.GetAllUserOperations(person.login);
+                foreach (string permission in permissions)
+                {
+                    writeRaport.WriteLine("\t" + permission);
+                }
+                writeRaport.WriteLine();
+            }
+            writeRaport.Close();
+            MessageBox.Show("Wygenerowano raport!");
         }
     }
 }

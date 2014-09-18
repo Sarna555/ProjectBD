@@ -164,7 +164,15 @@ namespace Warehouse.View
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(uctx != null)
-                MessageBox.Show(uctx.uname);
+            {
+                string windowMessage = ("Login: " +uctx.uname + "\n\nUprawnienia użytkownika:\n");
+                foreach (string permission in uctx.GetAllRoles())
+                {
+                    windowMessage += permission;
+                    windowMessage += "\n";
+                }
+                MessageBox.Show(windowMessage);
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
